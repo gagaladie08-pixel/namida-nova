@@ -1,4 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:youtipie/class/result_wrapper/hashtag_result.dart';
+import 'package:youtipie/class/result_wrapper/comment_result.dart';
+import 'package:youtipie/class/result_wrapper/comment_reply_result.dart';
 
 class YoutiPie {
   static const cipher = _StubCipher();
@@ -59,6 +62,8 @@ class _StubCacheBuilder {
   dynamic forUserPlaylists() => this;
   dynamic forHashtag({dynamic params}) => this;
   dynamic forNotificationComments({dynamic videoId, dynamic linkedCommentId}) => this;
+  dynamic forCommentReplies({dynamic commentId}) => this;
+  dynamic forFeedItems() => this;
   dynamic withMaxPeriod({dynamic allowedDuration}) => this;
   Future<dynamic> read() async => null;
   dynamic readSync() => null;
@@ -126,7 +131,8 @@ class _StubUserChannel {
 
 class _StubComment {
   const _StubComment();
-  Future<dynamic> fetchNotificationComments({dynamic videoId, dynamic linkedCommentId, dynamic details}) async => null;
+  Future<YoutiPieCommentReplyResult?> fetchCommentReplies({dynamic mainComment, dynamic details}) async => null;
+  Future<YoutiPieCommentResult?> fetchNotificationComments({dynamic videoId, dynamic linkedCommentId, dynamic details}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -147,12 +153,13 @@ class _StubFeedbackAction {
 
 class _StubFeed {
   const _StubFeed();
+  Future<dynamic> fetchFeed({dynamic details}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
 class _StubHashtag {
   const _StubHashtag();
-  Future<dynamic> fetchHashtag({dynamic params, dynamic details}) async => null;
+  Future<YoutiPieHashtagResult?> fetchHashtag({dynamic params, dynamic details}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

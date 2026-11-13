@@ -1,7 +1,32 @@
-class YoutubeFeed {
-  final List<dynamic> items;
+import 'package:youtipie/class/map_serializable.dart';
 
-  const YoutubeFeed({this.items = const []});
+class YoutubeFeed extends MapSerializable {
+  @override
+  final dynamic id;
+  @override
+  final dynamic name;
+  @override
+  final dynamic title;
+  final List<dynamic> items;
+  final List<dynamic> initialVideos;
+  final String? subtitle;
+  final bool isMix;
+  final bool isShortContent;
+  final bool isMixPlaylist;
+  final dynamic shortsSection;
+
+  const YoutubeFeed({
+    this.id,
+    this.name,
+    this.title,
+    this.items = const [],
+    this.initialVideos = const [],
+    this.subtitle,
+    this.isMix = false,
+    this.isShortContent = false,
+    this.isMixPlaylist = false,
+    this.shortsSection,
+  });
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

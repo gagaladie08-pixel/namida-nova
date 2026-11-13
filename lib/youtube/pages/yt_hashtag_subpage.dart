@@ -61,27 +61,27 @@ class YTHashtagSubpage extends StatelessWidget with NamidaRouteWidget {
           thumbnailHeight: thumbnailHeight,
         ),
         itemBuilder: (item, index, list) {
-          return switch (item.runtimeType) {
-            const (StreamInfoItem) => YoutubeVideoCard(
+          return switch (item) {
+            final StreamInfoItem item => YoutubeVideoCard(
               properties: properties,
-              key: Key((item as StreamInfoItem).id),
+              key: Key(item.id),
               thumbnailWidth: thumbnailWidth,
               thumbnailHeight: thumbnailHeight,
               isImageImportantInCache: false,
               video: item,
               playlistID: null,
             ),
-            const (StreamInfoItemShort) => YoutubeShortVideoCard(
+            final StreamInfoItemShort item => YoutubeShortVideoCard(
               queueSource: queueSource,
-              key: Key("${(item as StreamInfoItemShort?)?.id}"),
+              key: Key("${item.id}"),
               thumbnailWidth: thumbnailWidth,
               thumbnailHeight: thumbnailHeight,
-              short: item as StreamInfoItemShort,
+              short: item,
               playlistID: null,
             ),
-            const (PlaylistInfoItem) => YoutubePlaylistCard(
+            final PlaylistInfoItem item => YoutubePlaylistCard(
               queueSource: queueSource,
-              key: Key((item as PlaylistInfoItem).id),
+              key: Key("${item.id}"),
               playlist: item,
               firstVideoID: item.initialVideos.firstOrNull?.id,
               thumbnailWidth: thumbnailWidth,

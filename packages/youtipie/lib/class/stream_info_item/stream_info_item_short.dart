@@ -1,9 +1,13 @@
-// Stub generated for class/stream_info_item/stream_info_item_short.dart
-class StreamInfoItemShort {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const StreamInfoItemShort({this.id, this.name, this.title});
+import 'package:youtipie/class/youtipie_feed/yt_feed_base.dart';
+
+class StreamInfoItemShort extends YoutubeFeed {
+  @override
+  final String id;
+
+  const StreamInfoItemShort({
+    this.id = '',
+    super.items = const [],
+  });
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

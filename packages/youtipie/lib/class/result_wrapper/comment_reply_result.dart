@@ -1,16 +1,16 @@
-class YoutiPieCommentReplyResult {
-  final String? commentId;
-  final String? cacheKey;
-  final List<dynamic> items;
-  final dynamic continuation;
+import 'package:youtipie/class/comments/comment_info_item.dart';
+import 'package:youtipie/class/result_wrapper/list_wrapper_base.dart';
 
-  int get length => items.length;
+class YoutiPieCommentReplyResult extends YoutiPieListWrapper<CommentInfoItem> {
+  final String commentId;
+  final int repliesCount;
+  @override
+  final List<CommentInfoItem> items;
 
   const YoutiPieCommentReplyResult({
-    this.commentId,
-    this.cacheKey,
+    this.commentId = '',
+    this.repliesCount = 0,
     this.items = const [],
-    this.continuation,
   });
 
   dynamic noSuchMethod(Invocation invocation) => null;
