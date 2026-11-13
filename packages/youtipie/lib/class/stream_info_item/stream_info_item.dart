@@ -22,6 +22,7 @@ class StreamInfoItem extends YoutubeFeed {
   final bool? isActuallyShortContent;
   final bool? isUploadedByMe;
   final String? channelId;
+  final String? channelName;
   final List<dynamic> thumbnails;
 
   const StreamInfoItem({
@@ -44,6 +45,7 @@ class StreamInfoItem extends YoutubeFeed {
     this.isActuallyShortContent,
     this.isUploadedByMe,
     this.channelId,
+    this.channelName,
     this.thumbnails = const [],
     super.items = const [],
   });

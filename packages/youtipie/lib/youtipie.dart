@@ -13,10 +13,11 @@ class Thumbnail {
   const Thumbnail({this.url, this.width, this.height});
 }
 
-extension ThumbnailListExtension on Iterable<dynamic>? {
-  dynamic pick() {
-    if (this == null || this!.isEmpty) return null;
-    return this!.first;
+extension ThumbnailListExtension<E> on Iterable<E>? {
+  E? pick() {
+    final self = this;
+    if (self == null || self.isEmpty) return null;
+    return self.first;
   }
 }
 
@@ -164,6 +165,8 @@ class _StubCommentAction {
 
 class _StubNotificationsAction {
   const _StubNotificationsAction();
+  Future<bool> markNotficationRead({dynamic mainList, dynamic notification}) async => true;
+  Future<bool> applyMenuAction({dynamic mainList, dynamic notification, dynamic action}) async => true;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

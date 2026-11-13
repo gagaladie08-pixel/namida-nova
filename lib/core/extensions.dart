@@ -300,13 +300,6 @@ extension StringListJoiner on Iterable<String?> {
   }
 }
 
-extension ThumbnailListExtension on Iterable<dynamic>? {
-  dynamic pick() {
-    if (this == null || this!.isEmpty) return null;
-    return this!.first;
-  }
-}
-
 final _sharedRandom = math.Random();
 
 extension ListieListieUtils<T> on List<T> {
