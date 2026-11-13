@@ -1,7 +1,9 @@
 enum PlaylistAddDuplicateAction {
   justAddEverything,
   addAllAndRemoveOldOnes,
-  cancel,
+  addOnlyMissing,
+  mergeAndSortByAddedDate,
+  deleteAndCreateNewPlaylist,
 }
 
 enum PlaylistType {

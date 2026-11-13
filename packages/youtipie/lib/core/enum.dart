@@ -1,7 +1,8 @@
 enum LikeStatus {
-  none,
   liked,
   disliked,
+  undefined,
+  unknown,
 }
 
 enum ChannelNotifications {
@@ -25,12 +26,19 @@ enum ThumbnailType {
   video,
   playlist,
   channel,
+  other,
 }
 
 enum FeedbackMenuActionType {
   notInterested,
   dontRecommendChannel,
-  report,
+}
+
+enum VideoEndScreenItemType {
+  video,
+  playlist,
+  channel,
+  unknown,
 }
 
 enum YoutiLoginProgress {

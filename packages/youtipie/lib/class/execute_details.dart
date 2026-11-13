@@ -1,9 +1,11 @@
-// Stub generated for class/execute_details.dart
 class ExecuteDetails {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const ExecuteDetails({this.id, this.name, this.title});
+  final bool forceRequest;
+
+  const ExecuteDetails({this.forceRequest = false});
+
+  factory ExecuteDetails.forceRequest() => const ExecuteDetails(forceRequest: true);
+
+  static const kForceRequest = ExecuteDetails(forceRequest: true);
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

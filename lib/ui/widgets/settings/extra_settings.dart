@@ -2563,17 +2563,20 @@ extension _ScrollbarTrackModeDisplay on ScrollbarTrackMode {
     ScrollbarTrackMode.thumbOnly => 'thumb only',
     ScrollbarTrackMode.dragAnywhere => 'drag anywhere',
     ScrollbarTrackMode.jumpToTouch => 'jump to touch',
+    _ => 'instant jump',
   };
 
   String toSubtitle() => switch (this) {
     ScrollbarTrackMode.thumbOnly => 'only the thumb can be dragged.',
     ScrollbarTrackMode.dragAnywhere => 'drag anywhere on the scroll track to scroll (with a small delay).',
     ScrollbarTrackMode.jumpToTouch => 'tap or drag (with a small delay) anywhere on the scroll track to jump there.',
+    _ => 'instantly jump on touch.',
   };
 
   IconData toIcon() => switch (this) {
     ScrollbarTrackMode.thumbOnly => Broken.lock_1,
     ScrollbarTrackMode.dragAnywhere => Broken.arrow_swap,
     ScrollbarTrackMode.jumpToTouch => Broken.finger_cricle,
+    _ => Broken.finger_cricle,
   };
 }

@@ -40,6 +40,12 @@ enum EqualizerChannel {
   right,
 }
 
+enum PlayerConfigModificationScale {
+  main,
+  alt,
+  none,
+}
+
 class PlayerConfigOverrides {
   static const none = PlayerConfigOverrides();
 
@@ -84,6 +90,10 @@ class PlayerConfigOverrides {
       balance: balance ?? this.balance,
     );
   }
+
+  PlayerConfigOverrides resolve(dynamic defaultConfig) => this;
+
+  PlayerConfigModificationScale getModificationScale() => PlayerConfigModificationScale.none;
 }
 
 class AndroidLoadControl {
@@ -114,6 +124,12 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   final playWhenReady = ValueNotifier<bool>(false);
   final queueShuffler = QueueShuffler<Q>();
   final queueItems = RxList<Q>();
+  final numberOfRepeats = Rx<int>(0);
+
+  PlayerRepeatMode get displayRepeatMode => PlayerRepeatMode.none;
+  PlayerRepeatMode get playerRepeatMode => PlayerRepeatMode.none;
+  void updateNumberOfRepeats(int n) {}
+  PlayerRepeatMode userCycleRepeatMode() => PlayerRepeatMode.none;
 
   AudioLoadConfiguration? get defaultAndroidLoadConfig => null;
 

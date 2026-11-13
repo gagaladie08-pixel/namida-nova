@@ -1,9 +1,19 @@
-// Stub generated for class/result_wrapper/comment_notification_result.dart
-class CommentNotificationResult {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const CommentNotificationResult({this.id, this.name, this.title});
+class YoutiPieNotificationCommentResult {
+  final dynamic linkedReply;
+  final String? linkedMainCommentId;
+  final List<dynamic> items;
+
+  int get length => items.length;
+
+  const YoutiPieNotificationCommentResult({
+    this.linkedReply,
+    this.linkedMainCommentId,
+    this.items = const [],
+  });
+
+  void transferLocalItemsTo(dynamic other) {}
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
+
+typedef CommentNotificationResult = YoutiPieNotificationCommentResult;
