@@ -33,7 +33,14 @@ kotlin {
 android {
     namespace = "com.msob7y.namida"
     compileSdkVersion(36)
-    ndkVersion = flutter.ndkVersion
+    val sdkDir = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT") ?: "/usr/local/lib/android/sdk"
+    val ndkDir = File(sdkDir, "ndk")
+    val installedNdks = if (ndkDir.exists()) ndkDir.listFiles()?.filter { it.isDirectory }?.map { it.name }?.sorted() else null
+    if (!installedNdks.isNullOrEmpty()) {
+        ndkVersion = installedNdks.last()
+    } else {
+        ndkVersion = flutter.ndkVersion
+    }
     
     splits {
         abi {

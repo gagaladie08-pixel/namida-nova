@@ -66,6 +66,9 @@ jobs:
           keyAlias=namida
           storeFile=keystore.jks
           EOF
+          echo "Installed Android NDKs:"
+          ls -la $ANDROID_HOME/ndk || true
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
       - name: Get Flutter dependencies
         run: |
