@@ -72,25 +72,25 @@ jobs:
           flutter pub get
 
       - name: Analyze Dart code
-        continue-on-error: true
         run: |
-          echo "### Dart Analysis" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          flutter analyze --no-fatal-infos 2>&1 | head -n 120 >> $GITHUB_STEP_SUMMARY || true
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          flutter analyze --no-fatal-infos > analyze_output.txt 2>&1 || true
+          head -n 200 analyze_output.txt > analyze_head.txt
 
       - name: Build APK (Release arm64)
         run: |
           set -o pipefail
           flutter build apk --target-platform android-arm64 --release 2>&1 | tee build_log.txt
 
-      - name: Print failure log
+      - name: Report Diagnostics on Failure
         if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "### Build Failure Log" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          tail -n 120 build_log.txt >> $GITHUB_STEP_SUMMARY || true
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          tail -n 120 build_log.txt > last_build_error.txt
+          gh release delete build-debug -y || true
+          gh release create build-debug last_build_error.txt analyze_head.txt \
+            --title "Build Diagnostic Log" \
+            --notes-file last_build_error.txt || true
 
       - name: List generated APKs
         run: |
