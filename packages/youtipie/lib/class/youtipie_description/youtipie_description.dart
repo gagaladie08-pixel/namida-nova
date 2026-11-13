@@ -1,4 +1,19 @@
-// Stub generated for class/youtipie_description/youtipie_description.dart
+class StylesWrapper {
+  final String text;
+  final String? attachementUrl;
+  final dynamic hashtagParams;
+  final dynamic hashtag;
+
+  const StylesWrapper({
+    this.text = '',
+    this.attachementUrl,
+    this.hashtagParams,
+    this.hashtag,
+  });
+
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
 class YoutipieDescription {
   final dynamic id;
   final dynamic name;

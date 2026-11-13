@@ -29,6 +29,11 @@ enum VideoEndScreenItemType {
   unknown,
 }
 
+enum CommentsSortType {
+  top,
+  newest,
+}
+
 enum YoutiLoginProgress {
   canceled,
   failed,

@@ -1,9 +1,15 @@
-// Stub generated for class/feedback_menu_action.dart
+import 'package:youtipie/core/enum.dart';
+
 class FeedbackMenuAction {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const FeedbackMenuAction({this.id, this.name, this.title});
+  final FeedbackMenuActionType type;
+  final String text;
+  final String? undoToken;
+
+  const FeedbackMenuAction({
+    this.type = FeedbackMenuActionType.notInterested,
+    this.text = '',
+    this.undoToken,
+  });
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

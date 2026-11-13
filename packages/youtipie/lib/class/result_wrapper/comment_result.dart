@@ -6,11 +6,15 @@ class YoutiPieCommentResult extends YoutiPieListWrapper<CommentInfoItem> {
   final List<CommentInfoItem> items;
   final CommentInfoItem? linkedReply;
   final String? linkedMainCommentId;
+  final int? commentsCount;
+  final String? pausedMessage;
 
   const YoutiPieCommentResult({
     this.items = const [],
     this.linkedReply,
     this.linkedMainCommentId,
+    this.commentsCount,
+    this.pausedMessage,
   });
 
   dynamic noSuchMethod(Invocation invocation) => null;

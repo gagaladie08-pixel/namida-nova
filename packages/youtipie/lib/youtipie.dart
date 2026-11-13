@@ -4,6 +4,7 @@ import 'package:youtipie/class/result_wrapper/comment_result.dart';
 import 'package:youtipie/class/result_wrapper/comment_reply_result.dart';
 import 'package:youtipie/class/result_wrapper/history_result.dart';
 import 'package:youtipie/class/result_wrapper/channel_user_result.dart';
+import 'package:youtipie/class/result_wrapper/feedback_holder.dart';
 
 class Thumbnail {
   final String? url;
@@ -18,6 +19,14 @@ extension ThumbnailListExtension<E> on Iterable<E>? {
     final self = this;
     if (self == null || self.isEmpty) return null;
     return self.first;
+  }
+}
+
+extension StringCheckerExtension on String {
+  bool isYTTitleFaulty() {
+    if (trim().isEmpty) return true;
+    if (this == '-') return true;
+    return false;
   }
 }
 
@@ -172,6 +181,8 @@ class _StubNotificationsAction {
 
 class _StubFeedbackAction {
   const _StubFeedbackAction();
+  Future<YoutiPieFeedbackUndo?> sendFeedback({dynamic list, dynamic item, dynamic action}) async => null;
+  Future<bool> undoFeedback(dynamic undo) async => true;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

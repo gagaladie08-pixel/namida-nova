@@ -1,8 +1,8 @@
-import 'package:youtipie/class/stream_info_item/stream_info_item.dart';
 import 'package:youtipie/class/streams/audio_stream.dart';
+import 'package:youtipie/class/streams/video_stream_info.dart';
 
 class VideoStreamsResult {
-  final StreamInfoItem? info;
+  final VideoStreamInfo? info;
   final List<AudioStream> audioStreams;
   final dynamic id;
   final dynamic name;
