@@ -25,11 +25,14 @@ import 'package:namida/core/translations/language.dart';
 import 'package:namida/core/utils.dart';
 import 'package:namida/packages/three_arched_circle.dart';
 import 'package:namida/ui/dialogs/edit_tags_dialog.dart';
+import 'package:namida/ui/widgets/artwork.dart';
 import 'package:namida/ui/widgets/custom_widgets.dart';
 import 'package:namida/ui/widgets/settings_card.dart';
+import 'package:namida/ui/widgets/simple_lyrics_line.dart';
 import 'package:namida/youtube/controller/youtube_account_controller.dart';
 import 'package:namida/youtube/pages/user/membership_card.dart';
 import 'package:namida/youtube/pages/user/youtube_account_manage_page.dart';
+import 'package:namida/youtube/widgets/yt_thumbnail.dart';
 
 part 'party/party_browse.dart';
 part 'party/party_chat_section.dart';

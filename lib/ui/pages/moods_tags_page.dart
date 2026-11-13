@@ -25,6 +25,35 @@ import 'package:namida/ui/widgets/custom_widgets.dart';
 import 'package:namida/ui/widgets/expandable_box.dart';
 import 'package:namida/ui/widgets/sort_by_button.dart';
 
+class TagsNotesPage extends StatefulWidget with NamidaRouteWidget {
+  @override
+  RouteType get route => RouteType.PAGE_tagsNotes;
+
+  const TagsNotesPage({super.key});
+
+  @override
+  State<TagsNotesPage> createState() => _TagsNotesPageState();
+}
+
+class _TagsNotesPageState extends State<TagsNotesPage> {
+  int _tabIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return NamidaTabView(
+      initialIndex: _tabIndex,
+      reportIndexChangedOnInit: false,
+      tabs: [lang.rating, lang.tags, lang.moods],
+      onIndexChanged: (index) => _tabIndex = index,
+      children: const [
+        RatingsPage(),
+        TagsPage(),
+        MoodsPage(),
+      ],
+    );
+  }
+}
+
 class MoodsPage extends StatelessWidget with NamidaRouteWidget {
   @override
   RouteType get route => RouteType.PAGE_moods;

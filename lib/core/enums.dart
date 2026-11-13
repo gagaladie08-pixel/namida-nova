@@ -385,7 +385,20 @@ enum LibraryTab {
   rating,
   languages,
   stats,
-  party;
+  party,
+  tagsNotes;
+
+  static const selectableTabs = [
+    LibraryTab.home,
+    LibraryTab.tracks,
+    LibraryTab.albums,
+    LibraryTab.artists,
+    LibraryTab.playlists,
+    LibraryTab.tagsNotes,
+    LibraryTab.history,
+    LibraryTab.youtube,
+    LibraryTab.party,
+  ];
 
   final bool isInDrawerOnlyWhenActive;
   final bool hasSectionsMenu;
@@ -782,6 +795,7 @@ enum RouteType {
   PAGE_artistsMap(isDrawerEdgeSwipeOnly: true),
   PAGE_moods,
   PAGE_tags,
+  PAGE_tagsNotes,
   PAGE_languages,
   PAGE_rating,
   PAGE_stats,

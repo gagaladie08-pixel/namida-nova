@@ -70,26 +70,251 @@ class _MembershipTile extends StatelessWidget {
   }
 }
 
-class _PartyLobby extends StatelessWidget {
+class _PartyLobby extends StatefulWidget {
   const _PartyLobby();
+
+  @override
+  State<_PartyLobby> createState() => _PartyLobbyState();
+}
+
+enum _LobbyViewMode { home, create, join }
+
+class _PartyLobbyState extends State<_PartyLobby> {
+  _LobbyViewMode _mode = _LobbyViewMode.home;
 
   @override
   Widget build(BuildContext context) {
     final double horizontalMargin = Dimensions.inst.getSettingsHorizontalMargin(context);
     return SuperSmoothListView(
-      padding: kBottomPaddingInsets.add(EdgeInsets.symmetric(horizontal: horizontalMargin)).add(EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom)),
-      children: const [
-        _RejoinCard(),
-        _JoinCard(),
-        _CreateCard(),
-        _PartyHistoryLive(),
-        _DeviceNameCard(),
-        _BrowseSection(),
-        NamidaContainerDivider(
-          margin: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-        ),
-        _PrivacyTile(),
+      padding: kBottomPaddingInsets
+          .add(EdgeInsets.symmetric(horizontal: horizontalMargin))
+          .add(EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom)),
+      children: [
+        if (_mode == _LobbyViewMode.home) ...[
+          const _PartyHeroBanner(),
+          _PartyActionSelectionCards(
+            onCreateTap: () => setState(() => _mode = _LobbyViewMode.create),
+            onJoinTap: () => setState(() => _mode = _LobbyViewMode.join),
+          ),
+          const _RejoinCard(),
+          const _DeviceNameCard(),
+          const _PartyHistoryLive(),
+          const _BrowseSection(),
+          const NamidaContainerDivider(
+            margin: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+          ),
+          const _PrivacyTile(),
+        ] else if (_mode == _LobbyViewMode.create) ...[
+          _BackToLobbyButton(onBack: () => setState(() => _mode = _LobbyViewMode.home)),
+          const _CreateCard(),
+        ] else if (_mode == _LobbyViewMode.join) ...[
+          _BackToLobbyButton(onBack: () => setState(() => _mode = _LobbyViewMode.home)),
+          const _JoinCard(),
+        ],
       ],
+    );
+  }
+}
+
+class _PartyHeroBanner extends StatelessWidget {
+  const _PartyHeroBanner();
+
+  @override
+  Widget build(BuildContext context) {
+    return NBuilder(
+      builder: (context, colors) => Container(
+        margin: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+        padding: const EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24.0.multipliedRadius),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              colors.primary.withOpacityExt(0.18),
+              colors.secondaryContainer.withOpacityExt(0.25),
+            ],
+          ),
+          border: Border.all(
+            color: colors.primary.withOpacityExt(0.2),
+            width: 1.0,
+          ),
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: colors.primary.withOpacityExt(0.12),
+              ),
+              child: Icon(
+                Broken.people,
+                size: 42.0,
+                color: colors.primary,
+              ),
+            ),
+            const SizedBox(height: 12.0),
+            NamidaText(
+              lang.partyListeningParty,
+              style: const NText(.large, weight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 6.0),
+            NamidaText(
+              "Écoutez vos morceaux ensemble en direct et en parfaite synchronisation",
+              style: NText.small,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PartyActionSelectionCards extends StatelessWidget {
+  final VoidCallback onCreateTap;
+  final VoidCallback onJoinTap;
+
+  const _PartyActionSelectionCards({
+    required this.onCreateTap,
+    required this.onJoinTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+      child: Column(
+        children: [
+          _ActionCardItem(
+            icon: Broken.add_circle,
+            title: lang.partyCreate,
+            subtitle: "Créer un nouveau salon d'écoute et inviter vos amis",
+            isPrimary: true,
+            onTap: onCreateTap,
+          ),
+          const SizedBox(height: 12.0),
+          _ActionCardItem(
+            icon: Broken.login_1,
+            title: lang.partyJoin,
+            subtitle: "Rejoindre un salon existant avec un code ou un lien",
+            isPrimary: false,
+            onTap: onJoinTap,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ActionCardItem extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final bool isPrimary;
+  final VoidCallback onTap;
+
+  const _ActionCardItem({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.isPrimary,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return NBuilder(
+      builder: (context, colors) => Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(20.0.multipliedRadius),
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0.multipliedRadius),
+              color: isPrimary
+                  ? colors.primary.withOpacityExt(0.12)
+                  : colors.card.withOpacityExt(0.5),
+              border: Border.all(
+                color: isPrimary
+                    ? colors.primary.withOpacityExt(0.35)
+                    : colors.cardTheme.withOpacityExt(0.2),
+                width: 1.2,
+              ),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: isPrimary ? colors.primary : colors.secondaryContainer,
+                  ),
+                  child: Icon(
+                    icon,
+                    size: 26.0,
+                    color: isPrimary ? Colors.white : colors.primary,
+                  ),
+                ),
+                const SizedBox(width: 16.0),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: isPrimary ? colors.primary : null,
+                        ),
+                      ),
+                      const SizedBox(height: 4.0),
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  Broken.arrow_right_3,
+                  size: 20.0,
+                  color: isPrimary ? colors.primary : Colors.grey,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _BackToLobbyButton extends StatelessWidget {
+  final VoidCallback onBack;
+
+  const _BackToLobbyButton({required this.onBack});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0, top: 4.0),
+      child: Align(
+        alignment: AlignmentDirectional.centerStart,
+        child: TextButton.icon(
+          onPressed: onBack,
+          icon: const Icon(Broken.arrow_left_2, size: 18.0),
+          label: Text(lang.back),
+        ),
+      ),
     );
   }
 }

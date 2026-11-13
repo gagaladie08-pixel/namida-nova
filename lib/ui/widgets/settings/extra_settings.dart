@@ -1114,7 +1114,7 @@ class _LibraryTabsTile extends StatelessWidget {
   }
 
   void _showDialog(List<LibraryTab> libraryTabs) {
-    final groupHeads = LibraryTab.values.where((e) => e.isGroupHead).toFixedList();
+    final groupHeads = LibraryTab.selectableTabs;
     NamidaNavigator.inst.navigateDialog(
       scale: 1.0,
       dialog: CustomBlurryDialog(

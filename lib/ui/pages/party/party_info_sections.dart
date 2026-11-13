@@ -11,9 +11,11 @@ class _PartyInfoSections extends StatelessWidget {
         SuperSmoothListView(
           padding: kBottomPaddingInsets.add(EdgeInsets.symmetric(horizontal: horizontalMargin)),
           children: const [
+            _PartyMembersHeader(),
+            _PartyNowPlayingCenterCard(),
+            _ReactionsCard(),
             _HeaderCard(),
             _JoinRequestsCard(),
-            _ReactionsCard(),
             _MembersCard(),
             _PartyHistoryLive(),
             _HostSettingsCard(),
@@ -23,6 +25,309 @@ class _PartyInfoSections extends StatelessWidget {
           child: _ReactionOverlay(),
         ),
       ],
+    );
+  }
+}
+
+class _PartyMembersHeader extends StatelessWidget {
+  const _PartyMembersHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = PartyController.inst;
+    return ObxO(
+      rx: controller.infoTick,
+      builder: (context, _) {
+        final members = controller.state.members.values.toList();
+        if (members.isEmpty) return const SizedBox();
+        return NContainer(
+          margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+          padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10.0),
+          decoration: (colors) => BoxDecoration(
+            color: colors.card.withOpacityExt(0.55),
+            borderRadius: BorderRadius.circular(20.0.multipliedRadius),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  NIcon(Broken.profile_2user, size: 16.0, color: NColors.defaultIcon()),
+                  const SizedBox(width: 8.0),
+                  NamidaText(
+                    '${lang.members} (${members.length})',
+                    style: const NText(.small, weight: FontWeight.w600),
+                  ),
+                  const Spacer(),
+                  if (controller.code != null)
+                    InkWell(
+                      borderRadius: BorderRadius.circular(8.0),
+                      onTap: () {
+                        final invite = controller.inviteLink;
+                        if (invite != null) {
+                          NamidaUtils.copyText(invite);
+                          snackyy(
+                            icon: Broken.tick_circle,
+                            title: lang.partyListeningParty,
+                            message: "Lien d'invitation copié !",
+                          );
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            NIcon(Broken.copy, size: 13.0, color: NColors.primary),
+                            const SizedBox(width: 4.0),
+                            NamidaText(
+                              controller.code!,
+                              style: const NText(.small, weight: FontWeight.bold),
+                              color: NColors.primary,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    for (final member in members) ...[
+                      _MemberAvatarPill(member: member),
+                      const SizedBox(width: 8.0),
+                    ],
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _MemberAvatarPill extends StatelessWidget {
+  final PartyMember member;
+
+  const _MemberAvatarPill({required this.member});
+
+  @override
+  Widget build(BuildContext context) {
+    final isHost = member.role == PartyRole.host;
+    final initial = member.name.isNotEmpty ? member.name.substring(0, 1).toUpperCase() : '?';
+    return NBuilder(
+      builder: (context, colors) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+        decoration: BoxDecoration(
+          color: isHost ? colors.primary.withOpacityExt(0.18) : colors.secondaryContainer.withOpacityExt(0.35),
+          borderRadius: BorderRadius.circular(22.0),
+          border: isHost ? Border.all(color: colors.primary.withOpacityExt(0.6), width: 1.2) : null,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircleAvatar(
+              radius: 11.0,
+              backgroundColor: isHost ? colors.primary : colors.secondary,
+              child: Text(
+                initial,
+                style: const TextStyle(fontSize: 11.0, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+            ),
+            const SizedBox(width: 8.0),
+            Text(
+              member.name,
+              style: TextStyle(
+                fontSize: 12.0,
+                fontWeight: isHost ? FontWeight.bold : FontWeight.w500,
+              ),
+            ),
+            if (isHost) ...[
+              const SizedBox(width: 5.0),
+              const Icon(Icons.star, size: 13.0, color: Colors.amber),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PartyNowPlayingCenterCard extends StatelessWidget {
+  const _PartyNowPlayingCenterCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = PartyController.inst;
+    return NContainer(
+      margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+      decoration: (colors) => BoxDecoration(
+        color: colors.card.withOpacityExt(0.7),
+        borderRadius: BorderRadius.circular(24.0.multipliedRadius),
+        border: Border.all(
+          color: colors.cardTheme.withOpacityExt(0.25),
+          width: 1.0,
+        ),
+      ),
+      child: ObxO(
+        rx: controller.queueTick,
+        builder: (context, _) => ObxO(
+          rx: controller.anchorTick,
+          builder: (context, _) {
+            final state = controller.state;
+            final me = controller.me;
+            final anchor = state.anchor;
+            final entry = state.currentEntry;
+            final canControl = me != null && entry != null && state.canControl(me);
+            final artworkSize = (namida.width * 0.48).clampDouble(160.0, 220.0);
+            final ytId = entry?.ytId ?? entry?.fallbackYtId;
+
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(22.0.multipliedRadius),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 16.0,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(22.0.multipliedRadius),
+                      child: SizedBox(
+                        width: artworkSize,
+                        height: artworkSize,
+                        child: ytId != null
+                            ? YtThumbnail(
+                                videoId: ytId,
+                                thumbnailSize: artworkSize,
+                                fit: BoxFit.cover,
+                              )
+                            : Obx((context) {
+                                final current = Player.inst.currentItem.valueR;
+                                if (current is Selectable) {
+                                  return ArtworkWidget(
+                                    track: current.track,
+                                    thumbnailSize: artworkSize,
+                                    forceSquared: true,
+                                  );
+                                }
+                                return Container(
+                                  color: Colors.black12,
+                                  child: const Center(
+                                    child: Icon(Broken.musicnote, size: 54.0),
+                                  ),
+                                );
+                              }),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                NamidaText(
+                  entry == null ? lang.partyQueueEmpty : entry.title,
+                  style: const NText(.large, weight: FontWeight.bold),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
+                if (entry != null && entry.artist.isNotEmpty) ...[
+                  const SizedBox(height: 4.0),
+                  NamidaText(
+                    entry.artist,
+                    style: NText.medium,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+                const SizedBox(height: 12.0),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.04),
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  constraints: const BoxConstraints(minHeight: 46.0),
+                  child: const SimpleLyricsLineWidget(
+                    karaoke: true,
+                    maxLines: 2,
+                    softWrap: true,
+                    fitToWidth: true,
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                _PositionBar(
+                  anchor: anchor,
+                  durationMS: entry?.durationMS ?? 0,
+                  enabled: canControl,
+                ),
+                const SizedBox(height: 6.0),
+                if (canControl)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      NamidaIconButton(
+                        icon: Broken.previous,
+                        iconSize: 28.0,
+                        tooltip: () => lang.previous,
+                        onPressed: () => controller.sendCommand(const PartyMsg.previous()),
+                      ),
+                      const SizedBox(width: 16.0),
+                      NBuilder(
+                        builder: (context, colors) => Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: colors.primary,
+                          ),
+                          child: NamidaIconButton(
+                            icon: anchor.playing ? Broken.pause : Broken.play,
+                            iconSize: 36.0,
+                            iconColor: Colors.white,
+                            onPressed: () => controller.sendCommand(anchor.playing ? const PartyMsg.pause() : const PartyMsg.play()),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16.0),
+                      NamidaIconButton(
+                        icon: Broken.next,
+                        iconSize: 28.0,
+                        tooltip: () => lang.next,
+                        onPressed: () => controller.sendCommand(const PartyMsg.next()),
+                      ),
+                    ],
+                  )
+                else
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        NIcon(Broken.headphone, size: 16.0, color: NColors.defaultIcon()),
+                        const SizedBox(width: 6.0),
+                        NamidaText(
+                          "Lecture synchronisée avec l'hôte",
+                          style: NText.small,
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 }

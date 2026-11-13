@@ -387,8 +387,8 @@ class NamidaDrawer extends StatelessWidget {
                   width: 42.0,
                   margin: EdgeInsets.all(10.0),
                 ),
-                ...LibraryTab.values
-                    .where((element) => element != LibraryTab.search && element.isGroupHead && (!element.isInDrawerOnlyWhenActive || libraryTabs.contains(element)))
+                ...libraryTabs
+                    .where((element) => element != LibraryTab.search && element.isGroupHead)
                     .map(
                       (e) => ObxO(
                         rx: settings.extra.selectedLibraryTab,

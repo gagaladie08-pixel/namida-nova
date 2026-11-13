@@ -1188,14 +1188,30 @@ class PartyController implements PartyConnectionListener, PartyHostDelegate, Par
   }
 
   static Future<String?> _searchYoutubeMatch(PartyEntry entry) async {
-    final query = '${entry.artist} ${entry.title}'.trim();
-    final wantedSeconds = entry.durationMS ~/ 1000;
-    // -- without a length there is nothing to check a candidate against
-    if (query.isEmpty || wantedSeconds <= 0) return null;
+    var query = '${entry.artist} ${entry.title}'.trim();
+    if (query.isEmpty) query = entry.title.trim();
+    if (query.isEmpty) return null;
+
+    var wantedSeconds = entry.durationMS ~/ 1000;
+
+    // 1. Resolve canonical metadata from free public iTunes Search API
+    final itunes = await _fetchItunesTrackInfo(query);
+    if (itunes != null) {
+      if (itunes.artist.isNotEmpty && itunes.title.isNotEmpty) {
+        query = '${itunes.artist} ${itunes.title}'.trim();
+      }
+      if (itunes.durationSeconds > 0) {
+        wantedSeconds = itunes.durationSeconds;
+      }
+    }
+
     try {
-      final result = await YoutubeInfoController.search.search(query, peopleAlsoWatched: false);
+      // 2. Search on YouTube with targeted audio query first, then raw query
+      var result = await YoutubeInfoController.search.search('$query Audio', peopleAlsoWatched: false);
+      result ??= await YoutubeInfoController.search.search(query, peopleAlsoWatched: false);
       if (result == null) return null;
-      final tolerance = _matchToleranceSeconds(wantedSeconds);
+
+      final tolerance = _matchToleranceSeconds(wantedSeconds > 0 ? wantedSeconds : 210);
       String? bestId;
       var bestDiff = tolerance + 1;
       for (final chunk in result.items) {
@@ -1203,14 +1219,50 @@ class PartyController implements PartyConnectionListener, PartyHostDelegate, Par
           if (item is! StreamInfoItem || item.isActuallyShortContent == true) continue;
           final seconds = item.durSeconds;
           if (seconds == null) continue;
-          final diff = (seconds - wantedSeconds).abs();
+          final diff = wantedSeconds > 0 ? (seconds - wantedSeconds).abs() : 0;
           if (diff < bestDiff) {
             bestDiff = diff;
             bestId = item.id;
           }
         }
       }
+
+      // Safeguard: if strict duration check found nothing, fallback to first valid video
+      if (bestId == null) {
+        for (final chunk in result.items) {
+          for (final item in chunk.items) {
+            if (item is StreamInfoItem && item.isActuallyShortContent != true) {
+              return item.id;
+            }
+          }
+        }
+      }
       return bestId;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static Future<({String artist, String title, int durationSeconds})?> _fetchItunesTrackInfo(String query) async {
+    try {
+      final client = HttpClient()..connectionTimeout = const Duration(seconds: 4);
+      final uri = Uri.https('itunes.apple.com', '/search', {
+        'term': query,
+        'entity': 'song',
+        'limit': '1',
+      });
+      final request = await client.getUrl(uri);
+      final response = await request.close();
+      if (response.statusCode != 200) return null;
+      final body = await response.transform(utf8.decoder).join();
+      final json = jsonDecode(body) as Map<String, dynamic>;
+      final results = json['results'] as List?;
+      if (results == null || results.isEmpty) return null;
+      final first = results.first as Map<String, dynamic>;
+      final artist = (first['artistName'] as String?)?.trim() ?? '';
+      final title = (first['trackName'] as String?)?.trim() ?? '';
+      final durationMS = (first['trackTimeMillis'] as num?)?.toInt() ?? 0;
+      return (artist: artist, title: title, durationSeconds: durationMS ~/ 1000);
     } catch (_) {
       return null;
     }

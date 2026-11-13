@@ -186,6 +186,7 @@ extension LibraryTabUtils on LibraryTab {
       LibraryTab.rating => null,
       LibraryTab.stats => null,
       LibraryTab.party => null,
+      LibraryTab.tagsNotes => null,
     };
   }
 
@@ -248,6 +249,7 @@ extension LibraryTabUtils on LibraryTab {
       LibraryTab.moods => const MoodsPage(),
       LibraryTab.tags => const TagsPage(),
       LibraryTab.rating => const RatingsPage(),
+      LibraryTab.tagsNotes => const TagsNotesPage(),
       LibraryTab.stats => const StatsPage(
         isYoutube: false,
         isLibraryTab: true,
@@ -1576,6 +1578,9 @@ extension RouteUtils on NamidaRoute {
       case RouteType.PAGE_party:
         finalWidget = getTextWidget(lang.partyListeningParty);
         break;
+      case RouteType.PAGE_tagsNotes:
+        finalWidget = getTextWidget("Tags & Notes");
+        break;
       case RouteType.SUBPAGE_INDEXER_DUPLICATE_TRACKS:
         finalWidget = getTextWidget(lang.duplicatedTracks);
         break;
@@ -2116,6 +2121,7 @@ extension LibraryTabL10n on LibraryTab {
     LibraryTab.tags => lang.tags,
     LibraryTab.languages => lang.languages,
     LibraryTab.rating => lang.rating,
+    LibraryTab.tagsNotes => 'Tags & Notes',
     LibraryTab.stats => lang.stats,
     LibraryTab.party => lang.partyListeningParty,
   };
@@ -2160,6 +2166,7 @@ extension LibraryTabL10n on LibraryTab {
     LibraryTab.tags => MediaType.tag.toIcon(),
     LibraryTab.languages => MediaType.language.toIcon(),
     LibraryTab.rating => MediaType.rating.toIcon(),
+    LibraryTab.tagsNotes => Broken.tag,
     LibraryTab.stats => Broken.chart_21,
     LibraryTab.party => Broken.people,
   };

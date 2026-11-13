@@ -110,7 +110,7 @@ class _SettingsController extends _SettingsKeysWriter {
   late final staticColorDark = _key<int?>('staticColorDark_v2', null);
   late final libraryTabs = _keyEnumList(
     'libraryTabs',
-    const [LibraryTab.home, LibraryTab.tracks, LibraryTab.artists, LibraryTab.playlists, LibraryTab.folders, LibraryTab.youtube],
+    LibraryTab.selectableTabs,
     LibraryTab.values,
     item: const _LibraryTabGroupCodec(),
   );
