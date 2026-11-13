@@ -71,9 +71,21 @@ jobs:
         run: |
           flutter pub get
 
+      - name: Analyze Dart code
+        continue-on-error: true
+        run: |
+          flutter analyze --no-fatal-infos
+
       - name: Build APK (Release arm64)
         run: |
-          flutter build apk --target-platform android-arm64 --release
+          set -o pipefail
+          flutter build apk --target-platform android-arm64 --release 2>&1 | tee build_log.txt
+
+      - name: Print failure log
+        if: failure()
+        run: |
+          echo "==== TAIL OF BUILD LOG (LAST 150 LINES) ===="
+          tail -n 150 build_log.txt || true
 
       - name: List generated APKs
         run: |
