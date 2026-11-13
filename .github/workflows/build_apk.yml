@@ -74,7 +74,10 @@ jobs:
       - name: Analyze Dart code
         continue-on-error: true
         run: |
-          flutter analyze --no-fatal-infos
+          echo "### Dart Analysis" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          flutter analyze --no-fatal-infos 2>&1 | head -n 120 >> $GITHUB_STEP_SUMMARY || true
+          echo '```' >> $GITHUB_STEP_SUMMARY
 
       - name: Build APK (Release arm64)
         run: |
@@ -84,8 +87,10 @@ jobs:
       - name: Print failure log
         if: failure()
         run: |
-          echo "==== TAIL OF BUILD LOG (LAST 150 LINES) ===="
-          tail -n 150 build_log.txt || true
+          echo "### Build Failure Log" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          tail -n 120 build_log.txt >> $GITHUB_STEP_SUMMARY || true
+          echo '```' >> $GITHUB_STEP_SUMMARY
 
       - name: List generated APKs
         run: |
