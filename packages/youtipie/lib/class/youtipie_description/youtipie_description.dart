@@ -33,10 +33,19 @@ class StylesWrapper {
 }
 
 class YoutipieDescription {
+  final List<StylesWrapper> parts;
+  final String rawText;
   final dynamic id;
   final dynamic name;
   final dynamic title;
-  const YoutipieDescription({this.id, this.name, this.title});
+
+  const YoutipieDescription({
+    this.parts = const [],
+    this.rawText = '',
+    this.id,
+    this.name,
+    this.title,
+  });
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

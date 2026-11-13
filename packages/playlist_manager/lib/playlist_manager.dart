@@ -11,6 +11,35 @@ export 'package:playlist_manager/class/favourite_playlist.dart';
 export 'package:playlist_manager/core/enum.dart';
 export 'package:playlist_manager/module/playlist_id.dart';
 
+abstract class PlaylistTagKey {}
+
+enum PlaylistVirtualTag implements PlaylistTagKey {
+  pinned,
+  untagged,
+  m3u,
+  remote;
+}
+
+class PlaylistUserTag implements PlaylistTagKey {
+  final String path;
+  const PlaylistUserTag(this.path);
+}
+
+class PlaylistTagsSelection {
+  final List<PlaylistTagKey> included;
+  final List<PlaylistTagKey> excluded;
+  const PlaylistTagsSelection({
+    this.included = const [],
+    this.excluded = const [],
+  });
+}
+
+enum PlaylistTagFilterState {
+  none,
+  included,
+  excluded,
+}
+
 mixin PlaylistItemWithDate {
   int get dateAdded;
 }
