@@ -56,5 +56,9 @@ enum AccountCookiesValidity {
 
 enum YoutiPieOperation {
   fetchHashtag,
+  fetchFeed,
+  fetchUserChannels,
+  fetchHistory,
+  fetchUserPlaylists,
   other,
 }

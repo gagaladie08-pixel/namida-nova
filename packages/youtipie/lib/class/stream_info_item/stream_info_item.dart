@@ -5,11 +5,17 @@ class StreamInfoItem extends YoutubeFeed {
   final String id;
   final String? channelId;
   final dynamic channel;
+  final int? durSeconds;
+  final List<dynamic> liveThumbs;
+  final List<dynamic> thumbnails;
 
   const StreamInfoItem({
     this.id = '',
     this.channelId,
     this.channel,
+    this.durSeconds,
+    this.liveThumbs = const [],
+    this.thumbnails = const [],
     super.items = const [],
   });
 

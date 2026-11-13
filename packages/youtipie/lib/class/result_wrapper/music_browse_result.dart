@@ -1,9 +1,12 @@
-// Stub generated for class/result_wrapper/music_browse_result.dart
-class MusicBrowseResult {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const MusicBrowseResult({this.id, this.name, this.title});
+import 'package:youtipie/class/result_wrapper/list_wrapper_base.dart';
+
+class YoutiPieMusicBrowseResult extends YoutiPieListWrapper<dynamic> {
+  @override
+  final List<dynamic> items;
+
+  const YoutiPieMusicBrowseResult({this.items = const []});
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
+
+typedef MusicBrowseResult = YoutiPieMusicBrowseResult;

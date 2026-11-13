@@ -1,9 +1,13 @@
-// Stub generated for class/channels/channel_tab_result.dart
-class ChannelTabResult {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const ChannelTabResult({this.id, this.name, this.title});
+import 'package:youtipie/class/youtipie_feed/yt_feed_base.dart';
+import 'package:youtipie/class/result_wrapper/list_wrapper_base.dart';
+
+class YoutiPieChannelTabResult extends YoutiPieListWrapper<YoutubeFeed> {
+  @override
+  final List<YoutubeFeed> items;
+
+  const YoutiPieChannelTabResult({this.items = const []});
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
+
+typedef ChannelTabResult = YoutiPieChannelTabResult;

@@ -1,9 +1,13 @@
-// Stub generated for class/result_wrapper/user_channels_all_videos_result.dart
-class UserChannelsAllVideosResult {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const UserChannelsAllVideosResult({this.id, this.name, this.title});
+import 'package:youtipie/class/youtipie_feed/yt_feed_base.dart';
+import 'package:youtipie/class/result_wrapper/list_wrapper_base.dart';
+
+class YoutiPieUserChannelsAllVideosResult extends YoutiPieListWrapper<YoutubeFeed> {
+  @override
+  final List<YoutubeFeed> items;
+
+  const YoutiPieUserChannelsAllVideosResult({this.items = const []});
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
+
+typedef UserChannelsAllVideosResult = YoutiPieUserChannelsAllVideosResult;

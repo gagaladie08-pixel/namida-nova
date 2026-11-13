@@ -4,7 +4,14 @@ import 'package:youtipie/class/result_wrapper/list_wrapper_base.dart';
 class YoutiPieCommentResult extends YoutiPieListWrapper<CommentInfoItem> {
   @override
   final List<CommentInfoItem> items;
-  const YoutiPieCommentResult({this.items = const []});
+  final CommentInfoItem? linkedReply;
+  final String? linkedMainCommentId;
+
+  const YoutiPieCommentResult({
+    this.items = const [],
+    this.linkedReply,
+    this.linkedMainCommentId,
+  });
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

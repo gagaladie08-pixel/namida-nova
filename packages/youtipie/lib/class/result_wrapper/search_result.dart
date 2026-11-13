@@ -1,9 +1,12 @@
-// Stub generated for class/result_wrapper/search_result.dart
-class SearchResult {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const SearchResult({this.id, this.name, this.title});
+import 'package:youtipie/class/result_wrapper/list_wrapper_base.dart';
+
+class YoutiPieSearchResult extends YoutiPieListWrapper<dynamic> {
+  @override
+  final List<dynamic> items;
+
+  const YoutiPieSearchResult({this.items = const []});
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
+
+typedef SearchResult = YoutiPieSearchResult;

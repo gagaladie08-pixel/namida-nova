@@ -1,9 +1,12 @@
-// Stub generated for class/result_wrapper/playlist_result.dart
-class PlaylistResult {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const PlaylistResult({this.id, this.name, this.title});
+import 'package:youtipie/class/result_wrapper/list_wrapper_base.dart';
+
+class YoutiPiePlaylistResult extends YoutiPieListWrapper<dynamic> {
+  @override
+  final List<dynamic> items;
+
+  const YoutiPiePlaylistResult({this.items = const []});
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
+
+typedef PlaylistResult = YoutiPiePlaylistResult;

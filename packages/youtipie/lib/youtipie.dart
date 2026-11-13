@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:youtipie/class/result_wrapper/hashtag_result.dart';
 import 'package:youtipie/class/result_wrapper/comment_result.dart';
 import 'package:youtipie/class/result_wrapper/comment_reply_result.dart';
+import 'package:youtipie/class/result_wrapper/history_result.dart';
+import 'package:youtipie/class/result_wrapper/channel_user_result.dart';
 
 class YoutiPie {
   static const cipher = _StubCipher();
@@ -60,6 +62,8 @@ class _StubCacheBuilder {
   dynamic forMissingInfo({dynamic videoId}) => this;
   dynamic forStreamInfoItem({dynamic videoId}) => this;
   dynamic forUserPlaylists() => this;
+  dynamic forUserChannels() => this;
+  dynamic forHistory() => this;
   dynamic forHashtag({dynamic params}) => this;
   dynamic forNotificationComments({dynamic videoId, dynamic linkedCommentId}) => this;
   dynamic forCommentReplies({dynamic commentId}) => this;
@@ -81,7 +85,7 @@ class _StubChannel {
 class _StubHistory {
   const _StubHistory();
   Future<dynamic> addVideoToHistory({dynamic videoId}) async => null;
-  Future<dynamic> fetchHistory({dynamic details}) async => null;
+  Future<YoutiPieHistoryResult?> fetchHistory({dynamic details}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -126,6 +130,7 @@ class _StubUserPlaylist {
 
 class _StubUserChannel {
   const _StubUserChannel();
+  Future<YoutiPieUserChannelsResult?> fetchUserChannels({dynamic details}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

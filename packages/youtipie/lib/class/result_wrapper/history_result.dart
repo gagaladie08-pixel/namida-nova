@@ -1,9 +1,13 @@
-// Stub generated for class/result_wrapper/history_result.dart
-class HistoryResult {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const HistoryResult({this.id, this.name, this.title});
+import 'package:youtipie/class/chunks/history_chunk.dart';
+import 'package:youtipie/class/result_wrapper/list_wrapper_base.dart';
+
+class YoutiPieHistoryResult extends YoutiPieListWrapper<YoutiPieHistoryChunk> {
+  @override
+  final List<YoutiPieHistoryChunk> items;
+
+  const YoutiPieHistoryResult({this.items = const []});
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
+
+typedef HistoryResult = YoutiPieHistoryResult;

@@ -1,17 +1,11 @@
-class YoutiPieNotificationCommentResult {
-  final dynamic linkedReply;
-  final String? linkedMainCommentId;
-  final List<dynamic> items;
+import 'package:youtipie/class/result_wrapper/comment_result.dart';
 
-  int get length => items.length;
-
+class YoutiPieNotificationCommentResult extends YoutiPieCommentResult {
   const YoutiPieNotificationCommentResult({
-    this.linkedReply,
-    this.linkedMainCommentId,
-    this.items = const [],
+    super.items = const [],
+    super.linkedReply,
+    super.linkedMainCommentId,
   });
-
-  void transferLocalItemsTo(dynamic other) {}
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
