@@ -1,9 +1,7 @@
-// Stub generated for class/comments/comment_info_item_base.dart
 class CommentInfoItemBase {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const CommentInfoItemBase({this.id, this.name, this.title});
+  final String commentId;
+
+  const CommentInfoItemBase({this.commentId = ''});
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

@@ -1,9 +1,9 @@
-// Stub generated for class/result_wrapper/hashtag_result.dart
-class HashtagResult {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const HashtagResult({this.id, this.name, this.title});
+class YoutiPieHashtagResult {
+  final List<dynamic> items;
+
+  const YoutiPieHashtagResult({this.items = const []});
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
+
+typedef HashtagResult = YoutiPieHashtagResult;

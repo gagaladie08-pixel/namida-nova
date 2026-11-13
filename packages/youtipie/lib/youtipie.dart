@@ -57,6 +57,8 @@ class _StubCacheBuilder {
   dynamic forMissingInfo({dynamic videoId}) => this;
   dynamic forStreamInfoItem({dynamic videoId}) => this;
   dynamic forUserPlaylists() => this;
+  dynamic forHashtag({dynamic params}) => this;
+  dynamic forNotificationComments({dynamic videoId, dynamic linkedCommentId}) => this;
   dynamic withMaxPeriod({dynamic allowedDuration}) => this;
   Future<dynamic> read() async => null;
   dynamic readSync() => null;
@@ -124,6 +126,7 @@ class _StubUserChannel {
 
 class _StubComment {
   const _StubComment();
+  Future<dynamic> fetchNotificationComments({dynamic videoId, dynamic linkedCommentId, dynamic details}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -149,6 +152,7 @@ class _StubFeed {
 
 class _StubHashtag {
   const _StubHashtag();
+  Future<dynamic> fetchHashtag({dynamic params, dynamic details}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

@@ -1,9 +1,10 @@
-class CommentInfoItem {
-  final String? commentId;
+import 'package:youtipie/class/comments/comment_info_item_base.dart';
+
+class CommentInfoItem extends CommentInfoItemBase {
   final int repliesCount;
 
   const CommentInfoItem({
-    this.commentId,
+    super.commentId = '',
     this.repliesCount = 0,
   });
 

@@ -7228,7 +7228,7 @@ class SoundControlButtonRaw extends StatelessWidget {
         final secondaryIcon = switch (soundModificationScale) {
           PlayerConfigModificationScale.main => Broken.edit_2,
           PlayerConfigModificationScale.alt => Broken.magicpen,
-          PlayerConfigModificationScale.none => null,
+          _ => null,
         };
 
         return secondaryIcon != null

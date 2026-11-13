@@ -53,3 +53,8 @@ enum AccountCookiesValidity {
   invalid,
   expired,
 }
+
+enum YoutiPieOperation {
+  fetchHashtag,
+  other,
+}

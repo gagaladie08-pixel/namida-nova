@@ -51,7 +51,7 @@ class YTHashtagSubpage extends StatelessWidget with NamidaRouteWidget {
       builder: (properties) => YoutubeMainPageFetcherAccBase<YoutiPieHashtagResult, YoutubeFeed>(
         operation: YoutiPieOperation.fetchHashtag,
         transparentShimmer: false,
-        title: hashtag.isEmpty ? lang.hashtag : hashtag,
+        title: hashtag.isEmpty ? 'Hashtag' : hashtag,
         cacheReader: YoutiPie.cacheBuilder.forHashtag(params: params),
         networkFetcher: (details) => YoutubeInfoController.hashtag.fetchHashtag(params: params, details: details),
         itemExtent: thumbnailItemExtent,
