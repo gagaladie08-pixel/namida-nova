@@ -106,8 +106,7 @@ dependencies:
     git:
       url: https://github.com/MSOB7YY/jiffy
   playlist_manager:
-    git:
-      url: https://github.com/namidaco/playlist_manager
+    path: packages/playlist_manager
   history_manager:
     git:
       url: https://github.com/namidaco/history_manager
@@ -175,8 +174,7 @@ dependencies:
     git:
       url: https://github.com/namidaco/namida_waveform
   basic_audio_handler:
-    git:
-      url: https://github.com/namidaco/basic_audio_handler
+    path: packages/basic_audio_handler
   flutter_taglib:
     git:
       url: https://github.com/MSOB7YY/flutter_taglib

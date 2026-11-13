@@ -1,0 +1,20 @@
+name: basic_audio_handler
+description: Open-source implementation of basic_audio_handler for Namida
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  audio_service:
+    git:
+      url: https://github.com/MSOB7YY/audio_service
+      path: audio_service/
+      ref: minor
+  nampack:
+    git:
+      url: https://github.com/MSOB7YY/nampack
