@@ -5,6 +5,21 @@ import 'package:youtipie/class/result_wrapper/comment_reply_result.dart';
 import 'package:youtipie/class/result_wrapper/history_result.dart';
 import 'package:youtipie/class/result_wrapper/channel_user_result.dart';
 
+class Thumbnail {
+  final String? url;
+  final int? width;
+  final int? height;
+
+  const Thumbnail({this.url, this.width, this.height});
+}
+
+extension ThumbnailListExtension on Iterable<dynamic>? {
+  dynamic pick() {
+    if (this == null || this!.isEmpty) return null;
+    return this!.first;
+  }
+}
+
 class YoutiPie {
   static const cipher = _StubCipher();
   static const potoken = _StubPotoken();
@@ -64,6 +79,7 @@ class _StubCacheBuilder {
   dynamic forUserPlaylists() => this;
   dynamic forUserChannels() => this;
   dynamic forHistory() => this;
+  dynamic forHistoryVideos() => this;
   dynamic forHashtag({dynamic params}) => this;
   dynamic forNotificationComments({dynamic videoId, dynamic linkedCommentId}) => this;
   dynamic forCommentReplies({dynamic commentId}) => this;

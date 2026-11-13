@@ -17,18 +17,6 @@ enum PlaylistPrivacy {
   private,
 }
 
-enum ThumbnailType {
-  high,
-  medium,
-  low,
-  standard,
-  maxres,
-  video,
-  playlist,
-  channel,
-  other,
-}
-
 enum FeedbackMenuActionType {
   notInterested,
   dontRecommendChannel,
