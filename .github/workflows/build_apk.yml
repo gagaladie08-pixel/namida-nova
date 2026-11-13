@@ -6,6 +6,9 @@ on:
       - '**'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build_android:
     name: Build Android APK
@@ -17,6 +20,13 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 1
+
+      - name: Fetch FFmpegKit bundle for Android
+        run: |
+          mkdir -p external/ffmpeg_build/ffmpegkit
+          curl -L -f -o external/ffmpeg_build/ffmpegkit/bundle-namida-shared-lgpl-release.aar \
+            https://github.com/MSOB7YY/ffmpeg-kit-builders/releases/download/v0.11.5-android/bundle-namida-shared-lgpl-release.aar
+          ls -lh external/ffmpeg_build/ffmpegkit/
 
       - name: Free Disk Space
         continue-on-error: true
@@ -46,7 +56,7 @@ jobs:
 
       - name: Create Keystore & key.properties
         run: |
-          keytool -genkey -v -keystore android/app/keystore.jks \
+          keytool -genkeypair -v -keystore android/app/keystore.jks \
             -keyalg RSA -keysize 2048 -validity 10000 \
             -alias namida -storepass namidapass -keypass namidapass \
             -dname "CN=Namida, OU=App, O=Namida, L=Paris, S=IDF, C=FR"
@@ -61,9 +71,13 @@ jobs:
         run: |
           flutter pub get
 
-      - name: Build APK (Release)
+      - name: Build APK (Release arm64)
         run: |
-          flutter build apk --release
+          flutter build apk --target-platform android-arm64 --release
+
+      - name: List generated APKs
+        run: |
+          ls -lh build/app/outputs/flutter-apk/ || true
 
       - name: Upload APK Artifacts
         uses: actions/upload-artifact@v4
@@ -73,13 +87,22 @@ jobs:
           retention-days: 14
 
       - name: Create Release and Upload APK
-        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+        continue-on-error: true
         uses: softprops/action-gh-release@v2
         with:
           files: build/app/outputs/flutter-apk/*.apk
-          name: Namida Build ${{ github.sha }}
-          tag_name: build-${{ github.sha }}
+          name: "Namida Nova v8.6.0-beta - Listening Party & Redesigned Tabs"
+          tag_name: "v8.6.0-nova-apk"
           draft: false
           prerelease: true
+          body: |
+            ### Namida Nova v8.6.0-beta (Listening Party Overhaul & Tab Simplification)
+            
+            This release contains the Android APK built automatically by GitHub Actions:
+            - **Modern 2-Button Lobby**: Easy choice between "Créer un salon" and "Rejoindre un salon".
+            - **Creation & Join Flows**: Fast setup with custom username, party name, and optional password.
+            - **Active Session UI**: Member avatars, centered artwork, synchronized live karaoke lyrics, host controls, and guest view.
+            - **iTunes Search Fallback Resolver**: Automatic high-accuracy audio resolution on YouTube via canonical iTunes track metadata and duration verification.
+            - **Simplified Navigation**: 9 core tabs with Ratings, Tags, and Moods grouped cleanly under "Tags & Notes".
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
