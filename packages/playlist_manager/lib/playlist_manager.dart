@@ -213,5 +213,7 @@ abstract class PlaylistManager<T, I, S> {
 
   void addNewPlaylist(String name, {dynamic videoIds}) {}
 
+  GeneralPlaylist<T, S>? addNewPlaylistRaw(String name, {dynamic videoIds, dynamic modifiedDate}) => null;
+
   void addTracksToPlaylist(dynamic playlist, dynamic tracks) {}
 }

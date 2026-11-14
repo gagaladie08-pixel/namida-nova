@@ -178,7 +178,7 @@ class _StubSearch {
 
 class _StubVideoAction {
   const _StubVideoAction();
-  Future<dynamic> changeLikeStatus({dynamic videoId, dynamic status}) async => null;
+  Future<dynamic> changeLikeStatus({dynamic videoId, dynamic status, dynamic engagement, dynamic videoPage}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -190,7 +190,7 @@ class _StubPlaylistAction {
 
 class _StubPlaylist {
   const _StubPlaylist();
-  Future<YoutiPiePlaylistResultBase?> getMixPlaylist({dynamic videoId, dynamic includeFirstVideo, dynamic userPersonalized, dynamic details}) async => null;
+  Future<YoutiPiePlaylistResultBase?> getMixPlaylist({dynamic videoId, dynamic mixId, dynamic includeFirstVideo, dynamic userPersonalized, dynamic details}) async => null;
   Future<YoutiPiePlaylistResultBase?> fetchPlaylist({dynamic playlistId, dynamic details}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }

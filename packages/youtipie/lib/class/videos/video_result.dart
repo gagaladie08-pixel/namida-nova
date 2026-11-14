@@ -19,6 +19,8 @@ class YoutiPieVideoPageResult {
     this.heatMap,
   });
 
+  String? get videoId => id as String?;
+
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

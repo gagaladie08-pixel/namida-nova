@@ -1,9 +1,14 @@
-// Stub generated for class/youtipie_feed/music_album_info_item.dart
-class MusicAlbumInfoItem {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const MusicAlbumInfoItem({this.id, this.name, this.title});
+import 'package:youtipie/class/youtipie_feed/yt_feed_base.dart';
+
+class MusicAlbumInfoItem extends YoutubeFeed {
+  const MusicAlbumInfoItem({
+    super.id,
+    super.name,
+    super.title,
+    super.subtitle,
+    super.thumbnails = const [],
+    super.endpoint,
+  });
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

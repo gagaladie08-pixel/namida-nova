@@ -14,6 +14,8 @@ class YoutubeFeed extends MapSerializable {
   final bool isShortContent;
   final bool isMixPlaylist;
   final dynamic shortsSection;
+  final List<dynamic> thumbnails;
+  final dynamic endpoint;
 
   const YoutubeFeed({
     this.id,
@@ -26,6 +28,8 @@ class YoutubeFeed extends MapSerializable {
     this.isShortContent = false,
     this.isMixPlaylist = false,
     this.shortsSection,
+    this.thumbnails = const [],
+    this.endpoint,
   });
 
   dynamic noSuchMethod(Invocation invocation) => null;

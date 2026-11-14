@@ -1,9 +1,23 @@
-// Stub generated for class/youtipie_feed/music_navigation_item.dart
-class MusicNavigationItem {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const MusicNavigationItem({this.id, this.name, this.title});
+import 'package:flutter/painting.dart';
+import 'package:youtipie/class/music/music_browse_endpoint.dart';
+import 'package:youtipie/class/youtipie_feed/yt_feed_base.dart';
+
+class MusicNavigationItem extends YoutubeFeed {
+  final Color? color;
+  @override
+  final YoutiPieMusicBrowseEndpoint endpoint;
+  @override
+  final String title;
+
+  const MusicNavigationItem({
+    super.id,
+    super.name,
+    this.title = '',
+    super.subtitle,
+    super.thumbnails = const [],
+    this.endpoint = const YoutiPieMusicBrowseEndpoint(),
+    this.color,
+  }) : super(title: title, endpoint: endpoint);
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
