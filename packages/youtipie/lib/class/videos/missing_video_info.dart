@@ -17,6 +17,9 @@ class MissingVideoInfo {
     this.durSeconds,
   });
 
+  String? get videoId => id as String?;
+  String? get description => null;
+
   static MissingVideoInfo fromMap(dynamic map) => const MissingVideoInfo();
   StreamInfoItem toStreamInfo() => const StreamInfoItem();
 

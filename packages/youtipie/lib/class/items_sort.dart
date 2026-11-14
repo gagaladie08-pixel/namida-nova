@@ -1,6 +1,11 @@
 class YoutiPieItemsSort {
   final String? title;
-  const YoutiPieItemsSort({this.title});
+  final bool initiallySelected;
+
+  const YoutiPieItemsSort({
+    this.title,
+    this.initiallySelected = false,
+  });
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
@@ -8,5 +13,8 @@ class YoutiPieItemsSort {
 typedef ItemsSort = YoutiPieItemsSort;
 
 mixin YoutiPieListSorterMixin {
-  List<YoutiPieItemsSort> get sorts => const [];
+  YoutiPieItemsSort? get customSort => null;
+  List<YoutiPieItemsSort> get itemsSort => const [];
+
+  Future<bool> fetchWithNewSort({dynamic sort, dynamic details}) async => false;
 }

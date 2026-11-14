@@ -8,6 +8,7 @@ import 'package:youtipie/class/result_wrapper/channel_user_result.dart';
 import 'package:youtipie/class/result_wrapper/feed_result.dart';
 import 'package:youtipie/class/result_wrapper/feedback_holder.dart';
 import 'package:youtipie/class/result_wrapper/playlist_user_result.dart';
+import 'package:youtipie/class/result_wrapper/user_channels_all_videos_result.dart';
 import 'package:youtipie/class/youtipie_feed/user_channel_info.dart';
 
 export 'package:youtipie/core/enum.dart';
@@ -186,14 +187,15 @@ class _StubUserPlaylist {
   const _StubUserPlaylist();
   Future<dynamic> getPlaylistsForVideo(dynamic videoId) async => [];
   Future<YoutiPieUserPlaylistsResult?> getUserPlaylists({dynamic details}) async => null;
-  Future<dynamic> createPlaylist({dynamic title, dynamic privacy, dynamic mainList}) async => null;
+  Future<dynamic> createPlaylist({dynamic title, dynamic privacy, dynamic mainList, dynamic initialVideoIds}) async => null;
+  Future<dynamic> injectDefaultPlaylistsInUserPlaylists(dynamic res) async => res;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
 class _StubUserChannel {
   const _StubUserChannel();
   Future<YoutiPieUserChannelsResult?> fetchUserChannels({dynamic details}) async => null;
-  Future<dynamic> fetchUserChannelsAllVideos({dynamic details}) async => null;
+  Future<YoutiPieUserChannelsAllVideosResult?> fetchUserChannelsAllVideos({dynamic details}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -233,7 +235,7 @@ class _StubFeedbackAction {
 class _StubFeed {
   const _StubFeed();
   Future<YoutiPieFeedResult?> fetchFeed({dynamic details}) async => null;
-  Future<dynamic> fetchNotifications({dynamic details}) async => null;
+  Future<dynamic> fetchNotifications({dynamic details, dynamic useNewExtractor}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

@@ -125,6 +125,12 @@ class GeneralPlaylist<T, S> {
     final all = [...tags, ...moods];
     return all.join(', ');
   }
+
+  GeneralPlaylist<T, S> get value => this;
+}
+
+extension RxMapLengthExt<K, V> on Rx<Map<K, V>> {
+  int get length => value.length;
 }
 
 abstract class PlaylistManager<T, I, S> {
@@ -140,6 +146,8 @@ abstract class PlaylistManager<T, I, S> {
 
   File getArtworkFileForPlaylist(String playlistName) => File('');
   dynamic get tagsFilter => null;
+  Rx<List<int>> getCustomIndicesOrderListRx() => Rx<List<int>>([]);
+  void onPlaylistReorder(int oldIndex, int newIndex) {}
 
   Future<void> get waitForPlaylistsLoad async {}
   Future<void> get waitForFavouritePlaylistLoad async {}

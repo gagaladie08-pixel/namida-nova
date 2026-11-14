@@ -1,6 +1,8 @@
 class YoutiPieSearchDate {
   final DateTime? date;
   const YoutiPieSearchDate([this.date]);
+
+  DateTime toDateTimeUtc() => date?.toUtc() ?? DateTime.now().toUtc();
 }
 
 class YoutiPieSearchParsedDates {
@@ -18,11 +20,13 @@ class YoutiPieSearchOperators {
   final List<String> phrases;
   final List<String> titlePhrases;
   final List<String> excluded;
+  final String remainingText;
 
   const YoutiPieSearchOperators({
     this.phrases = const [],
     this.titlePhrases = const [],
     this.excluded = const [],
+    this.remainingText = '',
   });
 
   static YoutiPieSearchOperators parse(String text) => const YoutiPieSearchOperators();

@@ -26,6 +26,8 @@ class VideoStreamInfo {
     this.thumbnails = const [],
   });
 
+  String? get availableDescription => null;
+
   static VideoStreamInfo fromMap(dynamic map) => const VideoStreamInfo();
   StreamInfoItem toStreamInfo() => const StreamInfoItem();
 
