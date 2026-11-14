@@ -11,7 +11,7 @@ export 'package:playlist_manager/class/favourite_playlist.dart';
 export 'package:playlist_manager/core/enum.dart';
 export 'package:playlist_manager/module/playlist_id.dart';
 
-abstract class PlaylistTagKey {}
+sealed class PlaylistTagKey {}
 
 enum PlaylistVirtualTag implements PlaylistTagKey {
   pinned,

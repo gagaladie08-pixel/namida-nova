@@ -6,6 +6,8 @@ import 'package:youtipie/class/result_wrapper/history_result.dart';
 import 'package:youtipie/class/result_wrapper/channel_user_result.dart';
 import 'package:youtipie/class/result_wrapper/feedback_holder.dart';
 
+export 'package:youtipie/core/enum.dart';
+
 class Thumbnail {
   final String? url;
   final int? width;

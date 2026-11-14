@@ -5,6 +5,13 @@ enum LikeStatus {
   unknown,
 }
 
+enum LikeAction {
+  addLike,
+  removeLike,
+  addDislike,
+  removeDislike,
+}
+
 enum ChannelNotifications {
   all,
   personalized,
