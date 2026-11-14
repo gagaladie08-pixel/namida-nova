@@ -1,10 +1,12 @@
 class YoutiPieItemsSort {
   final String title;
   final bool initiallySelected;
+  final String? token;
 
   const YoutiPieItemsSort({
     this.title = '',
     this.initiallySelected = false,
+    this.token,
   });
 
   dynamic noSuchMethod(Invocation invocation) => null;

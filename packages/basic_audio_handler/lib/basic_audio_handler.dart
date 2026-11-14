@@ -155,11 +155,13 @@ class ParametricEqualizer {
   final List<EqualizerBand> bands;
   final double preamp;
   final bool autoPreamp;
+  final bool limiter;
 
   const ParametricEqualizer({
     this.bands = const [],
     this.preamp = 0.0,
     this.autoPreamp = true,
+    this.limiter = false,
   });
 
   static List<double> logFrequencies(double min, double max, int count) {
@@ -197,6 +199,13 @@ class ParametricEqualizer {
 
   List<EqualizerBand> getActiveBands() => bands.where((b) => b.enabled && (b.gain != 0.0 || !b.type.hasGain)).toList();
 
+  int getNextBandId() => bands.isEmpty ? 0 : (bands.map((b) => b.id).reduce(math.max) + 1);
+
+  bool get hasChannelSpecificBands => bands.any((b) => b.channel != EqualizerChannel.all);
+
+  List<double> responseCurve(List<double> frequencies, {EqualizerChannel channel = EqualizerChannel.all}) =>
+      frequencies.map((f) => responseDb(f, channel: channel)).toList();
+
   ParametricEqualizer withBand(EqualizerBand band) {
     final updated = List<EqualizerBand>.from(bands);
     final idx = updated.indexWhere((b) => b.id == band.id);
@@ -208,14 +217,18 @@ class ParametricEqualizer {
     return copyWith(bands: updated);
   }
 
+  ParametricEqualizer withoutBand(int id) => copyWith(bands: bands.where((b) => b.id != id).toList());
+
   ParametricEqualizer copyWith({
     List<EqualizerBand>? bands,
     double? preamp,
     bool? autoPreamp,
+    bool? limiter,
   }) => ParametricEqualizer(
     bands: bands ?? this.bands,
     preamp: preamp ?? this.preamp,
     autoPreamp: autoPreamp ?? this.autoPreamp,
+    limiter: limiter ?? this.limiter,
   );
 
   double responseDb(double freq, {EqualizerChannel channel = EqualizerChannel.all}) {
@@ -359,6 +372,7 @@ class ParametricEqualizer {
       bands: bandsList,
       preamp: (map['preamp'] as num?)?.toDouble() ?? 0.0,
       autoPreamp: map['autoPreamp'] as bool? ?? true,
+      limiter: map['limiter'] as bool? ?? false,
     );
   }
 
@@ -366,6 +380,7 @@ class ParametricEqualizer {
     'bands': bands.map((b) => b.toMap()).toList(),
     'preamp': preamp,
     'autoPreamp': autoPreamp,
+    'limiter': limiter,
   };
 }
 
@@ -374,6 +389,11 @@ class EqualizerPreset {
   final ParametricEqualizer equalizer;
 
   const EqualizerPreset({required this.name, required this.equalizer});
+
+  EqualizerPreset copyWith({String? name, ParametricEqualizer? equalizer}) => EqualizerPreset(
+    name: name ?? this.name,
+    equalizer: equalizer ?? this.equalizer,
+  );
 
   static EqualizerPreset? fromMap(Map<dynamic, dynamic> map) {
     final name = map['name'] as String?;
@@ -404,12 +424,23 @@ class EqualizerPreset {
   int get hashCode => name.hashCode;
 }
 
+class LoudnessEnhancerExtended {
+  static const double kMinGain = -20.0;
+  static const double kMaxGain = 20.0;
+
+  void setTargetGainUser(double gain) {}
+  void setEnabledUser(bool enabled) {}
+  void setTargetGainTrack(double gain) {}
+
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
 class PlayerConfig {
   final bool skipSilence;
   final bool loudnessEnhancerEnabled;
   final double loudnessEnhancer;
   final bool equalizerEnabled;
-  final ParametricEqualizer? equalizer;
+  final ParametricEqualizer equalizer;
   final EqualizerPreset? preset;
   final double speed;
   final double volume;
@@ -420,7 +451,7 @@ class PlayerConfig {
     this.loudnessEnhancerEnabled = false,
     this.loudnessEnhancer = 0.0,
     this.equalizerEnabled = false,
-    this.equalizer,
+    this.equalizer = ParametricEqualizer.flat,
     this.preset,
     this.speed = 1.0,
     this.volume = 1.0,
@@ -464,12 +495,20 @@ class PlayerConfigOverrides {
   final double? speed;
   final double? volume;
   final double? balance;
+  final bool? skipSilence;
+  final bool? loudnessEnhancerEnabled;
+  final double? loudnessEnhancer;
+  final bool? equalizerEnabled;
 
   const PlayerConfigOverrides({
     this.pitch,
     this.speed,
     this.volume,
     this.balance,
+    this.skipSilence,
+    this.loudnessEnhancerEnabled,
+    this.loudnessEnhancer,
+    this.equalizerEnabled,
   });
 
   factory PlayerConfigOverrides.fromMap(Map<dynamic, dynamic> map) {
@@ -478,6 +517,10 @@ class PlayerConfigOverrides {
       speed: (map['speed'] as num?)?.toDouble(),
       volume: (map['volume'] as num?)?.toDouble(),
       balance: (map['balance'] as num?)?.toDouble(),
+      skipSilence: map['skipSilence'] as bool?,
+      loudnessEnhancerEnabled: map['loudnessEnhancerEnabled'] as bool?,
+      loudnessEnhancer: (map['loudnessEnhancer'] as num?)?.toDouble(),
+      equalizerEnabled: map['equalizerEnabled'] as bool?,
     );
   }
 
@@ -486,6 +529,10 @@ class PlayerConfigOverrides {
     'speed': speed,
     'volume': volume,
     'balance': balance,
+    'skipSilence': skipSilence,
+    'loudnessEnhancerEnabled': loudnessEnhancerEnabled,
+    'loudnessEnhancer': loudnessEnhancer,
+    'equalizerEnabled': equalizerEnabled,
   };
 
   PlayerConfigOverrides copyWith({
@@ -493,16 +540,52 @@ class PlayerConfigOverrides {
     double? speed,
     double? volume,
     double? balance,
+    bool? skipSilence,
+    bool? loudnessEnhancerEnabled,
+    double? loudnessEnhancer,
+    bool? equalizerEnabled,
   }) {
     return PlayerConfigOverrides(
       pitch: pitch ?? this.pitch,
       speed: speed ?? this.speed,
       volume: volume ?? this.volume,
       balance: balance ?? this.balance,
+      skipSilence: skipSilence ?? this.skipSilence,
+      loudnessEnhancerEnabled: loudnessEnhancerEnabled ?? this.loudnessEnhancerEnabled,
+      loudnessEnhancer: loudnessEnhancer ?? this.loudnessEnhancer,
+      equalizerEnabled: equalizerEnabled ?? this.equalizerEnabled,
     );
   }
 
-  PlayerConfigOverrides resolve(dynamic defaultConfig) => this;
+  PlayerConfigOverrides copyWithEqualizer(ParametricEqualizer? equalizer, EqualizerPreset? preset) => this;
+
+  PlayerConfigOverrides clear({
+    bool? volume,
+    bool? speed,
+    bool? pitch,
+    bool? loudnessEnhancer,
+    bool? equalizer,
+    bool? skipSilence,
+  }) => PlayerConfigOverrides(
+    pitch: (pitch == true) ? null : this.pitch,
+    speed: (speed == true) ? null : this.speed,
+    volume: (volume == true) ? null : this.volume,
+    balance: balance,
+    skipSilence: (skipSilence == true) ? null : this.skipSilence,
+    loudnessEnhancerEnabled: (loudnessEnhancer == true) ? null : loudnessEnhancerEnabled,
+    loudnessEnhancer: (loudnessEnhancer == true) ? null : this.loudnessEnhancer,
+    equalizerEnabled: (equalizer == true) ? null : this.equalizerEnabled,
+  );
+
+  PlayerConfig resolve(PlayerConfig defaultConfig) => defaultConfig.copyWith(
+    pitch: pitch,
+    speed: speed,
+    volume: volume,
+    skipSilence: skipSilence,
+    loudnessEnhancerEnabled: loudnessEnhancerEnabled,
+    loudnessEnhancer: loudnessEnhancer,
+    equalizerEnabled: equalizerEnabled,
+  );
 
   PlayerConfigModificationScale getModificationScale() => PlayerConfigModificationScale.none;
 }
@@ -543,6 +626,8 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   PlayerRepeatMode userCycleRepeatMode() => PlayerRepeatMode.none;
 
   AudioLoadConfiguration? get defaultAndroidLoadConfig => null;
+
+  LoudnessEnhancerExtended? get loudnessEnhancerExtended => null;
 
   bool getLoudnessEnhancerEnabledTrackValue() => false;
   bool getLoudnessEnhancerEnabledTrackValueR() => false;

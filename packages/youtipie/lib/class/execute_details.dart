@@ -1,3 +1,9 @@
+enum CacheDecision {
+  cacheOnly,
+  cacheOrRequest,
+  requestOnly,
+}
+
 class ExecuteDetails {
   final bool forceRequest;
 

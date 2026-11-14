@@ -14,6 +14,7 @@ import 'package:youtipie/class/result_wrapper/user_channels_all_videos_result.da
 import 'package:youtipie/class/youtipie_feed/user_channel_info.dart';
 
 export 'package:youtipie/core/enum.dart';
+export 'package:youtipie/class/execute_details.dart';
 
 class Thumbnail {
   final String? url;
@@ -141,10 +142,16 @@ class _StubChannel {
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
+class ChannelSubscribeActionResult {
+  final bool isNowSubbed;
+  final dynamic newNotificationStatus;
+  const ChannelSubscribeActionResult({this.isNowSubbed = true, this.newNotificationStatus});
+}
+
 class _StubChannelAction {
   const _StubChannelAction();
-  Future<bool> changeSubscribeStatus({dynamic channelId, dynamic channelEngagement, dynamic status, dynamic mainChannelInfo, dynamic subscribe}) async => true;
-  Future<bool> changeChannelNotificationStatus({dynamic channelId, dynamic status, dynamic parameters, dynamic mainChannelInfo}) async => true;
+  Future<ChannelSubscribeActionResult?> changeSubscribeStatus({dynamic channelId, dynamic channelEngagement, dynamic status, dynamic mainChannelInfo, dynamic subscribe}) async => const ChannelSubscribeActionResult();
+  Future<bool> changeChannelNotificationStatus({dynamic channelId, dynamic status, dynamic parameters, dynamic mainChannelInfo, dynamic notifications}) async => true;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

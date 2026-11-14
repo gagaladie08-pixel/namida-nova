@@ -46,6 +46,7 @@ class PlaylistTagChip {
   final int depth;
   final String? label;
   final int? color;
+  final int? count;
 
   const PlaylistTagChip({
     required this.key,
@@ -53,6 +54,7 @@ class PlaylistTagChip {
     this.depth = 0,
     this.label,
     this.color,
+    this.count,
   });
 }
 
@@ -146,7 +148,7 @@ class GeneralPlaylist<T, S> {
 
   GeneralPlaylist<T, S> get value => this;
 
-  DateTime? get pinnedDate => isPinned ? DateTime.fromMillisecondsSinceEpoch(modifiedDate) : null;
+  int? get pinnedDate => isPinned ? modifiedDate : null;
 }
 
 extension RxMapLengthExt<K, V> on Rx<Map<K, V>> {
