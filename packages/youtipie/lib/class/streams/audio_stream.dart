@@ -1,4 +1,5 @@
 import 'package:youtipie/class/streams/audio_track.dart';
+import 'package:youtipie/class/streams/video_stream.dart';
 
 class AudioStream {
   final dynamic id;
@@ -7,6 +8,8 @@ class AudioStream {
   final int sizeInBytes;
   final Duration? duration;
   final AudioTrack? audioTrack;
+  final bool isWebm;
+  final int? itag;
 
   const AudioStream({
     this.id,
@@ -15,8 +18,11 @@ class AudioStream {
     this.sizeInBytes = 0,
     this.duration,
     this.audioTrack,
+    this.isWebm = false,
+    this.itag,
   });
 
+  VideoStreamCodecInfo get codecInfo => const VideoStreamCodecInfo();
   String bitrateText() => '';
   static AudioStream fromMap(dynamic map) => const AudioStream();
   Map<String, dynamic> toMap() => {};

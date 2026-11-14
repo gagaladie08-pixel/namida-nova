@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:basic_audio_handler/basic_audio_handler.dart';
+
 import 'package:namida/base/setting_subpage_provider.dart';
 import 'package:namida/class/route.dart';
 import 'package:namida/controller/current_color.dart';
@@ -366,7 +368,7 @@ class _SleepTimerQuickTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ObxO(
+    return ObxO<SleepTimerConfig>(
       rx: Player.inst.sleepTimerConfig,
       builder: (context, config) {
         final String subtitle;

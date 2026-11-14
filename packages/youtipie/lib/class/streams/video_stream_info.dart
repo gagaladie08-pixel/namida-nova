@@ -13,6 +13,7 @@ class VideoStreamInfo {
   final dynamic channel;
   final List<dynamic> thumbnails;
   final String? description;
+  final dynamic uploadDate;
 
   const VideoStreamInfo({
     this.id,
@@ -26,6 +27,7 @@ class VideoStreamInfo {
     this.channel,
     this.thumbnails = const [],
     this.description,
+    this.uploadDate,
   });
 
   PublishTime get publishDate => publishedAt;

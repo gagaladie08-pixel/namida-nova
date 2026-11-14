@@ -126,6 +126,14 @@ enum YoutiPieMusicSearchType {
   podcasts,
 }
 
+enum InnertubeClients {
+  web,
+  android,
+  ios,
+  tv_samsung,
+  tv_lg,
+}
+
 extension YoutiPieOperationExtension on YoutiPieOperation {
   bool get requiresAccount => false;
 }

@@ -28,11 +28,11 @@ extension YTStringUtils on String {
 }
 
 class Thumbnail {
-  final String? url;
-  final int? width;
-  final int? height;
+  final String url;
+  final int width;
+  final int height;
 
-  const Thumbnail({this.url, this.width, this.height});
+  const Thumbnail({this.url = '', this.width = 0, this.height = 0});
 }
 
 typedef YoutiPieThumbnail = Thumbnail;
@@ -96,8 +96,8 @@ class _StubCipher {
 
 class _StubPotoken {
   const _StubPotoken();
-  Future<String?> getVisitorData() async => null;
-  Future<dynamic> updateInfo({dynamic potoken, dynamic visitorData}) async => null;
+  String? getVisitorData() => null;
+  void updateInfo({dynamic potoken, dynamic visitorData, dynamic playerRequestPoToken, dynamic streamingPoToken}) {}
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -193,7 +193,13 @@ class _StubVideoAction {
 
 class _StubPlaylistAction {
   const _StubPlaylistAction();
-  Future<dynamic> addRemoveVideosInPlaylist({dynamic mainList, dynamic onUserPlaylistUpdated}) async => true;
+  Future<dynamic> addRemoveVideosInPlaylist({
+    dynamic videosToAdd,
+    dynamic videosToRemove,
+    dynamic playlistId,
+    dynamic mainList,
+    dynamic onUserPlaylistUpdated,
+  }) async => true;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -221,7 +227,7 @@ class _StubUserPlaylist {
     dynamic privacy,
     dynamic newVideosAtTop,
   }) async => true;
-  Future<dynamic> getPlaylistsForVideo(dynamic videoId) async => [];
+  Future<dynamic> getPlaylistsForVideo({dynamic videoId, dynamic insertActiveAtTop}) async => [];
   Future<YoutiPieUserPlaylistsResult?> getUserPlaylists({dynamic details}) async => null;
   Future<dynamic> createPlaylist({dynamic title, dynamic privacy, dynamic mainList, dynamic initialVideoIds}) async => null;
   Future<dynamic> injectDefaultPlaylistsInUserPlaylists(dynamic res) async => res;
@@ -245,7 +251,7 @@ class _StubComment {
 class _StubCommentAction {
   const _StubCommentAction();
   Future<bool> changeLikeStatus({dynamic comment, dynamic mainList, dynamic action}) async => true;
-  Future<dynamic> createComment({dynamic videoId, dynamic content, dynamic mainList, dynamic commentsList, dynamic videoPage}) async => null;
+  Future<dynamic> createComment({dynamic videoId, dynamic content, dynamic mainList, dynamic commentsList, dynamic videoPage, dynamic createCommentParams}) async => null;
   Future<dynamic> editComment({dynamic videoId, dynamic comment, dynamic content, dynamic mainList, dynamic commentsList, dynamic videoPage}) async => null;
   Future<bool> deleteComment({dynamic videoId, dynamic comment, dynamic mainList, dynamic commentsList, dynamic videoPage}) async => true;
   Future<dynamic> createReply({dynamic mainList, dynamic createReplyParams, dynamic content, dynamic mainComment, dynamic commentsList, dynamic videoPage, dynamic videoId}) async => null;

@@ -58,6 +58,24 @@ class PlaylistTagChip {
   });
 }
 
+class PlaylistTagInfo {
+  final String path;
+  final String name;
+  final int count;
+  final dynamic color;
+  final List<PlaylistTagInfo> nested;
+
+  const PlaylistTagInfo({
+    this.path = '',
+    this.name = '',
+    this.count = 0,
+    this.color,
+    this.nested = const [],
+  });
+
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
 mixin PlaylistItemWithDate {
   int get dateAdded;
 }
@@ -83,7 +101,7 @@ class PlaylistMetadataEdit {
 class PlaylistTagsFilter {
   static const String separator = '/';
 
-  static List<String> normalizeTags(List<String> tags) {
+  static List<String> normalizeTags(Iterable<String> tags) {
     return tags.map((t) => t.trim().toLowerCase()).where((t) => t.isNotEmpty).toSet().toList();
   }
 
@@ -179,9 +197,9 @@ extension RxMapLengthExt<K, V> on Rx<Map<K, V>> {
   int get length => value.length;
 }
 
-abstract class PlaylistManager<T, I, S> {
+abstract class PlaylistManager<T extends PlaylistItemWithDate, I, S> {
   final playlists = RxList<GeneralPlaylist<T, S>>();
-  final playlistsMap = Rx<Map<String, GeneralPlaylist<T, S>>>({});
+  final playlistsMap = RxMap<String, GeneralPlaylist<T, S>>({});
   late final FavouritePlaylist<T, I, S> favouritesPlaylist = FavouritePlaylist<T, I, S>(
     GeneralPlaylist<T, S>(name: 'Favourites'),
   );
@@ -237,9 +255,25 @@ abstract class PlaylistManager<T, I, S> {
 
   Future<void> updatePlaylistsMetadata(Map<String, PlaylistMetadataEdit> edits) async {}
 
-  Future<void> updatePlaylistMetadata(String name, dynamic edit) async {}
+  Future<void> updatePlaylistMetadata(
+    String name, {
+    bool? isPinned,
+    dynamic edit,
+    List<String>? tags,
+    List<String>? moods,
+    String? comment,
+    int? artworkDate,
+  }) async {}
 
   Future<void> insertTracksInPlaylistWithEachIndex(dynamic playlist, dynamic tracks) async {}
+
+  Future<void> removeTag(String tag) async {}
+
+  Future<void> renameTag(String oldTag, String newTag) async {}
+
+  Map<String, int> computeTagsCounts() => {};
+
+  Map<String, int> computeMoodsCounts() => {};
 
   Future<bool> writePlaylistToStorage(GeneralPlaylist<T, S> playlist) async => true;
 

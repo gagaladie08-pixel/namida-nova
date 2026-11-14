@@ -2,6 +2,7 @@ class VideoStreamCodecInfo {
   final String container;
   const VideoStreamCodecInfo({this.container = ''});
   String? codecIdentifierIfCustom() => null;
+  String codecCleaned() => '';
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -15,6 +16,7 @@ class VideoStream {
   final int? bitrate;
   final int? fps;
   final int? itag;
+  final bool isWebm;
 
   const VideoStream({
     this.id,
@@ -26,6 +28,7 @@ class VideoStream {
     this.bitrate,
     this.fps,
     this.itag,
+    this.isWebm = false,
   });
 
   VideoStreamCodecInfo get codecInfo => const VideoStreamCodecInfo();

@@ -110,7 +110,7 @@ Future<void> showTrackInfoDialog(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  StreamBuilder(
+                  StreamBuilder<Duration>(
                     initialData: ap.position,
                     stream: ap.positionStream,
                     builder: (context, snapshot) {
@@ -118,7 +118,7 @@ Future<void> showTrackInfoDialog(
                       return Text(dur.inSeconds.secondsLabel);
                     },
                   ),
-                  StreamBuilder(
+                  StreamBuilder<Duration>(
                     initialData: ap.position,
                     stream: ap.positionStream,
                     builder: (context, snapshot) {
@@ -132,7 +132,7 @@ Future<void> showTrackInfoDialog(
                     },
                   ),
                   Text(((ap.duration?.inSeconds ?? 0).secondsLabel)),
-                  StreamBuilder(
+                  StreamBuilder<bool>(
                     initialData: ap.playing,
                     stream: ap.playingStream,
                     builder: (context, snapshot) {

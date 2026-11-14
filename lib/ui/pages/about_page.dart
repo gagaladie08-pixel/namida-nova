@@ -834,7 +834,7 @@ class __KuruKuruActivatorState extends State<_KuruKuruActivator> with SingleTick
       await pl.play();
       // -- some backends never report completion, the player would never be released
       final remainingMS = (duration ?? _kMaxSampleDuration) - randomSample.$2;
-      await Future.any([
+      await Future.any<dynamic>([
         pl.processingStateStream.firstWhere((element) => element == ProcessingState.completed).ignoreError(),
         Future.delayed(remainingMS + _kCompletionGrace),
       ]);

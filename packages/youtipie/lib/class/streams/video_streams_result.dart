@@ -31,6 +31,8 @@ class VideoStreamsResult {
 
   Map<dynamic, AudioStream>? get audioStreamsOrganizedByLanguage => null;
 
+  bool hasExpired() => false;
+
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

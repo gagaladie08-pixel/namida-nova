@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:youtipie/core/http.dart';
+import 'package:youtipie/youtipie.dart';
 
 import 'package:namida/base/setting_subpage_provider.dart';
 import 'package:namida/class/route.dart';
@@ -897,7 +898,7 @@ class _YTFlagsOptions extends StatelessWidget {
                   title: 'innertube_client'.toUpperCase(),
                   trailing: NamidaPopupWrapper(
                     childrenDefault: _innertubeChildren,
-                    child: ObxO(
+                    child: ObxO<InnertubeClients?>(
                       rx: settings.youtube.innertubeClient,
                       builder: (context, innertubeClient) => NamidaText(
                         innertubeClient?.name ?? lang.defaultLabel,

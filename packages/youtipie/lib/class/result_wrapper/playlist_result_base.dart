@@ -20,8 +20,10 @@ class PlaylistUploaderInfo {
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
-class PlaylistInfo {
+class PlaylistInfo extends PlaylistBasicInfo {
+  @override
   final String id;
+  @override
   final String title;
   final String? description;
   final PlaylistPrivacy? privacy;
@@ -30,6 +32,7 @@ class PlaylistInfo {
   final Rx<bool> isInLibrary;
   final int? viewsCount;
   final String? viewsCountText;
+  @override
   final List<Thumbnail> thumbnails;
 
   PlaylistInfo({

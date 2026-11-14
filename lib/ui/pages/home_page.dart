@@ -1290,7 +1290,7 @@ class _YoutubeHomePageState extends _HomePageStateBase<YoutubeID, String, YTHome
   @override
   Widget buildOtherSectionSliver(BuildContext context, HomePageItems element) {
     if (element == HomePageItems.pinned) {
-      return _PinnedPlaylistsList(
+      return _PinnedPlaylistsList<YoutubeID, SortEntry<YTSortType>>(
         homepageItem: element,
         playlistsMap: YoutubePlaylistController.inst.playlistsMap,
         cardBuilder: (playlist, homepageItem) => _YTPlaylistCard(

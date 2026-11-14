@@ -13,7 +13,7 @@ class YoutiPieVideoPageResult {
   final List<YoutiPieVideoHeatMap>? heatMap;
   final dynamic channelInfo;
   final YoutiPieRelatedVideosResult? relatedVideosResult;
-  final YoutiPieCommentResult? commentResult;
+  final YoutiPieCommentResult commentResult;
 
   const YoutiPieVideoPageResult({
     this.id,
@@ -24,7 +24,7 @@ class YoutiPieVideoPageResult {
     this.heatMap,
     this.channelInfo,
     this.relatedVideosResult,
-    this.commentResult,
+    this.commentResult = const YoutiPieCommentResult(),
   });
 
   String get videoId => (id as String?) ?? '';

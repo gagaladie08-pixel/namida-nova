@@ -635,11 +635,28 @@ class QueueShuffler<Q> {
   List<Q> shuffle(List<Q> items) => List<Q>.from(items)..shuffle();
 }
 
+class SleepTimerConfig {
+  final bool enableSleepAfterMins;
+  final int sleepAfterMin;
+  final bool enableSleepAfterItems;
+  final int sleepAfterItems;
+
+  const SleepTimerConfig({
+    this.enableSleepAfterMins = false,
+    this.sleepAfterMin = 0,
+    this.enableSleepAfterItems = false,
+    this.sleepAfterItems = 0,
+  });
+
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
 abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   final playWhenReady = ValueNotifier<bool>(false);
   final queueShuffler = QueueShuffler<Q>();
   final queueItems = RxList<Q>();
   final numberOfRepeats = Rx<int>(0);
+  final sleepTimerConfig = Rx<SleepTimerConfig>(const SleepTimerConfig());
 
   PlayerRepeatMode get displayRepeatMode => PlayerRepeatMode.none;
   PlayerRepeatMode get playerRepeatMode => PlayerRepeatMode.none;
@@ -669,4 +686,61 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
 
   Future<void> skipToNext({bool andPlay = true, bool isManualSkip = false}) async {}
   Future<void> skipToPrevious({bool isManualSkip = false}) async {}
+}
+
+class UriSource {
+  final Uri uri;
+  final Map<String, String>? headers;
+
+  const UriSource(this.uri, {this.headers});
+
+  factory UriSource.uri(Uri uri, {Map<String, String>? headers}) => UriSource(uri, headers: headers);
+  factory UriSource.file(String path) => UriSource(Uri.file(path));
+
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
+class AudioVideoSource extends UriSource {
+  const AudioVideoSource(super.uri, {super.headers});
+
+  factory AudioVideoSource.uri(Uri uri, {Map<String, String>? headers}) => AudioVideoSource(uri, headers: headers);
+  factory AudioVideoSource.file(String path) => AudioVideoSource(Uri.file(path));
+
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
+class ItemPrepareConfig<Q, S extends UriSource> {
+  final S source;
+  final int index;
+  final Duration? initialPosition;
+  final dynamic audioTrackId;
+  final dynamic videoOptions;
+
+  const ItemPrepareConfig(
+    this.source, {
+    required this.index,
+    this.initialPosition,
+    this.audioTrackId,
+    this.videoOptions,
+  });
+
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
+abstract class AVPlayer {
+  Duration get position;
+  Stream<Duration> get positionStream;
+  Duration? get duration;
+  Stream<Duration?> get durationStream;
+  bool get playing;
+  Stream<bool> get playingStream;
+
+  Future<Duration?> setSource<T>(ItemPrepareConfig<T, UriSource> config);
+  Future<void> play();
+  Future<void> pause();
+  Future<void> stop();
+  Future<void> seek(Duration position);
+  Future<void> dispose();
+
+  dynamic noSuchMethod(Invocation invocation) => null;
 }
