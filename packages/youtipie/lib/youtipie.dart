@@ -15,6 +15,9 @@ import 'package:youtipie/class/result_wrapper/playlist_user_result.dart';
 import 'package:youtipie/class/result_wrapper/user_channels_all_videos_result.dart';
 import 'package:youtipie/class/youtipie_feed/user_channel_info.dart';
 import 'package:youtipie/class/result_wrapper/related_videos_result.dart';
+import 'package:youtipie/class/result_wrapper/search_result.dart';
+import 'package:youtipie/class/channels/channel_tab_result.dart';
+import 'package:youtipie/class/search_suggestion_info.dart';
 import 'package:youtipie/class/streams/hls_variant.dart';
 import 'package:youtipie/class/streams/video_streams_result.dart';
 import 'package:youtipie/class/videos/video_result.dart';
@@ -42,6 +45,8 @@ extension ThumbnailListExtension<E> on Iterable<E>? {
     return self.first;
   }
 }
+
+typedef YoutiLoginProgressCallback = void Function(YoutiLoginProgress progress, [AccountCookiesValidity? cookiesValidity]);
 
 class YoutiPie {
   static const cipher = _StubCipher();
@@ -75,7 +80,8 @@ class YoutiPie {
   static const cacheManagerSync = _StubCacheManager();
   static Future<dynamic> getActiveAccountChannelIsolate(dynamic dir, {dynamic encryptionKey}) async => null;
 
-  static void Function(dynamic)? onOperationFailNoAccount;
+  static bool Function(dynamic)? canExecuteOperation;
+  static bool Function(dynamic)? onOperationFailNoAccount;
   static void Function(dynamic message, Object? error, StackTrace? stackTrace)? onWorkerError;
   static void setDefaultClients(dynamic clients) {}
   static void setLogs(dynamic logs) {}
@@ -105,12 +111,16 @@ class _StubCipher {
   const _StubCipher();
   bool get isPrepared => true;
   String? get jsPlayerVersion => null;
+  int? get signatureTimestamp => null;
+  bool get didFailedToExtractJsCode => false;
   Future<bool> prepareJSPlayer({dynamic cacheDirectoryPath}) async => true;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
 class _StubPotoken {
   const _StubPotoken();
+  bool get hasPoToken => false;
+  DateTime? get lastRefreshed => null;
   String? getVisitorData() => null;
   void updateInfo({dynamic potoken, dynamic visitorData, dynamic playerRequestPoToken, dynamic streamingPoToken}) {}
   dynamic noSuchMethod(Invocation invocation) => null;
@@ -152,8 +162,8 @@ class _StubCacheBuilder {
   dynamic forVideoPage({dynamic videoId}) => this;
   dynamic forReturnYoutubeDislike({dynamic videoId}) => this;
   dynamic forVideoStreams({dynamic videoId}) => this;
-  dynamic forMixPlaylistVideos({dynamic videoId, dynamic mixId}) => this;
-  dynamic forRelatedVideos({dynamic videoId, dynamic params}) => this;
+  dynamic forMixPlaylistVideos({dynamic videoId, dynamic mixId, dynamic userPersonalized}) => this;
+  dynamic forRelatedVideos({dynamic videoId, dynamic params, dynamic userPersonalized}) => this;
   dynamic forNotificationItems() => this;
   dynamic forMusicBrowse({dynamic endpoint}) => this;
   dynamic forFeedItems() => this;
@@ -167,7 +177,7 @@ class _StubChannel {
   const _StubChannel();
   Future<dynamic> fetchChannelPage({dynamic channelId, dynamic handle, dynamic details}) async => null;
   Future<dynamic> fetchChannelAbout({dynamic channel, dynamic details}) async => null;
-  Future<dynamic> fetchChannelTab({dynamic channelId, dynamic tab, dynamic sort, dynamic details}) async => null;
+  Future<YoutiPieChannelTabResult?> fetchChannelTab({dynamic channelId, dynamic tab, dynamic sort, dynamic details}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -200,8 +210,8 @@ class _StubMissingInfo {
 
 class _StubSearch {
   const _StubSearch();
-  Future<dynamic> getSuggestions(dynamic query, {dynamic details}) async => [];
-  Future<dynamic> search(dynamic query, {dynamic filters, dynamic details, dynamic peopleAlsoWatched}) async => null;
+  Future<List<SearchSuggestionInfo>?> getSuggestions(dynamic query, {dynamic details}) async => [];
+  Future<YoutiPieSearchResult?> search(dynamic query, {dynamic filters, dynamic details, dynamic peopleAlsoWatched}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

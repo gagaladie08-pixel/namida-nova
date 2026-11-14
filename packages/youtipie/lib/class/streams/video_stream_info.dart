@@ -14,6 +14,10 @@ class VideoStreamInfo {
   final List<dynamic> thumbnails;
   final String? description;
   final List<String> keywords;
+  final bool? isPrivate;
+  final bool? isUnlisted;
+  final bool? isLiveContent;
+  final dynamic category;
   final dynamic uploadDate;
 
   const VideoStreamInfo({
@@ -29,6 +33,10 @@ class VideoStreamInfo {
     this.thumbnails = const [],
     this.description,
     this.keywords = const [],
+    this.isPrivate,
+    this.isUnlisted,
+    this.isLiveContent,
+    this.category,
     this.uploadDate,
   });
 
@@ -38,6 +46,7 @@ class VideoStreamInfo {
 
   static VideoStreamInfo merge(String videoId, VideoStreamInfo? cached, VideoStreamInfo fresh) => fresh;
   static VideoStreamInfo fromMap(dynamic map) => const VideoStreamInfo();
+  Map<String, dynamic> toMap() => {};
   StreamInfoItem toStreamInfo() => const StreamInfoItem();
 
   dynamic noSuchMethod(Invocation invocation) => null;

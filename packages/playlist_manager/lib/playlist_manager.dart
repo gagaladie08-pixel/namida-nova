@@ -80,6 +80,13 @@ mixin PlaylistItemWithDate {
   int get dateAdded;
 }
 
+class PlaylistRemoteSource {
+  final String? sourceKey;
+  final String? remoteId;
+  const PlaylistRemoteSource({this.sourceKey, this.remoteId});
+  static const none = PlaylistRemoteSource();
+}
+
 class PlaylistMetadataEdit {
   final List<String>? tags;
   final List<String>? moods;
@@ -142,13 +149,14 @@ class PlaylistTagSection {
 class GeneralPlaylist<T, S> {
   String name;
   List<T> tracks;
-  DateTime creationDate;
+  int creationDate;
   int modifiedDate;
   String? m3uPath;
   PlaylistID? playlistID;
   List<String> tags;
   List<String> moods;
   bool isPinned;
+  int? pinnedDate;
   String comment;
   int? artworkDate;
   Map<String, dynamic> metadata;
@@ -162,13 +170,14 @@ class GeneralPlaylist<T, S> {
   GeneralPlaylist({
     required this.name,
     List<T>? tracks,
-    DateTime? creationDate,
+    int? creationDate,
     int? modifiedDate,
     this.m3uPath,
     this.playlistID,
     List<String>? tags,
     List<String>? moods,
     this.isPinned = false,
+    this.pinnedDate,
     this.comment = '',
     this.artworkDate,
     Map<String, dynamic>? metadata,
@@ -179,7 +188,7 @@ class GeneralPlaylist<T, S> {
     this.isFav = false,
     this.customOrder,
   })  : tracks = tracks ?? [],
-        creationDate = creationDate ?? DateTime.now(),
+        creationDate = creationDate ?? DateTime.now().millisecondsSinceEpoch,
         modifiedDate = modifiedDate ?? DateTime.now().millisecondsSinceEpoch,
         tags = tags ?? [],
         moods = moods ?? [],
@@ -192,7 +201,40 @@ class GeneralPlaylist<T, S> {
 
   GeneralPlaylist<T, S> get value => this;
 
-  int? get pinnedDate => isPinned ? modifiedDate : null;
+  Map<String, dynamic> toJson(
+    dynamic Function(T item) itemToJson,
+    dynamic sortToJson, {
+    bool includeTracks = true,
+  }) => {
+    'name': name,
+    'creationDate': creationDate,
+    'modifiedDate': modifiedDate,
+    if (includeTracks) 'tracks': tracks.map(itemToJson).toList(),
+  };
+
+  GeneralPlaylist<T, S> copyWith({
+    String? name,
+    List<T>? tracks,
+    int? creationDate,
+    int? modifiedDate,
+    String? m3uPath,
+    bool? isPinned,
+    int? pinnedDate,
+    String? comment,
+    dynamic remoteSource,
+  }) => GeneralPlaylist<T, S>(
+    name: name ?? this.name,
+    tracks: tracks ?? this.tracks,
+    creationDate: creationDate ?? this.creationDate,
+    modifiedDate: modifiedDate ?? this.modifiedDate,
+    m3uPath: m3uPath ?? this.m3uPath,
+    isPinned: isPinned ?? this.isPinned,
+    pinnedDate: pinnedDate ?? this.pinnedDate,
+    comment: comment ?? this.comment,
+    remoteSource: remoteSource ?? this.remoteSource,
+  );
+
+  GeneralPlaylist<T, S> copyWithConvertedTracks(T Function(T item) converter) => copyWith(tracks: tracks.map(converter).toList());
 
   static GeneralPlaylist<T, S> fromJson<T, S>(
     dynamic json,
@@ -243,8 +285,13 @@ abstract class PlaylistManager<T extends PlaylistItemWithDate, I, S> {
     dynamic itemsSortType,
     dynamic restoreCustomOrder,
     dynamic tracks,
+    dynamic tracksRaw,
+    dynamic convertItem,
+    dynamic tracksFromNewSource,
+    dynamic creationDate,
     dynamic modifiedDate,
     dynamic m3uPath,
+    dynamic remoteSource,
     dynamic isFav,
     dynamic tags,
     dynamic moods,
@@ -254,8 +301,10 @@ abstract class PlaylistManager<T extends PlaylistItemWithDate, I, S> {
     final playlist = playlistsMap.value[name] ?? getPlaylist(name);
     if (playlist == null) return;
     if (tracks is List<T>) playlist.tracks = tracks;
+    if (creationDate is int) playlist.creationDate = creationDate;
     if (modifiedDate is int) playlist.modifiedDate = modifiedDate;
     if (m3uPath is String) playlist.m3uPath = m3uPath;
+    if (remoteSource != null) playlist.remoteSource = remoteSource;
     if (isFav is bool) playlist.isFav = isFav;
     if (tags is List<String>) playlist.tags = tags;
     if (moods is List<String>) playlist.moods = moods;
@@ -332,6 +381,24 @@ abstract class PlaylistManager<T extends PlaylistItemWithDate, I, S> {
   Future<void> removePlaylist(GeneralPlaylist<T, S> playlist) async {}
 
   Future<void> prepareAllPlaylistsFile() async {}
+
+  Future<void> reAddPlaylist(GeneralPlaylist<T, S> playlist, int modifiedDate, {dynamic artworkBytes}) async {
+    playlistsMap.value[playlist.name] = playlist;
+    playlists.add(playlist);
+  }
+
+  Future<void> insertTracksInPlaylist(GeneralPlaylist<T, S> playlist, Iterable<T> tracks, [int? index]) async {
+    playlist.tracks.insertAll(index ?? playlist.tracks.length, tracks);
+  }
+
+  Future<int> importPlaylistsIfNewer(Iterable<GeneralPlaylist<T, S>> incoming) async {
+    var count = 0;
+    for (final playlist in incoming) {
+      playlistsMap.value[playlist.name] = playlist;
+      count++;
+    }
+    return count;
+  }
 
   Future<void> removePlaylists(List<String> names, {bool deleteM3UFiles = false}) async {}
 

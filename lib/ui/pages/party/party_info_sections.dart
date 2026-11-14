@@ -65,7 +65,7 @@ class _PartyMembersHeader extends StatelessWidget {
                       onTap: () {
                         final invite = controller.inviteLink;
                         if (invite != null) {
-                          NamidaUtils.copyText(invite);
+                          Clipboard.setData(ClipboardData(text: invite));
                           snackyy(
                             icon: Broken.tick_circle,
                             title: lang.partyListeningParty,
@@ -209,9 +209,13 @@ class _PartyNowPlayingCenterCard extends StatelessWidget {
                         width: artworkSize,
                         height: artworkSize,
                         child: ytId != null
-                            ? YtThumbnail(
+                            ? YoutubeThumbnail(
+                                key: ValueKey(ytId),
                                 videoId: ytId,
-                                thumbnailSize: artworkSize,
+                                width: artworkSize,
+                                height: artworkSize,
+                                isImportantInCache: false,
+                                type: ThumbnailType.video,
                                 fit: BoxFit.cover,
                               )
                             : Obx((context) {
@@ -294,7 +298,7 @@ class _PartyNowPlayingCenterCard extends StatelessWidget {
                           child: NamidaIconButton(
                             icon: anchor.playing ? Broken.pause : Broken.play,
                             iconSize: 36.0,
-                            iconColor: Colors.white,
+                            iconColor: NColors.fixed(Colors.white),
                             onPressed: () => controller.sendCommand(anchor.playing ? const PartyMsg.pause() : const PartyMsg.play()),
                           ),
                         ),

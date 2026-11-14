@@ -185,7 +185,12 @@ class ParametricEqualizer {
     ],
   );
 
-  static ParametricEqualizer fromLegacyGains(List<double> gains) {
+  static ParametricEqualizer fromLegacyGains(dynamic values) {
+    final gains = values is Map
+        ? values.values.whereType<num>().map((value) => value.toDouble()).toList()
+        : values is Iterable
+        ? values.whereType<num>().map((value) => value.toDouble()).toList()
+        : const <double>[];
     final freqs = graphic5Frequencies;
     final bands = <EqualizerBand>[];
     for (int i = 0; i < gains.length && i < freqs.length; i++) {
@@ -478,6 +483,8 @@ class PlayerConfig {
   factory PlayerConfig.fromMap(Map<dynamic, dynamic> map) => const PlayerConfig();
   Map<String, dynamic> toMap() => {};
 
+  PlayerConfigModificationScale getModificationScale() => PlayerConfigModificationScale.none;
+
   PlayerConfig copyWith({
     bool? skipSilence,
     bool? loudnessEnhancerEnabled,
@@ -618,8 +625,42 @@ class PlayerConfigOverrides {
   PlayerConfigModificationScale getModificationScale() => PlayerConfigModificationScale.none;
 }
 
+class BeatGrid {
+  final double bpm;
+  final int beatOffsetMS;
+  const BeatGrid({this.bpm = 0.0, this.beatOffsetMS = 0});
+}
+
+class ItemTiming {
+  final int audibleStartMS;
+  final int audibleEndMS;
+  final int fadeOutStartMS;
+  const ItemTiming({this.audibleStartMS = 0, this.audibleEndMS = 0, this.fadeOutStartMS = 0});
+}
+
 class QueueShuffler<Q> {
   List<Q> shuffle(List<Q> items) => List<Q>.from(items)..shuffle();
+
+  void shuffleRange(List<Q> items, List<int>? pairedIndices, int start, int end) {
+    final entries = List.generate(end - start, (offset) => (item: items[start + offset], index: pairedIndices?[start + offset]));
+    entries.shuffle();
+    for (var offset = 0; offset < entries.length; offset++) {
+      final entry = entries[offset];
+      items[start + offset] = entry.item;
+      if (pairedIndices != null && entry.index != null) pairedIndices[start + offset] = entry.index!;
+    }
+  }
+
+  static void swap<T>(List<T> items, List<int>? pairedIndices, int a, int b) {
+    final item = items[a];
+    items[a] = items[b];
+    items[b] = item;
+    if (pairedIndices != null) {
+      final index = pairedIndices[a];
+      pairedIndices[a] = pairedIndices[b];
+      pairedIndices[b] = index;
+    }
+  }
 }
 
 class SleepTimerConfig {

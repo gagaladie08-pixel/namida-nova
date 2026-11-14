@@ -43,7 +43,7 @@ class YTPlaylistsMessage extends BaseMessage {
 
   factory YTPlaylistsMessage.fromMap(Map<String, dynamic> map, BaseMessageInfo messageInfo) {
     return YTPlaylistsMessage(
-      playlists: (map['playlists'] as List).map((e) => YoutubePlaylist.fromJson(e, YoutubeID.fromJson, YTSortType.sortListFromJsonList)),
+      playlists: (map['playlists'] as List).map((e) => YoutubePlaylist.fromJson<YoutubeID, SortEntry<YTSortType>>(e, YoutubeID.fromJson, YTSortType.sortListFromJsonList)).toList(),
       messageInfo: messageInfo,
     );
   }

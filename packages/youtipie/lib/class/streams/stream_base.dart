@@ -11,5 +11,8 @@ class StreamBase {
     this.sizeInBytes = 0,
   });
 
+  dynamic get codecInfo => null;
+  Uri buildUrl() => Uri();
+
   dynamic noSuchMethod(Invocation invocation) => null;
 }

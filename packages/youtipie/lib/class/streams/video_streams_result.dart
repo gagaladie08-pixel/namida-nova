@@ -1,4 +1,5 @@
 import 'package:youtipie/class/streams/audio_stream.dart';
+import 'package:youtipie/class/streams/caption.dart';
 import 'package:youtipie/class/streams/endscreens/endscreen_item_base.dart';
 import 'package:youtipie/class/streams/video_stream.dart';
 import 'package:youtipie/class/streams/video_stream_info.dart';
@@ -22,6 +23,7 @@ class VideoStreamsResult {
   final String? statsWatchtimeUrl;
   final dynamic client;
   final dynamic failureReport;
+  final List<Caption> captions;
 
   const VideoStreamsResult({
     this.info,
@@ -34,6 +36,7 @@ class VideoStreamsResult {
     this.statsWatchtimeUrl,
     this.client,
     this.failureReport,
+    this.captions = const [],
     this.loudnessDBData,
     this.playability = const VideoPlayability(),
     this.overlay,
