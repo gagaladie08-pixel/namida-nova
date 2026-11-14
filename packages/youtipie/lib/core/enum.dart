@@ -12,6 +12,17 @@ enum LikeAction {
   removeDislike,
 }
 
+extension LikeActionExtension on LikeAction {
+  LikeStatus toExpectedStatus() {
+    return switch (this) {
+      LikeAction.addLike => LikeStatus.liked,
+      LikeAction.removeLike => LikeStatus.undefined,
+      LikeAction.addDislike => LikeStatus.disliked,
+      LikeAction.removeDislike => LikeStatus.undefined,
+    };
+  }
+}
+
 enum ChannelNotifications {
   all,
   personalized,

@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
+import 'package:nampack/nampack.dart';
 import 'package:youtipie/class/result_wrapper/hashtag_result.dart';
 import 'package:youtipie/class/result_wrapper/comment_result.dart';
 import 'package:youtipie/class/result_wrapper/comment_reply_result.dart';
 import 'package:youtipie/class/result_wrapper/history_result.dart';
 import 'package:youtipie/class/result_wrapper/channel_user_result.dart';
 import 'package:youtipie/class/result_wrapper/feedback_holder.dart';
+import 'package:youtipie/class/youtipie_feed/user_channel_info.dart';
 
 export 'package:youtipie/core/enum.dart';
 
@@ -35,7 +37,7 @@ extension StringCheckerExtension on String {
 class YoutiPie {
   static const cipher = _StubCipher();
   static const potoken = _StubPotoken();
-  static const cookies = _StubCookies();
+  static final cookies = _StubCookies();
   static final signedInAccounts = ValueNotifier<List<dynamic>>([]);
   static final activeAccountDetails = ValueNotifier<dynamic>(null);
   static dynamic lastSessionFailureReport;
@@ -76,7 +78,16 @@ class _StubPotoken {
 }
 
 class _StubCookies {
-  const _StubCookies();
+  bool canAddMultiAccounts = false;
+  final activeAccountChannel = Rxn<UserChannelInfo>();
+  final signedInAccounts = Rx<List<dynamic>>([]);
+  bool get canAuthorizeRequests => false;
+
+  bool isSessionExpired(dynamic account) => false;
+  void signOut(dynamic userChannel) {}
+  void setAccount(dynamic userChannel) {}
+  void setAnonymous() {}
+
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -171,6 +182,13 @@ class _StubComment {
 
 class _StubCommentAction {
   const _StubCommentAction();
+  Future<bool> changeLikeStatus({dynamic comment, dynamic mainList, dynamic action}) async => true;
+  Future<dynamic> createComment({dynamic videoId, dynamic content, dynamic mainList, dynamic commentsList, dynamic videoPage}) async => null;
+  Future<dynamic> editComment({dynamic videoId, dynamic comment, dynamic content, dynamic mainList, dynamic commentsList, dynamic videoPage}) async => null;
+  Future<bool> deleteComment({dynamic videoId, dynamic comment, dynamic mainList, dynamic commentsList, dynamic videoPage}) async => true;
+  Future<dynamic> createReply({dynamic mainList, dynamic createReplyParams, dynamic content, dynamic mainComment, dynamic commentsList, dynamic videoPage, dynamic videoId}) async => null;
+  Future<dynamic> editReply({dynamic mainList, dynamic reply, dynamic content, dynamic videoId}) async => null;
+  Future<bool> deleteReply({dynamic reply, dynamic mainList, dynamic mainComment, dynamic commentsList, dynamic videoPage}) async => true;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

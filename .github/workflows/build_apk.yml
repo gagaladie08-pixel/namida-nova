@@ -70,9 +70,14 @@ jobs:
           ls -la $ANDROID_HOME/ndk || true
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
+      - name: Patch Missing Translations
+        run: |
+          python3 tool/patch_translations.py
+
       - name: Get Flutter dependencies
         run: |
           flutter pub get
+          flutter gen-l10n
 
       - name: Analyze Dart code
         run: |
@@ -89,7 +94,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          tail -n 120 build_log.txt > last_build_error.txt
+          tail -n 300 build_log.txt > last_build_error.txt
           gh release delete build-debug -y || true
           gh release create build-debug last_build_error.txt analyze_head.txt \
             --title "Build Diagnostic Log" \

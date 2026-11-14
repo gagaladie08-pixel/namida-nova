@@ -1,9 +1,19 @@
-// Stub generated for class/youtipie_feed/user_channel_info.dart
+import 'package:youtipie/youtipie.dart';
+
 class UserChannelInfo {
   final dynamic id;
   final dynamic name;
   final dynamic title;
-  const UserChannelInfo({this.id, this.name, this.title});
+  final dynamic handler;
+  final List<Thumbnail> thumbnails;
+
+  const UserChannelInfo({
+    this.id,
+    this.name,
+    this.title,
+    this.handler,
+    this.thumbnails = const [],
+  });
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
