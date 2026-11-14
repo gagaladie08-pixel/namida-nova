@@ -1,9 +1,16 @@
-// Stub generated for class/youtipie_feed/playlist_info_item_user.dart
-class PlaylistInfoItemUser {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const PlaylistInfoItemUser({this.id, this.name, this.title});
+import 'package:youtipie/class/youtipie_feed/playlist_basic_info.dart';
+
+class PlaylistInfoItemUser extends PlaylistBasicInfo {
+  final List<String>? infoTexts;
+  final bool isMix;
+
+  const PlaylistInfoItemUser({
+    super.id,
+    super.name,
+    super.title,
+    this.infoTexts,
+    this.isMix = false,
+  });
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

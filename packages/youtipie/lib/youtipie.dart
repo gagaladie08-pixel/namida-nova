@@ -6,6 +6,7 @@ import 'package:youtipie/class/result_wrapper/comment_reply_result.dart';
 import 'package:youtipie/class/result_wrapper/history_result.dart';
 import 'package:youtipie/class/result_wrapper/channel_user_result.dart';
 import 'package:youtipie/class/result_wrapper/feedback_holder.dart';
+import 'package:youtipie/class/result_wrapper/playlist_user_result.dart';
 import 'package:youtipie/class/youtipie_feed/user_channel_info.dart';
 
 export 'package:youtipie/core/enum.dart';
@@ -61,9 +62,18 @@ class YoutiPie {
   static const feed = _StubFeed();
   static const hashtag = _StubHashtag();
   static const video = _StubVideo();
+  static const cacheManager = _StubCacheManager();
+  static const cacheManagerSync = _StubCacheManager();
+  static Future<dynamic> getActiveAccountChannelIsolate(dynamic dir, {dynamic encryptionKey}) async => null;
 
   static void Function(dynamic)? onOperationFailNoAccount;
   static void setDefaultClients(dynamic clients) {}
+}
+
+class _StubCacheManager {
+  const _StubCacheManager();
+  void init(dynamic dir) {}
+  dynamic noSuchMethod(Invocation invocation) => null;
 }
 
 class _StubCipher {
@@ -87,6 +97,8 @@ class _StubCookies {
   void signOut(dynamic userChannel) {}
   void setAccount(dynamic userChannel) {}
   void setAnonymous() {}
+  void addOnAccountChanged(dynamic callback) {}
+  void removeOnAccountChanged(dynamic callback) {}
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
@@ -103,6 +115,7 @@ class _StubCacheBuilder {
   dynamic forUserChannels() => this;
   dynamic forHistory() => this;
   dynamic forHistoryVideos() => this;
+  dynamic forUserChannelsAllVideos() => this;
   dynamic forHashtag({dynamic params}) => this;
   dynamic forNotificationComments({dynamic videoId, dynamic linkedCommentId}) => this;
   dynamic forCommentReplies({dynamic commentId}) => this;
@@ -162,7 +175,7 @@ class _StubPlaylist {
 class _StubUserPlaylist {
   const _StubUserPlaylist();
   Future<dynamic> getPlaylistsForVideo(dynamic videoId) async => [];
-  Future<dynamic> getUserPlaylists({dynamic details}) async => null;
+  Future<YoutiPieUserPlaylistsResult?> getUserPlaylists({dynamic details}) async => null;
   Future<dynamic> createPlaylist({dynamic title, dynamic privacy, dynamic mainList}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
@@ -170,6 +183,7 @@ class _StubUserPlaylist {
 class _StubUserChannel {
   const _StubUserChannel();
   Future<YoutiPieUserChannelsResult?> fetchUserChannels({dynamic details}) async => null;
+  Future<dynamic> fetchUserChannelsAllVideos({dynamic details}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

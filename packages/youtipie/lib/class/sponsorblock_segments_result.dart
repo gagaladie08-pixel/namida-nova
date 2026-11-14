@@ -1,9 +1,17 @@
-// Stub generated for class/sponsorblock_segments_result.dart
-class SponsorblockSegmentsResult {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const SponsorblockSegmentsResult({this.id, this.name, this.title});
+import 'package:youtipie/class/sponsorblock_segment.dart';
+
+class SponsorBlockSegmentsResult {
+  final int videoDurationMS;
+  final List<SponsorBlockSegment> segments;
+  final SponsorBlockSegment? poi_highlight;
+
+  const SponsorBlockSegmentsResult({
+    this.videoDurationMS = 0,
+    this.segments = const [],
+    this.poi_highlight,
+  });
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
+
+typedef SponsorblockSegmentsResult = SponsorBlockSegmentsResult;

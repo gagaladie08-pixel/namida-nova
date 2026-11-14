@@ -1,4 +1,5 @@
 import 'package:youtipie/class/publish_time.dart';
+import 'package:youtipie/class/stream_info_item/stream_info_item.dart';
 
 class VideoStreamInfo {
   final dynamic id;
@@ -24,6 +25,9 @@ class VideoStreamInfo {
     this.channel,
     this.thumbnails = const [],
   });
+
+  static VideoStreamInfo fromMap(dynamic map) => const VideoStreamInfo();
+  StreamInfoItem toStreamInfo() => const StreamInfoItem();
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

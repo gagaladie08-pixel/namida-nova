@@ -120,6 +120,11 @@ class GeneralPlaylist<T, S> {
         tags = tags ?? [],
         moods = moods ?? [],
         metadata = metadata ?? {};
+
+  String toTagsAndMoodsText() {
+    final all = [...tags, ...moods];
+    return all.join(', ');
+  }
 }
 
 abstract class PlaylistManager<T, I, S> {
@@ -132,6 +137,9 @@ abstract class PlaylistManager<T, I, S> {
   RegExp get cleanupFilenameRegex => RegExp(r'');
 
   I identifyBy(T item);
+
+  File getArtworkFileForPlaylist(String playlistName) => File('');
+  dynamic get tagsFilter => null;
 
   Future<void> get waitForPlaylistsLoad async {}
   Future<void> get waitForFavouritePlaylistLoad async {}

@@ -50,5 +50,7 @@ class StreamInfoItem extends YoutubeFeed {
     super.items = const [],
   });
 
+  static StreamInfoItem fromMap(dynamic map) => const StreamInfoItem();
+
   dynamic noSuchMethod(Invocation invocation) => null;
 }

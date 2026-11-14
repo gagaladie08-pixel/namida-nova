@@ -1,9 +1,11 @@
-// Stub generated for class/videos/video_heat_map.dart
-class VideoHeatMap {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const VideoHeatMap({this.id, this.name, this.title});
+class YoutiPieVideoHeatMap {
+  final double value;
+  final int startMS;
+  final int endMS;
+
+  const YoutiPieVideoHeatMap({this.value = 0.0, this.startMS = 0, this.endMS = 0});
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
+
+typedef VideoHeatMap = YoutiPieVideoHeatMap;

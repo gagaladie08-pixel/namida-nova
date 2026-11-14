@@ -1,9 +1,15 @@
-// Stub generated for class/streams/stream_segments.dart
-class StreamSegments {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const StreamSegments({this.id, this.name, this.title});
+class StreamSegment {
+  final String? title;
+  final int startMS;
+  final int endMS;
+
+  const StreamSegment({this.title, this.startMS = 0, this.endMS = 0});
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
+
+extension StreamSegmentListExtension on Iterable<StreamSegment> {
+  StreamSegment? findByMillisecond(int ms) => null;
+}
+
+typedef StreamSegments = List<StreamSegment>;
