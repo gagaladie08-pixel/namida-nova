@@ -10,6 +10,7 @@ class YoutiPieChannelInfo extends ChannelInfoItem implements MapSerializable {
   final dynamic notificationParameters;
   final dynamic channelEngagement;
   final int? subscribersCount;
+  final dynamic subscribersCountText;
 
   const YoutiPieChannelInfo({
     super.id,
@@ -25,6 +26,7 @@ class YoutiPieChannelInfo extends ChannelInfoItem implements MapSerializable {
     this.notificationParameters,
     this.channelEngagement,
     this.subscribersCount,
+    this.subscribersCountText,
   });
 
   YoutiPieChannelInfo rebuild({

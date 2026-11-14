@@ -1,5 +1,4 @@
 import 'package:youtipie/class/result_wrapper/list_wrapper_base.dart';
-import 'package:youtipie/class/stream_info_item/stream_info_item.dart';
 import 'package:youtipie/class/stream_info_item/stream_info_item_short.dart';
 
 class YoutiPieShortsSection {
@@ -19,9 +18,9 @@ class YoutiPieShortsSection {
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
-class YoutiPieRelatedVideosResult extends YoutiPieListWrapper<StreamInfoItem> {
+class YoutiPieRelatedVideosResult extends YoutiPieListWrapper<dynamic> {
   @override
-  final List<StreamInfoItem> items;
+  final List<dynamic> items;
   final YoutiPieShortsSection shortsSection;
 
   const YoutiPieRelatedVideosResult({

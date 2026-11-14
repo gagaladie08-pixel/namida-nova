@@ -23,6 +23,8 @@ class VideoStream {
   VideoStreamCodecInfo get codecInfo => const VideoStreamCodecInfo();
   dynamic getCachedFileSync(dynamic id) => null;
   String bitrateText() => '';
+  static VideoStream fromMap(dynamic map) => const VideoStream();
+  Map<String, dynamic> toMap() => {};
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

@@ -17,6 +17,11 @@ export 'package:youtipie/core/enum.dart';
 export 'package:youtipie/class/execute_details.dart';
 export 'package:youtipie/core/url_utils.dart';
 
+extension YTStringUtils on String {
+  bool get isDummyVideoId => this == 'dummy' || isEmpty;
+  bool isYTTitleFaulty() => false;
+}
+
 class Thumbnail {
   final String? url;
   final int? width;

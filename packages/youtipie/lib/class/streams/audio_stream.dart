@@ -14,6 +14,8 @@ class AudioStream {
   });
 
   String bitrateText() => '';
+  static AudioStream fromMap(dynamic map) => const AudioStream();
+  Map<String, dynamic> toMap() => {};
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

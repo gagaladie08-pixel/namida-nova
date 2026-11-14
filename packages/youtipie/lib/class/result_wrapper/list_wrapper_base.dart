@@ -5,6 +5,7 @@ export 'package:youtipie/core/enum.dart';
 
 class YoutiPieFetchAllRes {
   final Future<YoutiPieFetchAllResType> result;
+  bool get isExecuting => false;
   void cancel() {}
   const YoutiPieFetchAllRes({required this.result});
 

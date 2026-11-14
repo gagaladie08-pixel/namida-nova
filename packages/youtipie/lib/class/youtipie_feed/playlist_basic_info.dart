@@ -22,6 +22,8 @@ class PlaylistBasicInfo extends YoutubeFeed {
   });
 
   String buildUrl() => '';
+  static PlaylistBasicInfo fromMap(dynamic map) => const PlaylistBasicInfo();
+  Map<String, dynamic> toMap() => {};
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

@@ -12,6 +12,7 @@ class VideoStreamInfo {
   final int? viewsCount;
   final dynamic channel;
   final List<dynamic> thumbnails;
+  final String? description;
 
   const VideoStreamInfo({
     this.id,
@@ -24,9 +25,11 @@ class VideoStreamInfo {
     this.viewsCount,
     this.channel,
     this.thumbnails = const [],
+    this.description,
   });
 
-  String? get availableDescription => null;
+  PublishTime get publishDate => publishedAt;
+  String? get availableDescription => description;
 
   static VideoStreamInfo fromMap(dynamic map) => const VideoStreamInfo();
   StreamInfoItem toStreamInfo() => const StreamInfoItem();

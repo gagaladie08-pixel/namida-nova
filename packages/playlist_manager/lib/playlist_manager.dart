@@ -107,6 +107,20 @@ class PlaylistTagsFilter {
   List<int> colorsOf(dynamic tags) => const [];
 }
 
+class PlaylistTagSection {
+  final dynamic key;
+  final int? color;
+  final List<String> names;
+
+  const PlaylistTagSection({
+    required this.key,
+    this.color,
+    this.names = const [],
+  });
+
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
 class GeneralPlaylist<T, S> {
   String name;
   List<T> tracks;
@@ -117,9 +131,13 @@ class GeneralPlaylist<T, S> {
   List<String> tags;
   List<String> moods;
   bool isPinned;
-  String? comment;
+  String comment;
   int? artworkDate;
   Map<String, dynamic> metadata;
+  bool isReadOnly;
+  dynamic remoteSource;
+  dynamic sortsType;
+  bool sortReverse;
 
   GeneralPlaylist({
     required this.name,
@@ -131,9 +149,13 @@ class GeneralPlaylist<T, S> {
     List<String>? tags,
     List<String>? moods,
     this.isPinned = false,
-    this.comment,
+    this.comment = '',
     this.artworkDate,
     Map<String, dynamic>? metadata,
+    this.isReadOnly = false,
+    this.remoteSource,
+    this.sortsType,
+    this.sortReverse = false,
   })  : tracks = tracks ?? [],
         creationDate = creationDate ?? DateTime.now(),
         modifiedDate = modifiedDate ?? DateTime.now().millisecondsSinceEpoch,
@@ -168,7 +190,20 @@ abstract class PlaylistManager<T, I, S> {
 
   File getArtworkFileForPlaylist(String playlistName) => File('');
   dynamic get tagsFilter => null;
-  Rx<List<int>> getCustomIndicesOrderListRx() => Rx<List<int>>([]);
+  final canReorderItems = Rx<bool>(false);
+  Rx<List<String>> getCustomIndicesOrderListRx() => Rx<List<String>>([]);
+  bool isOneOfDefaultPlaylists(String name) => false;
+  void reorderTrack(dynamic playlist, int oldIndex, int newIndex) {}
+  void updatePropertyInPlaylist(
+    String name, {
+    dynamic itemsSortReverse,
+    dynamic sortsType,
+    dynamic tags,
+    dynamic moods,
+    dynamic isPinned,
+    dynamic comment,
+  }) {}
+  void resetCanReorder() {}
   void onPlaylistReorder(int oldIndex, int newIndex) {}
   Future<void> removeTracksFromPlaylist(GeneralPlaylist<T, S> playlist, dynamic indexes) async {}
   void ensureCustomOrderValid({bool removeNonExistent = true}) {}

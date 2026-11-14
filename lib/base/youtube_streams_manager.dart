@@ -89,7 +89,7 @@ mixin YoutubeStreamsManager<W extends YoutiPieListWrapper<YoutubeFeed>> {
 
   YoutiPieListSorterMixin<YoutubeFeed>? get _serverSorter {
     final wrapper = listWrapper;
-    return wrapper is YoutiPieListSorterMixin<YoutubeFeed> ? wrapper : null;
+    return wrapper is YoutiPieListSorterMixin<YoutubeFeed> ? (wrapper as YoutiPieListSorterMixin<YoutubeFeed>) : null;
   }
 
   List<YoutiPieItemsSort> get _serverSorts {

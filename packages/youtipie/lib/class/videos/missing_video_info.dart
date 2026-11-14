@@ -9,6 +9,8 @@ class MissingVideoInfo {
   final int? durSeconds;
   final String? channelId;
   final String? channelName;
+  final List<Uri> sources;
+  final String? subsource;
 
   const MissingVideoInfo({
     this.id,
@@ -19,6 +21,8 @@ class MissingVideoInfo {
     this.durSeconds,
     this.channelId,
     this.channelName,
+    this.sources = const [],
+    this.subsource,
   });
 
   String get videoId => (id as String?) ?? '';
