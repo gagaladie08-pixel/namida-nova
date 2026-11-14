@@ -40,6 +40,13 @@ extension NumFormatDecimalShortExt on num {
   String formatDecimalShort([bool? expanded]) => toString();
 }
 
+extension NullableStringExtensions on String? {
+  String? nullifyEmpty() {
+    final value = this;
+    return value == null || value.isEmpty ? null : value;
+  }
+}
+
 extension TracksSelectableUtils on Iterable<Selectable> {
   String get displayTrackKeyword => length.displayTrackKeyword;
 

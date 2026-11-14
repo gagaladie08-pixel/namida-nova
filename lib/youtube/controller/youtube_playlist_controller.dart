@@ -308,7 +308,7 @@ class YoutubePlaylistController extends PlaylistManager<YoutubeID, String, SortE
   static YoutubePlaylist? _prepareFavouritesFile(String path) {
     try {
       final response = File(path).readAsJsonSync();
-      return YoutubePlaylist.fromJson(response, YoutubeID.fromJson, YTSortType.sortListFromJsonList);
+      return YoutubePlaylist.fromJson<YoutubeID, SortEntry<YTSortType>>(response, YoutubeID.fromJson, YTSortType.sortListFromJsonList);
     } catch (_) {
       return null;
     }
@@ -320,7 +320,7 @@ class YoutubePlaylistController extends PlaylistManager<YoutubeID, String, SortE
     for (final f in files) {
       try {
         final response = f.readAsJsonSync(ensureExists: false);
-        final pl = YoutubePlaylist.fromJson(response, YoutubeID.fromJson, YTSortType.sortListFromJsonList);
+        final pl = YoutubePlaylist.fromJson<YoutubeID, SortEntry<YTSortType>>(response, YoutubeID.fromJson, YTSortType.sortListFromJsonList);
         entries.add(MapEntry(pl.name, pl));
       } catch (_) {}
     }

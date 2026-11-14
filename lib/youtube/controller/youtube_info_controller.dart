@@ -22,6 +22,7 @@ import 'package:youtipie/class/stream_info_item/stream_info_item.dart';
 import 'package:youtipie/class/streams/hls_variant.dart';
 import 'package:youtipie/class/streams/video_stream_info.dart';
 import 'package:youtipie/class/streams/video_streams_result.dart';
+import 'package:youtipie/class/videos/video_playability.dart';
 import 'package:youtipie/class/thumbnail.dart';
 import 'package:youtipie/class/videos/missing_video_info.dart';
 import 'package:youtipie/class/videos/video_result.dart';

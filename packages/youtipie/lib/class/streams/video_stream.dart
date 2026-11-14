@@ -1,3 +1,5 @@
+import 'package:youtipie/class/streams/stream_base.dart';
+
 class VideoStreamCodecInfo {
   final String container;
   const VideoStreamCodecInfo({this.container = ''});
@@ -7,11 +9,9 @@ class VideoStreamCodecInfo {
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
-class VideoStream {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
+class VideoStream extends StreamBase {
   final String qualityLabel;
+  @override
   final int sizeInBytes;
   final int height;
   final int bitrate;
@@ -22,9 +22,9 @@ class VideoStream {
   final bool isWebm;
 
   const VideoStream({
-    this.id,
-    this.name,
-    this.title,
+    super.id,
+    super.name,
+    super.title,
     this.qualityLabel = '',
     this.sizeInBytes = 0,
     this.height = 0,
@@ -34,7 +34,7 @@ class VideoStream {
     this.duration,
     this.itag,
     this.isWebm = false,
-  });
+  }) : super(sizeInBytes: sizeInBytes);
 
   Uri buildUrl() => Uri();
 

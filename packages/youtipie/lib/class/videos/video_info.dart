@@ -25,6 +25,7 @@ class VideoInfo {
   });
 
   String buildUrl() => '';
+  String? get viewsText => viewCountTextShort ?? viewCountTextLong;
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

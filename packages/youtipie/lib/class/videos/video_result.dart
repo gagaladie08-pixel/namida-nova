@@ -30,6 +30,7 @@ class YoutiPieVideoPageResult {
   });
 
   String get videoId => (id as String?) ?? '';
+  Map<String, dynamic> toMap() => {};
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

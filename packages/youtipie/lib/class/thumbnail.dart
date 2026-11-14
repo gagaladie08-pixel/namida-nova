@@ -1,11 +1,12 @@
 class Thumbnail {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const Thumbnail({this.id, this.name, this.title});
+  final String url;
+  final int width;
+  final int height;
 
-  dynamic noSuchMethod(Invocation invocation) => null;
+  const Thumbnail({this.url = '', this.width = 0, this.height = 0});
 }
+
+typedef YoutiPieThumbnail = Thumbnail;
 
 class YoutiPieVideoThumbnail {
   static List<String> mix(String id) => [];

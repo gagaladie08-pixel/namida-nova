@@ -632,7 +632,7 @@ class _YTHostedPlaylistSubpageState extends State<YTHostedPlaylistSubpage> with 
     videosCountTextFinal ??= playlist.basicInfo.videosCountText ?? '?';
 
     plId ??= playlist.basicInfo.id;
-    final plIdWrapper = PlaylistID(id: plId);
+    final plIdWrapper = PlaylistID(id: plId ?? '');
     final firstID = playlist.items.firstOrNull?.id;
     final hasMoreStreamsLeft = playlist.canFetchNext;
     final theme = AppThemes.inst.getAppTheme(bgColor, !context.isDarkMode);

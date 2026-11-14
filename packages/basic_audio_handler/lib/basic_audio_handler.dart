@@ -779,7 +779,7 @@ abstract class AVPlayer {
   Future<void> stop();
   Future<void> seek(Duration position);
   Future<void> dispose();
-  void setAudioOutput(dynamic output, {dynamic bitPerfect, dynamic exclusive});
+  void setAudioOutput(dynamic output, {dynamic bitPerfect, dynamic exclusive, dynamic mono});
   Future<void> setVolume(double volume);
 
   dynamic noSuchMethod(Invocation invocation) => null;

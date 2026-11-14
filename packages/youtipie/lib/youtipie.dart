@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:nampack/nampack.dart';
 import 'package:youtipie/class/result_wrapper/hashtag_result.dart';
@@ -12,8 +14,13 @@ import 'package:youtipie/class/result_wrapper/playlist_result_base.dart';
 import 'package:youtipie/class/result_wrapper/playlist_user_result.dart';
 import 'package:youtipie/class/result_wrapper/user_channels_all_videos_result.dart';
 import 'package:youtipie/class/youtipie_feed/user_channel_info.dart';
+import 'package:youtipie/class/result_wrapper/related_videos_result.dart';
+import 'package:youtipie/class/streams/hls_variant.dart';
+import 'package:youtipie/class/streams/video_streams_result.dart';
+import 'package:youtipie/class/videos/video_result.dart';
 
 export 'package:youtipie/core/enum.dart';
+export 'package:youtipie/class/thumbnail.dart';
 export 'package:youtipie/class/execute_details.dart';
 export 'package:youtipie/core/url_utils.dart';
 export 'package:youtipie/class/streams/stream_segments.dart';
@@ -26,21 +33,6 @@ extension YTStringUtils on String {
     if (this == '-') return true;
     return false;
   }
-}
-
-class Thumbnail {
-  final String url;
-  final int width;
-  final int height;
-
-  const Thumbnail({this.url = '', this.width = 0, this.height = 0});
-}
-
-typedef YoutiPieThumbnail = Thumbnail;
-
-class YoutiPieVideoThumbnail {
-  static List<String> mix(String id) => [];
-  static List<String> mixLow(String id) => [];
 }
 
 extension ThumbnailListExtension<E> on Iterable<E>? {
@@ -84,7 +76,22 @@ class YoutiPie {
   static Future<dynamic> getActiveAccountChannelIsolate(dynamic dir, {dynamic encryptionKey}) async => null;
 
   static void Function(dynamic)? onOperationFailNoAccount;
+  static void Function(dynamic message, Object? error, StackTrace? stackTrace)? onWorkerError;
   static void setDefaultClients(dynamic clients) {}
+  static void setLogs(dynamic logs) {}
+  static void setProxySettings(dynamic settings) {}
+  static void initialize({
+    dynamic dataDirectory,
+    dynamic sensitiveDataDirectory,
+    dynamic sensitiveDataEncryptionKey,
+    dynamic isNewSensitiveDataEncryptionKey,
+    dynamic checkJSPlayer,
+    dynamic checkHasConnectionCallback,
+    dynamic syncItemsCompleter,
+    dynamic accountCompleter,
+  }) {}
+  static void dispose() {}
+  static Future<void> resetSession() async {}
 }
 
 class _StubCacheManager {
@@ -97,6 +104,8 @@ class _StubCacheManager {
 class _StubCipher {
   const _StubCipher();
   bool get isPrepared => true;
+  String? get jsPlayerVersion => null;
+  Future<bool> prepareJSPlayer({dynamic cacheDirectoryPath}) async => true;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -158,7 +167,7 @@ class _StubChannel {
   const _StubChannel();
   Future<dynamic> fetchChannelPage({dynamic channelId, dynamic handle, dynamic details}) async => null;
   Future<dynamic> fetchChannelAbout({dynamic channel, dynamic details}) async => null;
-  Future<dynamic> fetchChannelTab({dynamic channelId, dynamic tab, dynamic details}) async => null;
+  Future<dynamic> fetchChannelTab({dynamic channelId, dynamic tab, dynamic sort, dynamic details}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -177,7 +186,7 @@ class _StubChannelAction {
 
 class _StubHistory {
   const _StubHistory();
-  Future<dynamic> addVideoToHistory({dynamic videoId}) async => null;
+  Future<(bool, dynamic)> addVideoToHistory({dynamic videoId, dynamic statsPlaybackUrl, dynamic statsWatchtimeUrl}) async => (false, null);
   Future<YoutiPieHistoryResult?> fetchHistory({dynamic details}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
@@ -191,8 +200,8 @@ class _StubMissingInfo {
 
 class _StubSearch {
   const _StubSearch();
-  Future<dynamic> getSuggestions(dynamic query) async => [];
-  Future<dynamic> search(dynamic query, {dynamic filters}) async => null;
+  Future<dynamic> getSuggestions(dynamic query, {dynamic details}) async => [];
+  Future<dynamic> search(dynamic query, {dynamic filters, dynamic details, dynamic peopleAlsoWatched}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -302,6 +311,10 @@ class _StubHashtag {
 class _StubVideo {
   const _StubVideo();
   Future<dynamic> fetchVideoInfo(dynamic videoId) async => null;
-  Future<dynamic> fetchHlsMasterPlaylist(dynamic url) async => null;
+  Future<YoutiPieVideoPageResult?> fetchVideoPage({dynamic videoId, dynamic relatedVideosParams, dynamic details}) async => null;
+  Future<YoutiPieRelatedVideosResult?> fetchRelatedVideos({dynamic videoId, dynamic userPersonalized, dynamic preferMix, dynamic relatedVideosParams, dynamic details}) async => null;
+  Future<VideoStreamsResult?> fetchVideoStreams({dynamic id, dynamic details, dynamic client}) async => null;
+  Future<HlsMasterPlaylist?> fetchHlsMasterPlaylist(dynamic url) async => null;
+  Future<File?> fetchMusicVideoThumbnailToFile({dynamic id, dynamic filePath}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }

@@ -13,6 +13,7 @@ class VideoStreamInfo {
   final dynamic channel;
   final List<dynamic> thumbnails;
   final String? description;
+  final List<String> keywords;
   final dynamic uploadDate;
 
   const VideoStreamInfo({
@@ -27,6 +28,7 @@ class VideoStreamInfo {
     this.channel,
     this.thumbnails = const [],
     this.description,
+    this.keywords = const [],
     this.uploadDate,
   });
 
@@ -34,6 +36,7 @@ class VideoStreamInfo {
   String? get availableDescription => description;
   bool get isLiveNow => false;
 
+  static VideoStreamInfo merge(String videoId, VideoStreamInfo? cached, VideoStreamInfo fresh) => fresh;
   static VideoStreamInfo fromMap(dynamic map) => const VideoStreamInfo();
   StreamInfoItem toStreamInfo() => const StreamInfoItem();
 

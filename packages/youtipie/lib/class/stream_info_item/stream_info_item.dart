@@ -50,6 +50,8 @@ class StreamInfoItem extends YoutubeFeed {
     super.items = const [],
   });
 
+  String? get availableDescription => shortDescription;
+
   static StreamInfoItem fromMap(dynamic map) => const StreamInfoItem();
   Map<String, dynamic> toMap() => {};
 

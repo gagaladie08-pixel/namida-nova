@@ -329,11 +329,13 @@ class _YoutubeInfoUtils {
   }
 
   Future<List<YoutiPieThumbnail>?> getVideoChannelThumbnails(String videoId) async {
-    var thumbnails = tempVideoInfosFromStreams[videoId]?.channel?.thumbnails;
+    List<YoutiPieThumbnail>? normalize(dynamic thumbnails) => thumbnails is Iterable ? thumbnails.whereType<YoutiPieThumbnail>().toList() : null;
+
+    var thumbnails = normalize(tempVideoInfosFromStreams[videoId]?.channel?.thumbnails);
     if (thumbnails != null && thumbnails.isNotEmpty) return thumbnails;
-    thumbnails = (await getStreamInfo(videoId))?.channel?.thumbnails;
+    thumbnails = normalize((await getStreamInfo(videoId))?.channel?.thumbnails);
     if (thumbnails != null && thumbnails.isNotEmpty) return thumbnails;
-    return (await _getVideoPageResult(videoId))?.channelInfo?.thumbnails;
+    return normalize((await _getVideoPageResult(videoId))?.channelInfo?.thumbnails);
   }
 
   final _channelThumbnailsStorageReads = <String, Future<List<YoutiPieThumbnail>?>>{};
@@ -345,7 +347,7 @@ class _YoutubeInfoUtils {
   Future<List<YoutiPieThumbnail>?> getChannelThumbnails(String channelId) async {
     final thumbnails = getChannelThumbnailsSync(channelId);
     if (thumbnails != null) return thumbnails;
-    return _channelThumbnailsStorageReads[channelId] ??= YoutubeInfoController.channel.fetchChannelInfoCache(channelId).then((page) => page?.thumbnails);
+    return _channelThumbnailsStorageReads[channelId] ??= YoutubeInfoController.channel.fetchChannelInfoCache(channelId).then((page) => page?.thumbnails.whereType<YoutiPieThumbnail>().toList());
   }
 
   FutureOr<bool?> isShortContent(String videoId) {
@@ -355,15 +357,16 @@ class _YoutubeInfoUtils {
   }
 }
 
-extension _StringChecker on String {
+extension _StringChecker on String? {
   String? nullifyTitle([void Function()? onMissingInfo]) {
-    if (isEmpty) return null;
-    if (isYTTitleFaulty()) {
+    final value = this;
+    if (value == null || value.isEmpty) return null;
+    if (value.isYTTitleFaulty()) {
       onMissingInfo?.call();
       return null;
     }
 
-    return this;
+    return value;
   }
 }
 

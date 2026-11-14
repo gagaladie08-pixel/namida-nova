@@ -1,4 +1,4 @@
-import 'package:youtipie/class/channels/channel_info.dart';
+import 'package:youtipie/class/youtipie_feed/channel_info_item.dart';
 import 'package:youtipie/class/youtipie_feed/yt_feed_base.dart';
 
 class MusicAlbumInfoItem extends YoutubeFeed {
