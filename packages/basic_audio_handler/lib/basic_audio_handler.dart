@@ -428,11 +428,14 @@ class LoudnessEnhancerExtended {
   static const double kMinGain = -20.0;
   static const double kMaxGain = 20.0;
 
+  final targetGainTrack = Rx<double>(0.0);
+
   void setTargetGainUser(double gain) {}
   Future<void> setEnabledUser(bool enabled) async {}
-  void setTargetGainTrack(double gain) {}
-  double get targetGainTrack => 0.0;
-  double getActualGainFromUser(double gain) => gain;
+  void setTargetGainTrack(double gain) {
+    targetGainTrack.value = gain;
+  }
+  double getActualGainFromUser(bool enabled, double targetGainUser) => targetGainUser;
   void refreshEnabled() {}
 
   dynamic noSuchMethod(Invocation invocation) => null;

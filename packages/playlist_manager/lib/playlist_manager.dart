@@ -46,7 +46,7 @@ class PlaylistTagChip {
   final int depth;
   final String? label;
   final int? color;
-  final int? count;
+  final int count;
 
   const PlaylistTagChip({
     required this.key,
@@ -54,7 +54,7 @@ class PlaylistTagChip {
     this.depth = 0,
     this.label,
     this.color,
-    this.count,
+    this.count = 0,
   });
 }
 
@@ -213,7 +213,20 @@ abstract class PlaylistManager<T, I, S> {
 
   void addNewPlaylist(String name, {dynamic videoIds}) {}
 
-  GeneralPlaylist<T, S>? addNewPlaylistRaw(String name, {dynamic videoIds, dynamic modifiedDate}) => null;
+  GeneralPlaylist<T, S>? addNewPlaylistRaw(
+    String name, {
+    dynamic videoIds,
+    dynamic creationDate,
+    dynamic modifiedDate,
+    dynamic comment,
+    dynamic tracks,
+    dynamic convertItem,
+    dynamic isPinned,
+    dynamic metadata,
+    dynamic artworkDate,
+    dynamic tags,
+    dynamic moods,
+  }) => null;
 
   void addTracksToPlaylist(dynamic playlist, dynamic tracks) {}
 }

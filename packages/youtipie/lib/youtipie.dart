@@ -15,6 +15,7 @@ import 'package:youtipie/class/youtipie_feed/user_channel_info.dart';
 
 export 'package:youtipie/core/enum.dart';
 export 'package:youtipie/class/execute_details.dart';
+export 'package:youtipie/core/url_utils.dart';
 
 class Thumbnail {
   final String? url;
@@ -127,6 +128,7 @@ class _StubCacheBuilder {
   dynamic forNotificationComments({dynamic videoId, dynamic linkedCommentId}) => this;
   dynamic forCommentReplies({dynamic commentId}) => this;
   dynamic forNotificationItems() => this;
+  dynamic forMusicBrowse({dynamic endpoint}) => this;
   dynamic forFeedItems() => this;
   dynamic withMaxPeriod({dynamic allowedDuration}) => this;
   Future<dynamic> read() async => null;
@@ -178,7 +180,7 @@ class _StubSearch {
 
 class _StubVideoAction {
   const _StubVideoAction();
-  Future<dynamic> changeLikeStatus({dynamic videoId, dynamic status, dynamic engagement, dynamic videoPage}) async => null;
+  Future<dynamic> changeLikeStatus({dynamic videoId, dynamic status, dynamic engagement, dynamic videoPage, dynamic action}) async => true;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

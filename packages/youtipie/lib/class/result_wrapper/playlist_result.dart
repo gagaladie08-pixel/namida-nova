@@ -1,7 +1,8 @@
 import 'package:youtipie/class/result_wrapper/list_wrapper_base.dart';
 import 'package:youtipie/class/result_wrapper/playlist_result_base.dart';
+import 'package:youtipie/class/stream_info_item/stream_info_item.dart';
 
-class YoutiPiePlaylistResult extends YoutiPiePlaylistResultBase implements YoutiPieListWrapper<dynamic> {
+class YoutiPiePlaylistResult extends YoutiPiePlaylistResultBase implements YoutiPieListWrapper<StreamInfoItem> {
   const YoutiPiePlaylistResult({
     super.id,
     super.name,

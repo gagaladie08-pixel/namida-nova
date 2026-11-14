@@ -2,17 +2,19 @@ import 'package:youtipie/class/youtipie_feed/playlist_basic_info.dart';
 
 class PlaylistInfoItem extends PlaylistBasicInfo {
   final List<dynamic> initialVideos;
-  final String? subtitle;
+  @override
+  final String title;
+  final String subtitle;
   final bool isMix;
 
   const PlaylistInfoItem({
     super.id,
     super.name,
-    super.title,
+    this.title = '',
+    this.subtitle = '',
     this.initialVideos = const [],
-    this.subtitle,
     this.isMix = false,
-  });
+  }) : super(title: title);
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

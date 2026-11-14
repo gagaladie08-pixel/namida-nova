@@ -1,9 +1,17 @@
-// Stub generated for class/music/music_form_option.dart
-class MusicFormOption {
+class YoutiPieMusicFormOption {
+  final String title;
+  final bool isSelected;
   final dynamic id;
   final dynamic name;
-  final dynamic title;
-  const MusicFormOption({this.id, this.name, this.title});
+
+  const YoutiPieMusicFormOption({
+    this.title = '',
+    this.isSelected = false,
+    this.id,
+    this.name,
+  });
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
+
+typedef MusicFormOption = YoutiPieMusicFormOption;

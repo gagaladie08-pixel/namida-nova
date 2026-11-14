@@ -74,6 +74,7 @@ enum YoutiPieOperation {
   fetchChannelTab,
   fetchNotifications,
   changeVideoLikeStatus,
+  fetchMusicBrowse,
   other,
 }
 
