@@ -11,7 +11,7 @@ class NotificationPossibleInfo {
 
 class StreamInfoItemNotification extends MapSerializable {
   final String? linkedCommentId;
-  final String? notificationId;
+  final String notificationId;
   final String shortText;
   final bool? isRead;
   final PublishTime publishedAt;
@@ -26,7 +26,7 @@ class StreamInfoItemNotification extends MapSerializable {
 
   const StreamInfoItemNotification({
     this.linkedCommentId,
-    this.notificationId,
+    this.notificationId = '',
     this.shortText = '',
     this.isRead,
     this.publishedAt = const PublishTime.unknown(),

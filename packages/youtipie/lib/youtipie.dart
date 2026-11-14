@@ -5,6 +5,7 @@ import 'package:youtipie/class/result_wrapper/comment_result.dart';
 import 'package:youtipie/class/result_wrapper/comment_reply_result.dart';
 import 'package:youtipie/class/result_wrapper/history_result.dart';
 import 'package:youtipie/class/result_wrapper/channel_user_result.dart';
+import 'package:youtipie/class/result_wrapper/feed_result.dart';
 import 'package:youtipie/class/result_wrapper/feedback_holder.dart';
 import 'package:youtipie/class/result_wrapper/playlist_user_result.dart';
 import 'package:youtipie/class/youtipie_feed/user_channel_info.dart';
@@ -47,6 +48,7 @@ class YoutiPie {
   static DateTime lastSessionReset = DateTime.now();
   static const cacheBuilder = _StubCacheBuilder();
   static const channel = _StubChannel();
+  static const channelAction = _StubChannelAction();
   static const history = _StubHistory();
   static const missingInfo = _StubMissingInfo();
   static const search = _StubSearch();
@@ -119,6 +121,7 @@ class _StubCacheBuilder {
   dynamic forHashtag({dynamic params}) => this;
   dynamic forNotificationComments({dynamic videoId, dynamic linkedCommentId}) => this;
   dynamic forCommentReplies({dynamic commentId}) => this;
+  dynamic forNotificationItems() => this;
   dynamic forFeedItems() => this;
   dynamic withMaxPeriod({dynamic allowedDuration}) => this;
   Future<dynamic> read() async => null;
@@ -131,6 +134,13 @@ class _StubChannel {
   Future<dynamic> fetchChannelPage({dynamic channelId, dynamic handle, dynamic details}) async => null;
   Future<dynamic> fetchChannelAbout({dynamic channel, dynamic details}) async => null;
   Future<dynamic> fetchChannelTab({dynamic channelId, dynamic tab, dynamic details}) async => null;
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
+class _StubChannelAction {
+  const _StubChannelAction();
+  Future<bool> changeSubscribeStatus({dynamic channelId, dynamic channelEngagement, dynamic status}) async => true;
+  Future<bool> changeChannelNotificationStatus({dynamic channelId, dynamic status, dynamic parameters}) async => true;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -222,7 +232,8 @@ class _StubFeedbackAction {
 
 class _StubFeed {
   const _StubFeed();
-  Future<dynamic> fetchFeed({dynamic details}) async => null;
+  Future<YoutiPieFeedResult?> fetchFeed({dynamic details}) async => null;
+  Future<dynamic> fetchNotifications({dynamic details}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

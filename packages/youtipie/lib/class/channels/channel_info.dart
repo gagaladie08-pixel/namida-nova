@@ -12,6 +12,9 @@ class YoutiPieChannelInfo extends MapSerializable {
   final List<dynamic> tvbanners;
   final List<dynamic> mobileBanners;
   final bool? subscribed;
+  final dynamic notifications;
+  final dynamic notificationParameters;
+  final dynamic channelEngagement;
 
   const YoutiPieChannelInfo({
     this.id,
@@ -22,7 +25,16 @@ class YoutiPieChannelInfo extends MapSerializable {
     this.tvbanners = const [],
     this.mobileBanners = const [],
     this.subscribed,
+    this.notifications,
+    this.notificationParameters,
+    this.channelEngagement,
   });
+
+  YoutiPieChannelInfo rebuild({
+    dynamic newNotifications,
+    dynamic newNotificationParameters,
+    dynamic subscribed,
+  }) => this;
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

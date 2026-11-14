@@ -4,7 +4,18 @@ class MissingVideoInfo {
   final dynamic id;
   final dynamic name;
   final dynamic title;
-  const MissingVideoInfo({this.id, this.name, this.title});
+  final dynamic videoPage;
+  final dynamic date;
+  final int? durSeconds;
+
+  const MissingVideoInfo({
+    this.id,
+    this.name,
+    this.title,
+    this.videoPage,
+    this.date,
+    this.durSeconds,
+  });
 
   static MissingVideoInfo fromMap(dynamic map) => const MissingVideoInfo();
   StreamInfoItem toStreamInfo() => const StreamInfoItem();

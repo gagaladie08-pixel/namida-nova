@@ -15,7 +15,19 @@ class YoutiPieSearchFilters {
 }
 
 class YoutiPieSearchOperators {
-  static dynamic parse(String text) => null;
+  final List<String> phrases;
+  final List<String> titlePhrases;
+  final List<String> excluded;
+
+  const YoutiPieSearchOperators({
+    this.phrases = const [],
+    this.titlePhrases = const [],
+    this.excluded = const [],
+  });
+
+  static YoutiPieSearchOperators parse(String text) => const YoutiPieSearchOperators();
+
+  dynamic noSuchMethod(Invocation invocation) => null;
 }
 
 class SearchFilters {

@@ -11,6 +11,9 @@ class SponsorBlockSegment {
     this.endMS = 0,
   });
 
+  int get segmentStartMS => startMS;
+  int get segmentEndMS => endMS;
+
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

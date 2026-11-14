@@ -72,6 +72,11 @@ enum YoutiPieOperation {
   fetchHistory,
   fetchUserPlaylists,
   fetchChannelTab,
+  fetchNotifications,
   changeVideoLikeStatus,
   other,
+}
+
+extension YoutiPieOperationExtension on YoutiPieOperation {
+  bool get requiresAccount => false;
 }

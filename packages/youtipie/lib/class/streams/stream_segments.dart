@@ -5,6 +5,8 @@ class StreamSegment {
 
   const StreamSegment({this.title, this.startMS = 0, this.endMS = 0});
 
+  int get startSeconds => startMS ~/ 1000;
+
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
