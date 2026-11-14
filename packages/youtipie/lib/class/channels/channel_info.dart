@@ -1,3 +1,4 @@
+import 'package:youtipie/class/channels/channel_tab.dart';
 import 'package:youtipie/class/map_serializable.dart';
 import 'package:youtipie/class/youtipie_feed/channel_info_item.dart';
 
@@ -11,6 +12,9 @@ class YoutiPieChannelInfo extends ChannelInfoItem implements MapSerializable {
   final dynamic channelEngagement;
   final int? subscribersCount;
   final dynamic subscribersCountText;
+  final List<ChannelTab> tabs;
+  final int? videosCount;
+  final String? videosCountText;
 
   const YoutiPieChannelInfo({
     super.id,
@@ -27,7 +31,12 @@ class YoutiPieChannelInfo extends ChannelInfoItem implements MapSerializable {
     this.channelEngagement,
     this.subscribersCount,
     this.subscribersCountText,
+    this.tabs = const [],
+    this.videosCount,
+    this.videosCountText,
   });
+
+  String buildUrl() => '';
 
   YoutiPieChannelInfo rebuild({
     dynamic newNotifications,

@@ -32,6 +32,8 @@ class YoutubeFeed extends MapSerializable {
     this.endpoint,
   });
 
+  String? get playlistId => id as String?;
+
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

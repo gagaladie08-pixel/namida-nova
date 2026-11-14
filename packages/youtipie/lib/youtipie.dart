@@ -35,6 +35,8 @@ class Thumbnail {
   const Thumbnail({this.url, this.width, this.height});
 }
 
+typedef YoutiPieThumbnail = Thumbnail;
+
 extension ThumbnailListExtension<E> on Iterable<E>? {
   E? pick() {
     final self = this;
@@ -94,6 +96,8 @@ class _StubCipher {
 
 class _StubPotoken {
   const _StubPotoken();
+  Future<String?> getVisitorData() async => null;
+  Future<dynamic> updateInfo({dynamic potoken, dynamic visitorData}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -129,6 +133,7 @@ class _StubCacheBuilder {
   dynamic forHashtag({dynamic params}) => this;
   dynamic forNotificationComments({dynamic videoId, dynamic linkedCommentId}) => this;
   dynamic forCommentReplies({dynamic commentId}) => this;
+  dynamic forComments({dynamic videoId, dynamic createCommentParams, dynamic continuationToken}) => this;
   dynamic forNotificationItems() => this;
   dynamic forMusicBrowse({dynamic endpoint}) => this;
   dynamic forFeedItems() => this;

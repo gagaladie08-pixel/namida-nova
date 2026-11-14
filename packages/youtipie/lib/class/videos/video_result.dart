@@ -1,3 +1,4 @@
+import 'package:youtipie/class/result_wrapper/comment_result.dart';
 import 'package:youtipie/class/result_wrapper/related_videos_result.dart';
 import 'package:youtipie/class/streams/stream_segments.dart';
 import 'package:youtipie/class/videos/video_heat_map.dart';
@@ -12,6 +13,7 @@ class YoutiPieVideoPageResult {
   final List<YoutiPieVideoHeatMap>? heatMap;
   final dynamic channelInfo;
   final YoutiPieRelatedVideosResult? relatedVideosResult;
+  final YoutiPieCommentResult? commentResult;
 
   const YoutiPieVideoPageResult({
     this.id,
@@ -22,6 +24,7 @@ class YoutiPieVideoPageResult {
     this.heatMap,
     this.channelInfo,
     this.relatedVideosResult,
+    this.commentResult,
   });
 
   String get videoId => (id as String?) ?? '';

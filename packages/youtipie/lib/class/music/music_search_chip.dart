@@ -4,6 +4,7 @@ class YoutiPieMusicSearchChip {
   final YoutiPieMusicSearchType? type;
   final String title;
   final bool isSelected;
+  final String? params;
   final dynamic id;
   final dynamic name;
 
@@ -11,6 +12,7 @@ class YoutiPieMusicSearchChip {
     this.type,
     this.title = '',
     this.isSelected = false,
+    this.params,
     this.id,
     this.name,
   });

@@ -138,6 +138,7 @@ class GeneralPlaylist<T, S> {
   dynamic remoteSource;
   dynamic sortsType;
   bool sortReverse;
+  bool isFav;
 
   GeneralPlaylist({
     required this.name,
@@ -156,6 +157,7 @@ class GeneralPlaylist<T, S> {
     this.remoteSource,
     this.sortsType,
     this.sortReverse = false,
+    this.isFav = false,
   })  : tracks = tracks ?? [],
         creationDate = creationDate ?? DateTime.now(),
         modifiedDate = modifiedDate ?? DateTime.now().millisecondsSinceEpoch,
@@ -234,6 +236,10 @@ abstract class PlaylistManager<T, I, S> {
   FutureOr<void> onPlaylistTracksChanged(GeneralPlaylist<T, S> playlist) async {}
 
   Future<void> updatePlaylistsMetadata(Map<String, PlaylistMetadataEdit> edits) async {}
+
+  Future<void> updatePlaylistMetadata(String name, dynamic edit) async {}
+
+  Future<void> insertTracksInPlaylistWithEachIndex(dynamic playlist, dynamic tracks) async {}
 
   Future<bool> writePlaylistToStorage(GeneralPlaylist<T, S> playlist) async => true;
 

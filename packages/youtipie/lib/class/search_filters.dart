@@ -96,6 +96,8 @@ class YoutiPieSearchOperators {
 
   static YoutiPieSearchOperators parse(String text) => const YoutiPieSearchOperators();
 
+  static String buildQuery(String text, {YoutiPieSearchMatchMode? matchMode, List<String> excluded = const []}) => text;
+
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
