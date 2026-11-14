@@ -10,7 +10,7 @@ class AudioStream {
   final AudioTrack? audioTrack;
   final bool isWebm;
   final int? itag;
-  final int? bitrate;
+  final int bitrate;
 
   const AudioStream({
     this.id,
@@ -21,12 +21,12 @@ class AudioStream {
     this.audioTrack,
     this.isWebm = false,
     this.itag,
-    this.bitrate,
+    this.bitrate = 0,
   });
 
   VideoStreamCodecInfo get codecInfo => const VideoStreamCodecInfo();
   String bitrateText() => '';
-  String buildUrl() => '';
+  Uri buildUrl() => Uri();
   static AudioStream fromMap(dynamic map) => const AudioStream();
   Map<String, dynamic> toMap() => {};
 

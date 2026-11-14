@@ -193,6 +193,25 @@ class GeneralPlaylist<T, S> {
   GeneralPlaylist<T, S> get value => this;
 
   int? get pinnedDate => isPinned ? modifiedDate : null;
+
+  static GeneralPlaylist<T, S> fromJson<T, S>(
+    dynamic json,
+    dynamic itemFromJson,
+    dynamic sortFromJson,
+  ) {
+    final map = json is Map ? json : const <String, dynamic>{};
+    final name = map['name']?.toString() ?? '';
+    return GeneralPlaylist<T, S>(name: name);
+  }
+}
+
+extension PlaylistEntriesExt<T, S> on List<MapEntry<String, GeneralPlaylist<T, S>>> {
+  void movePinnedFirst() {
+    sort((a, b) {
+      if (a.value.isPinned == b.value.isPinned) return 0;
+      return a.value.isPinned ? -1 : 1;
+    });
+  }
 }
 
 extension RxMapLengthExt<K, V> on Rx<Map<K, V>> {
@@ -213,20 +232,38 @@ abstract class PlaylistManager<T extends PlaylistItemWithDate, I, S> {
   File getArtworkFileForPlaylist(String playlistName) => File('');
   dynamic get tagsFilter => null;
   final canReorderItems = Rx<bool>(false);
-  Rx<List<String>> getCustomIndicesOrderListRx() => Rx<List<String>>([]);
+  final customIndicesOrderRx = Rx<List<String>?>(null);
+  Rx<List<String>?> getCustomIndicesOrderListRx() => customIndicesOrderRx;
   bool isOneOfDefaultPlaylists(String name) => false;
   void reorderTrack(dynamic playlist, int oldIndex, int newIndex) {}
-  void updatePropertyInPlaylist(
+  Future<void> updatePropertyInPlaylist(
     String name, {
     dynamic itemsSortReverse,
     dynamic sortsType,
     dynamic itemsSortType,
     dynamic restoreCustomOrder,
+    dynamic tracks,
+    dynamic modifiedDate,
+    dynamic m3uPath,
+    dynamic isFav,
     dynamic tags,
     dynamic moods,
     dynamic isPinned,
     dynamic comment,
-  }) {}
+  }) async {
+    final playlist = playlistsMap.value[name] ?? getPlaylist(name);
+    if (playlist == null) return;
+    if (tracks is List<T>) playlist.tracks = tracks;
+    if (modifiedDate is int) playlist.modifiedDate = modifiedDate;
+    if (m3uPath is String) playlist.m3uPath = m3uPath;
+    if (isFav is bool) playlist.isFav = isFav;
+    if (tags is List<String>) playlist.tags = tags;
+    if (moods is List<String>) playlist.moods = moods;
+    if (isPinned is bool) playlist.isPinned = isPinned;
+    if (comment is String) playlist.comment = comment;
+    if (itemsSortType != null) playlist.sortsType = itemsSortType;
+    if (itemsSortReverse is bool) playlist.sortReverse = itemsSortReverse;
+  }
   void resetCanReorder() {}
   void onPlaylistReorder(int oldIndex, int newIndex) {}
   Future<void> removeTracksFromPlaylist(GeneralPlaylist<T, S> playlist, dynamic indexes) async {}
@@ -243,6 +280,17 @@ abstract class PlaylistManager<T extends PlaylistItemWithDate, I, S> {
 
   bool favouriteButtonOnPressed(I item, {bool refreshNotification = true}) {
     return false;
+  }
+
+  bool toggleTrackFavourite(T item) {
+    final tracks = favouritesPlaylist.value.tracks;
+    final index = tracks.indexWhere((e) => identifyBy(e) == identifyBy(item));
+    if (index >= 0) {
+      tracks.removeAt(index);
+      return false;
+    }
+    tracks.add(item);
+    return true;
   }
 
   int? getMetadataEditDate(GeneralPlaylist<T, S> playlist) => null;
@@ -283,6 +331,8 @@ abstract class PlaylistManager<T extends PlaylistItemWithDate, I, S> {
 
   Future<void> removePlaylist(GeneralPlaylist<T, S> playlist) async {}
 
+  Future<void> prepareAllPlaylistsFile() async {}
+
   Future<void> removePlaylists(List<String> names, {bool deleteM3UFiles = false}) async {}
 
   Future<int> importTracksToPlaylist(GeneralPlaylist<T, S> playlist, Iterable<T> tracks) async {
@@ -309,7 +359,34 @@ abstract class PlaylistManager<T extends PlaylistItemWithDate, I, S> {
     dynamic moods,
     dynamic actionIfAlreadyExists,
     dynamic m3uPath,
-  }) async => null;
+  }) async {
+    final playlist = GeneralPlaylist<T, S>(
+      name: name,
+      tracks: const [],
+      modifiedDate: modifiedDate is int ? modifiedDate : null,
+      comment: comment is String ? comment : '',
+      isPinned: isPinned is bool ? isPinned : false,
+      m3uPath: m3uPath is String ? m3uPath : null,
+    );
+    playlists.add(playlist);
+    playlistsMap.value[name] = playlist;
+    return playlist;
+  }
+
+  Future<int?> addTracksToPlaylistRaw<E>(
+    GeneralPlaylist<T, S> playlist,
+    Iterable<E> tracks,
+    dynamic duplicateAction,
+    T Function(E item, int dateAdded) convertItem,
+  ) async {
+    var count = 0;
+    final now = DateTime.now().millisecondsSinceEpoch;
+    for (final track in tracks) {
+      playlist.tracks.add(convertItem(track, now));
+      count++;
+    }
+    return count;
+  }
 
   void addTracksToPlaylist(dynamic playlist, dynamic tracks) {}
 }

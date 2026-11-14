@@ -17,6 +17,7 @@ class VideoStreamsResult {
   final dynamic title;
   final List<VideoStream> mixedStreams;
   final String? hlsManifestUrl;
+  final String? dashManifestUrl;
 
   const VideoStreamsResult({
     this.info,
@@ -24,6 +25,7 @@ class VideoStreamsResult {
     this.videoStreams = const [],
     this.mixedStreams = const [],
     this.hlsManifestUrl,
+    this.dashManifestUrl,
     this.loudnessDBData,
     this.playability = const VideoPlayability(),
     this.overlay,

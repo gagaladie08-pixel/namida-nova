@@ -17,6 +17,7 @@ export 'package:youtipie/core/enum.dart';
 export 'package:youtipie/class/execute_details.dart';
 export 'package:youtipie/core/url_utils.dart';
 export 'package:youtipie/class/streams/stream_segments.dart';
+export 'package:youtipie/class/streams/hls_variant.dart';
 
 extension YTStringUtils on String {
   bool get isDummyVideoId => this == 'dummy' || isEmpty;
@@ -38,8 +39,8 @@ class Thumbnail {
 typedef YoutiPieThumbnail = Thumbnail;
 
 class YoutiPieVideoThumbnail {
-  static String mix(String id) => '';
-  static String mixLow(String id) => '';
+  static List<String> mix(String id) => [];
+  static List<String> mixLow(String id) => [];
 }
 
 extension ThumbnailListExtension<E> on Iterable<E>? {
@@ -139,6 +140,11 @@ class _StubCacheBuilder {
   dynamic forNotificationComments({dynamic videoId, dynamic linkedCommentId}) => this;
   dynamic forCommentReplies({dynamic commentId}) => this;
   dynamic forComments({dynamic videoId, dynamic createCommentParams, dynamic continuationToken}) => this;
+  dynamic forVideoPage({dynamic videoId}) => this;
+  dynamic forReturnYoutubeDislike({dynamic videoId}) => this;
+  dynamic forVideoStreams({dynamic videoId}) => this;
+  dynamic forMixPlaylistVideos({dynamic videoId, dynamic mixId}) => this;
+  dynamic forRelatedVideos({dynamic videoId, dynamic params}) => this;
   dynamic forNotificationItems() => this;
   dynamic forMusicBrowse({dynamic endpoint}) => this;
   dynamic forFeedItems() => this;
@@ -248,6 +254,7 @@ class _StubUserChannel {
 
 class _StubComment {
   const _StubComment();
+  Future<YoutiPieCommentResult?> fetchComments({dynamic videoId, dynamic continuationToken, dynamic details}) async => null;
   Future<YoutiPieCommentReplyResult?> fetchCommentReplies({dynamic mainComment, dynamic details}) async => null;
   Future<YoutiPieCommentResult?> fetchNotificationComments({dynamic videoId, dynamic linkedCommentId, dynamic details}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;

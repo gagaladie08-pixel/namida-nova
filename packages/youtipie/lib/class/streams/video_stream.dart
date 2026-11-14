@@ -36,7 +36,7 @@ class VideoStream {
     this.isWebm = false,
   });
 
-  String buildUrl() => '';
+  Uri buildUrl() => Uri();
 
   VideoStreamCodecInfo get codecInfo => const VideoStreamCodecInfo();
   dynamic getCachedFileSync(dynamic id) => null;

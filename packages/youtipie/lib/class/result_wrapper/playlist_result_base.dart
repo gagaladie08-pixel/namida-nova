@@ -1,4 +1,5 @@
 import 'package:nampack/nampack.dart';
+import 'package:youtipie/class/execute_details.dart';
 import 'package:youtipie/class/result_wrapper/list_wrapper_base.dart';
 import 'package:youtipie/class/stream_info_item/stream_info_item.dart';
 import 'package:youtipie/class/youtipie_feed/playlist_basic_info.dart';
@@ -52,13 +53,26 @@ class PlaylistInfo extends PlaylistBasicInfo {
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
-class YoutiPiePlaylistResultBase {
+class YoutiPiePlaylistEditCallbacks {
+  final YoutiPiePlaylistResultBase Function() oldPlaylist;
+  final void Function(YoutiPiePlaylistResultBase newPlaylist) newPlaylistCallback;
+
+  const YoutiPiePlaylistEditCallbacks({
+    required this.oldPlaylist,
+    required this.newPlaylistCallback,
+  });
+}
+
+class YoutiPiePlaylistResultBase extends YoutiPieListWrapper<StreamInfoItem> {
   final dynamic id;
   final dynamic name;
   final dynamic title;
   final PlaylistBasicInfo basicInfo;
+  @override
   final List<StreamInfoItem> items;
   final PlaylistInfo info;
+  final String? cacheKey;
+  final dynamic continuation;
 
   YoutiPiePlaylistResultBase({
     this.id,
@@ -67,7 +81,22 @@ class YoutiPiePlaylistResultBase {
     this.basicInfo = const PlaylistBasicInfo(),
     this.items = const [],
     PlaylistInfo? info,
+    this.cacheKey,
+    this.continuation,
   }) : info = info ?? PlaylistInfo();
+
+  @override
+  bool get canFetchNext => continuation != null;
+
+  @override
+  Future<bool> fetchNext() => fetchNextFunction(null);
+
+  Future<bool> fetchNextFunction(ExecuteDetails? details) async => false;
+
+  @override
+  void transferLocalItemsTo(dynamic other) {}
+
+  Map<String, dynamic> toMapRaw() => {};
 
   YoutiPieFetchAllRes? fetchAll({void Function()? onProgress, dynamic details}) =>
       YoutiPieFetchAllRes(result: Future.value(YoutiPieFetchAllResType.success));

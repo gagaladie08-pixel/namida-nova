@@ -14,6 +14,7 @@ class YoutiPieVideoPageResult {
   final dynamic channelInfo;
   final YoutiPieRelatedVideosResult? relatedVideosResult;
   final YoutiPieCommentResult commentResult;
+  final dynamic timestamp;
 
   const YoutiPieVideoPageResult({
     this.id,
@@ -25,6 +26,7 @@ class YoutiPieVideoPageResult {
     this.channelInfo,
     this.relatedVideosResult,
     this.commentResult = const YoutiPieCommentResult(),
+    this.timestamp,
   });
 
   String get videoId => (id as String?) ?? '';

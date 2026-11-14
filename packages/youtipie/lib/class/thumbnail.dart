@@ -8,6 +8,6 @@ class Thumbnail {
 }
 
 class YoutiPieVideoThumbnail {
-  static String mix(String id) => '';
-  static String mixLow(String id) => '';
+  static List<String> mix(String id) => [];
+  static List<String> mixLow(String id) => [];
 }

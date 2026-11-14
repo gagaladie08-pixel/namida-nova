@@ -11,4 +11,10 @@ class FavouritePlaylist<T, E, S> extends Rx<GeneralPlaylist<T, S>> {
   bool isItemFavourite(dynamic item) => false;
 
   bool isSubItemFavourite(dynamic item) => false;
+
+  ({T item, int index})? firstItemForSubItem(dynamic item) {
+    final index = value.tracks.indexWhere((e) => e == item);
+    if (index < 0) return null;
+    return (item: value.tracks[index], index: index);
+  }
 }

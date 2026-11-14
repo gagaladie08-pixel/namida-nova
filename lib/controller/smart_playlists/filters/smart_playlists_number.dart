@@ -39,7 +39,7 @@ final class SmartPlaylistRuleNumber extends SmartPlaylistRuleBase<int, int, Smar
   @override
   String sourceDisplayText() {
     if (!isScoped) return source.toText();
-    final perScopeText = lang.sourcePerScope(source: source.toText(), scope: scope.toText());
+    final perScopeText = '${source.toText()} ${scope.toText()}';
     return source.requiresScope ? perScopeText : '$perScopeText (${aggregate.toText()})';
   }
 

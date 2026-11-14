@@ -10,6 +10,8 @@ class YoutiPieCommentResult extends YoutiPieListWrapper<CommentInfoItem> {
   final String? pausedMessage;
   final dynamic createParams;
   final String? videoId;
+  final dynamic continuation;
+  final Map<dynamic, dynamic> sorters;
 
   const YoutiPieCommentResult({
     this.items = const [],
@@ -19,6 +21,8 @@ class YoutiPieCommentResult extends YoutiPieListWrapper<CommentInfoItem> {
     this.pausedMessage,
     this.createParams,
     this.videoId,
+    this.continuation,
+    this.sorters = const {},
   });
 
   dynamic noSuchMethod(Invocation invocation) => null;

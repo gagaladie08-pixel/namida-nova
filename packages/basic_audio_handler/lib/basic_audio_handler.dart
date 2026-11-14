@@ -618,26 +618,6 @@ class PlayerConfigOverrides {
   PlayerConfigModificationScale getModificationScale() => PlayerConfigModificationScale.none;
 }
 
-class AndroidLoadControl {
-  final Duration minBufferDuration;
-  final Duration maxBufferDuration;
-  final Duration bufferForPlaybackAfterRebufferDuration;
-  final bool prioritizeTimeOverSizeThresholds;
-
-  const AndroidLoadControl({
-    this.minBufferDuration = const Duration(seconds: 5),
-    this.maxBufferDuration = const Duration(minutes: 3),
-    this.bufferForPlaybackAfterRebufferDuration = const Duration(seconds: 5),
-    this.prioritizeTimeOverSizeThresholds = true,
-  });
-}
-
-class AudioLoadConfiguration {
-  final AndroidLoadControl? androidLoadControl;
-
-  const AudioLoadConfiguration({this.androidLoadControl});
-}
-
 class QueueShuffler<Q> {
   List<Q> shuffle(List<Q> items) => List<Q>.from(items)..shuffle();
 }
@@ -658,6 +638,20 @@ class SleepTimerConfig {
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
+class QueueSnapshot<Q> {}
+
+class ItemPreparedPlayerInfo<Q> {
+  final dynamic config;
+  const ItemPreparedPlayerInfo({this.config});
+}
+
+class CurrentQueueRx<Q> extends RxList<Q> {
+  CurrentQueueRx([List<Q> value = const []]) : super(value);
+
+  List<int> originalIndices = [];
+  int get length => value.length;
+}
+
 abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   final playWhenReady = ValueNotifier<bool>(false);
   final queueShuffler = QueueShuffler<Q>();
@@ -666,7 +660,7 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   final sleepTimerConfig = Rx<SleepTimerConfig>(const SleepTimerConfig());
   final currentItem = Rx<Q?>(null);
   final currentIndex = Rx<int>(0);
-  final currentQueue = Rx<List<Q>>([]);
+  final currentQueue = CurrentQueueRx<Q>();
   final currentLiveWindow = Rx<dynamic>(null);
   final currentState = Rx<dynamic>(ProcessingState.idle);
   final currentPositionMS = Rx<int>(0);
@@ -676,6 +670,7 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
 
   bool get isQueueShuffled => false;
   dynamic get equalizerExtended => null;
+  dynamic get currentPlayer => null;
 
   PlayerRepeatMode get displayRepeatMode => PlayerRepeatMode.none;
   PlayerRepeatMode get playerRepeatMode => PlayerRepeatMode.none;
@@ -705,6 +700,9 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   void setCrossfadeTransition(dynamic transition) {}
   int? shufflePeekPreviousIndex() => null;
   void setPlayWhenReady(bool play) {}
+  Future<void> setQueueShuffled(bool shuffled) async {}
+  void beginEarlyCrossFadeOutIfRequired() {}
+  void addToQueue(dynamic items) {}
 
   @override
   Future<void> pause({dynamic pauseFadeMillis}) async {}
@@ -715,7 +713,21 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
     queueItems.clear();
   }
   Future<void>? beforeSkippingToItem() => null;
-  Future<void> assignNewQueue(dynamic items, {dynamic initialIndex, dynamic initialPosition}) async {}
+  Future<void> assignNewQueue<Id>({
+    required int playAtIndex,
+    required Iterable<Q> queue,
+    bool shuffle = false,
+    bool shuffleKeepingItem = false,
+    List<int>? originalIndices,
+    int? maximumItems,
+    void Function()? onQueueEmpty,
+    void Function()? onIndexAndQueueSame,
+    void Function(List<Q> finalizedQueue, List<int>? originalIndices)? onQueueDifferent,
+    void Function(Q currentItem)? onAssigningCurrentItem,
+    bool Function(Q? currentItem, Q itemToPlay)? canRestructureQueueOnly,
+    void Function(QueueSnapshot<Q>? previousQueue)? onRestructuringQueue,
+    Id Function(Q currentItem)? duplicateRemover,
+  }) async {}
   Future<void> setVideo(dynamic videoOptions) async {}
   Future<void> onPauseRaw() async {}
   Future<void> onPlaybackCompleted() async {}
@@ -767,7 +779,7 @@ abstract class AVPlayer {
   Future<void> stop();
   Future<void> seek(Duration position);
   Future<void> dispose();
-  void setAudioOutput(dynamic output, {dynamic bitPerfect});
+  void setAudioOutput(dynamic output, {dynamic bitPerfect, dynamic exclusive});
   Future<void> setVolume(double volume);
 
   dynamic noSuchMethod(Invocation invocation) => null;
