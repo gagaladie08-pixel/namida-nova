@@ -16,10 +16,15 @@ import 'package:youtipie/class/youtipie_feed/user_channel_info.dart';
 export 'package:youtipie/core/enum.dart';
 export 'package:youtipie/class/execute_details.dart';
 export 'package:youtipie/core/url_utils.dart';
+export 'package:youtipie/class/streams/stream_segments.dart';
 
 extension YTStringUtils on String {
   bool get isDummyVideoId => this == 'dummy' || isEmpty;
-  bool isYTTitleFaulty() => false;
+  bool isYTTitleFaulty() {
+    if (trim().isEmpty) return true;
+    if (this == '-') return true;
+    return false;
+  }
 }
 
 class Thumbnail {
@@ -35,14 +40,6 @@ extension ThumbnailListExtension<E> on Iterable<E>? {
     final self = this;
     if (self == null || self.isEmpty) return null;
     return self.first;
-  }
-}
-
-extension StringCheckerExtension on String {
-  bool isYTTitleFaulty() {
-    if (trim().isEmpty) return true;
-    if (this == '-') return true;
-    return false;
   }
 }
 

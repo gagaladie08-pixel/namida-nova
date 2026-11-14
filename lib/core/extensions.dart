@@ -36,6 +36,10 @@ import 'package:namida/youtube/controller/youtube_playlist_controller.dart';
 export 'package:dart_extensions/dart_extensions.dart';
 export 'package:youtipie/youtipie.dart' show YTStringUtils;
 
+extension NumFormatDecimalShortExt on num {
+  String formatDecimalShort([bool? expanded]) => toString();
+}
+
 extension TracksSelectableUtils on Iterable<Selectable> {
   String get displayTrackKeyword => length.displayTrackKeyword;
 

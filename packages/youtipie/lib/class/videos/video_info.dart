@@ -1,4 +1,5 @@
 import 'package:youtipie/class/publish_time.dart';
+import 'package:youtipie/class/youtipie_description/youtipie_description.dart';
 
 class VideoInfo {
   final dynamic id;
@@ -9,7 +10,7 @@ class VideoInfo {
   final int? viewsCount;
   final String? viewCountTextShort;
   final String? viewCountTextLong;
-  final String? description;
+  final YoutipieDescription? description;
 
   const VideoInfo({
     this.id,
@@ -22,6 +23,8 @@ class VideoInfo {
     this.viewCountTextLong,
     this.description,
   });
+
+  String buildUrl() => '';
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

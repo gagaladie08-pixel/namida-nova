@@ -1,9 +1,12 @@
+import 'package:youtipie/class/streams/audio_track.dart';
+
 class AudioStream {
   final dynamic id;
   final dynamic name;
   final dynamic title;
   final int sizeInBytes;
   final Duration? duration;
+  final AudioTrack? audioTrack;
 
   const AudioStream({
     this.id,
@@ -11,6 +14,7 @@ class AudioStream {
     this.title,
     this.sizeInBytes = 0,
     this.duration,
+    this.audioTrack,
   });
 
   String bitrateText() => '';

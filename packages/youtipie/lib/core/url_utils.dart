@@ -10,7 +10,3 @@ class YTUrlUtils {
 }
 
 typedef UrlUtils = YTUrlUtils;
-
-extension StringVideoIdExt on String {
-  bool get isDummyVideoId => this == 'dummy' || isEmpty;
-}

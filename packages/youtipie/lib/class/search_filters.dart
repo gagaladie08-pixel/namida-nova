@@ -1,8 +1,28 @@
+enum YoutiPieSearchMatchMode {
+  phrase,
+  title,
+}
+
 class YoutiPieSearchDate {
   final DateTime? date;
   const YoutiPieSearchDate([this.date]);
 
+  static YoutiPieSearchDate? parse(String text) {
+    if (text.isEmpty) return null;
+    final dt = DateTime.tryParse(text);
+    if (dt == null) return null;
+    return YoutiPieSearchDate(dt);
+  }
+
+  static YoutiPieSearchDate fromDateTime(DateTime dt) => YoutiPieSearchDate(dt);
+
+  DateTime toDateTime() => date ?? DateTime.now();
   DateTime toDateTimeUtc() => date?.toUtc() ?? DateTime.now().toUtc();
+
+  @override
+  String toString() => date != null
+      ? "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}"
+      : '';
 }
 
 class YoutiPieSearchParsedDates {
@@ -12,8 +32,22 @@ class YoutiPieSearchParsedDates {
 }
 
 class YoutiPieSearchFilters {
+  static const defaults = YoutiPieSearchFilters();
+
+  final YoutiPieSearchDate? after;
+  final YoutiPieSearchDate? before;
+  final bool isDefault;
+
+  const YoutiPieSearchFilters({
+    this.after,
+    this.before,
+    this.isDefault = true,
+  });
+
   static YoutiPieSearchParsedDates? parseDateOperators(String text) => null;
   static String stripDateOperators(String text) => text;
+
+  dynamic noSuchMethod(Invocation invocation) => null;
 }
 
 class YoutiPieSearchOperators {

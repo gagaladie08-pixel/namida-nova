@@ -11,6 +11,10 @@ class VideoStream {
   final dynamic title;
   final String qualityLabel;
   final int sizeInBytes;
+  final int? height;
+  final int? bitrate;
+  final int? fps;
+  final int? itag;
 
   const VideoStream({
     this.id,
@@ -18,6 +22,10 @@ class VideoStream {
     this.title,
     this.qualityLabel = '',
     this.sizeInBytes = 0,
+    this.height,
+    this.bitrate,
+    this.fps,
+    this.itag,
   });
 
   VideoStreamCodecInfo get codecInfo => const VideoStreamCodecInfo();
