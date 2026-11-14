@@ -86,6 +86,46 @@ enum YoutiPieFetchAllResType {
   inProgress,
 }
 
+enum YoutiPieSearchType {
+  all,
+  video,
+  channel,
+  playlist,
+  movie,
+}
+
+enum YoutiPieSearchSort {
+  relevance,
+  rating,
+  date,
+  views,
+}
+
+enum YoutiPieSearchUploadDate {
+  none,
+  lastHour,
+  today,
+  thisWeek,
+  thisMonth,
+  thisYear,
+}
+
+enum YoutiPieSearchMatchMode {
+  phrase,
+  title,
+}
+
+enum YoutiPieMusicSearchType {
+  songs,
+  videos,
+  albums,
+  artists,
+  playlists,
+  profiles,
+  episodes,
+  podcasts,
+}
+
 extension YoutiPieOperationExtension on YoutiPieOperation {
   bool get requiresAccount => false;
 }

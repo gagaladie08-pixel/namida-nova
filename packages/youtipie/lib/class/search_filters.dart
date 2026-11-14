@@ -1,7 +1,6 @@
-enum YoutiPieSearchMatchMode {
-  phrase,
-  title,
-}
+import 'package:youtipie/core/enum.dart';
+
+export 'package:youtipie/core/enum.dart';
 
 class YoutiPieSearchDate {
   final DateTime? date;
@@ -34,15 +33,45 @@ class YoutiPieSearchParsedDates {
 class YoutiPieSearchFilters {
   static const defaults = YoutiPieSearchFilters();
 
+  final YoutiPieSearchType type;
+  final YoutiPieSearchSort sort;
+  final YoutiPieSearchUploadDate uploadDate;
   final YoutiPieSearchDate? after;
   final YoutiPieSearchDate? before;
-  final bool isDefault;
 
   const YoutiPieSearchFilters({
+    this.type = YoutiPieSearchType.all,
+    this.sort = YoutiPieSearchSort.relevance,
+    this.uploadDate = YoutiPieSearchUploadDate.none,
     this.after,
     this.before,
-    this.isDefault = true,
   });
+
+  bool get hasDateRange => after != null || before != null;
+
+  bool get isDefault =>
+      type == YoutiPieSearchType.all &&
+      sort == YoutiPieSearchSort.relevance &&
+      uploadDate == YoutiPieSearchUploadDate.none &&
+      !hasDateRange;
+
+  YoutiPieSearchFilters copyWith({
+    YoutiPieSearchType? type,
+    YoutiPieSearchSort? sort,
+    YoutiPieSearchUploadDate? uploadDate,
+    YoutiPieSearchDate? after,
+    YoutiPieSearchDate? before,
+    bool clearAfter = false,
+    bool clearBefore = false,
+  }) {
+    return YoutiPieSearchFilters(
+      type: type ?? this.type,
+      sort: sort ?? this.sort,
+      uploadDate: uploadDate ?? this.uploadDate,
+      after: clearAfter ? null : (after ?? this.after),
+      before: clearBefore ? null : (before ?? this.before),
+    );
+  }
 
   static YoutiPieSearchParsedDates? parseDateOperators(String text) => null;
   static String stripDateOperators(String text) => text;
@@ -55,12 +84,14 @@ class YoutiPieSearchOperators {
   final List<String> titlePhrases;
   final List<String> excluded;
   final String remainingText;
+  final YoutiPieSearchMatchMode? matchMode;
 
   const YoutiPieSearchOperators({
     this.phrases = const [],
     this.titlePhrases = const [],
     this.excluded = const [],
     this.remainingText = '',
+    this.matchMode,
   });
 
   static YoutiPieSearchOperators parse(String text) => const YoutiPieSearchOperators();

@@ -3032,6 +3032,8 @@ class _YTVideoEndcardsState extends State<_YTVideoEndcards> {
             isInFullScreen: widget.inFullScreen,
           );
         }
+      default:
+        return const [];
     }
   }
 
