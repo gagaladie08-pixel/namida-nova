@@ -21,5 +21,7 @@ class PlaylistBasicInfo extends YoutubeFeed {
     this.thumbnails = const [],
   });
 
+  String buildUrl() => '';
+
   dynamic noSuchMethod(Invocation invocation) => null;
 }

@@ -16,5 +16,7 @@ class PlaylistInfoItem extends PlaylistBasicInfo {
     this.isMix = false,
   }) : super(title: title);
 
+  static bool isMixPlaylist(dynamic id) => false;
+
   dynamic noSuchMethod(Invocation invocation) => null;
 }

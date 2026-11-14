@@ -213,7 +213,9 @@ abstract class PlaylistManager<T, I, S> {
 
   void addNewPlaylist(String name, {dynamic videoIds}) {}
 
-  GeneralPlaylist<T, S>? addNewPlaylistRaw(
+  String? validatePlaylistName(String? name) => null;
+
+  Future<GeneralPlaylist<T, S>?> addNewPlaylistRaw(
     String name, {
     dynamic videoIds,
     dynamic creationDate,
@@ -226,7 +228,9 @@ abstract class PlaylistManager<T, I, S> {
     dynamic artworkDate,
     dynamic tags,
     dynamic moods,
-  }) => null;
+    dynamic actionIfAlreadyExists,
+    dynamic m3uPath,
+  }) async => null;
 
   void addTracksToPlaylist(dynamic playlist, dynamic tracks) {}
 }

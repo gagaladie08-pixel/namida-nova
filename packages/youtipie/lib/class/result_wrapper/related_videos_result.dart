@@ -1,9 +1,35 @@
-// Stub generated for class/result_wrapper/related_videos_result.dart
-class RelatedVideosResult {
-  final dynamic id;
-  final dynamic name;
-  final dynamic title;
-  const RelatedVideosResult({this.id, this.name, this.title});
+import 'package:youtipie/class/result_wrapper/list_wrapper_base.dart';
+import 'package:youtipie/class/stream_info_item/stream_info_item.dart';
+import 'package:youtipie/class/stream_info_item/stream_info_item_short.dart';
+
+class YoutiPieShortsSection {
+  final Map<int, List<int>> relatedItemsShortsData;
+  final Map<int, bool> shortsIndicesLookup;
+
+  const YoutiPieShortsSection({
+    this.relatedItemsShortsData = const {},
+    this.shortsIndicesLookup = const {},
+  });
+
+  StreamInfoItemShort getAsShort(dynamic item) {
+    if (item is StreamInfoItemShort) return item;
+    return const StreamInfoItemShort();
+  }
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
+
+class YoutiPieRelatedVideosResult extends YoutiPieListWrapper<StreamInfoItem> {
+  @override
+  final List<StreamInfoItem> items;
+  final YoutiPieShortsSection shortsSection;
+
+  const YoutiPieRelatedVideosResult({
+    this.items = const [],
+    this.shortsSection = const YoutiPieShortsSection(),
+  });
+
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
+typedef RelatedVideosResult = YoutiPieRelatedVideosResult;

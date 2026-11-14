@@ -199,6 +199,21 @@ class _StubPlaylist {
 
 class _StubUserPlaylist {
   const _StubUserPlaylist();
+  final int MAX_PLAYLIST_NAME = 150;
+  final int MAX_PLAYLIST_DESCRIPTION = 5000;
+  String? validatePlaylistTitle(String title) => null;
+  Future<dynamic> getPlaylistEditInfo(dynamic playlistId) async => null;
+  Future<dynamic> removeHostedPlaylistFromLibrary({dynamic playlist, dynamic playlistId}) async => true;
+  Future<dynamic> addHostedPlaylistToLibrary({dynamic playlist, dynamic playlistId}) async => true;
+  Future<dynamic> editPlaylist({
+    dynamic mainList,
+    dynamic playlists,
+    dynamic playlistId,
+    dynamic title,
+    dynamic description,
+    dynamic privacy,
+    dynamic newVideosAtTop,
+  }) async => true;
   Future<dynamic> getPlaylistsForVideo(dynamic videoId) async => [];
   Future<YoutiPieUserPlaylistsResult?> getUserPlaylists({dynamic details}) async => null;
   Future<dynamic> createPlaylist({dynamic title, dynamic privacy, dynamic mainList, dynamic initialVideoIds}) async => null;

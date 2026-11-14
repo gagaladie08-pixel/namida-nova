@@ -1,11 +1,19 @@
+import 'package:youtipie/youtipie.dart';
+
 class StreamSegment {
-  final String? title;
+  final String title;
   final int startMS;
   final int endMS;
+  final Thumbnail? thumbnail;
 
-  const StreamSegment({this.title, this.startMS = 0, this.endMS = 0});
+  const StreamSegment({
+    this.title = '',
+    this.startMS = 0,
+    this.endMS = 0,
+    this.thumbnail,
+  });
 
-  int get startSeconds => startMS ~/ 1000;
+  int? get startSeconds => startMS ~/ 1000;
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

@@ -14,7 +14,7 @@ class YoutiPieItemsSort {
 
 typedef ItemsSort = YoutiPieItemsSort;
 
-mixin YoutiPieListSorterMixin {
+mixin YoutiPieListSorterMixin<T> {
   YoutiPieItemsSort? get customSort => null;
   List<YoutiPieItemsSort> get itemsSort => const [];
 

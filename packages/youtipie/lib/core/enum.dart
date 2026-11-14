@@ -78,6 +78,14 @@ enum YoutiPieOperation {
   other,
 }
 
+enum YoutiPieFetchAllResType {
+  success,
+  fail,
+  alreadyCanceled,
+  alreadyDone,
+  inProgress,
+}
+
 extension YoutiPieOperationExtension on YoutiPieOperation {
   bool get requiresAccount => false;
 }
