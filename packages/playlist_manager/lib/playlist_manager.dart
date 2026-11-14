@@ -157,6 +157,7 @@ class GeneralPlaylist<T, S> {
   dynamic sortsType;
   bool sortReverse;
   bool isFav;
+  dynamic customOrder;
 
   GeneralPlaylist({
     required this.name,
@@ -176,6 +177,7 @@ class GeneralPlaylist<T, S> {
     this.sortsType,
     this.sortReverse = false,
     this.isFav = false,
+    this.customOrder,
   })  : tracks = tracks ?? [],
         creationDate = creationDate ?? DateTime.now(),
         modifiedDate = modifiedDate ?? DateTime.now().millisecondsSinceEpoch,
@@ -218,6 +220,8 @@ abstract class PlaylistManager<T extends PlaylistItemWithDate, I, S> {
     String name, {
     dynamic itemsSortReverse,
     dynamic sortsType,
+    dynamic itemsSortType,
+    dynamic restoreCustomOrder,
     dynamic tags,
     dynamic moods,
     dynamic isPinned,

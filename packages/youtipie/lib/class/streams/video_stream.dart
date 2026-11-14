@@ -3,6 +3,7 @@ class VideoStreamCodecInfo {
   const VideoStreamCodecInfo({this.container = ''});
   String? codecIdentifierIfCustom() => null;
   String codecCleaned() => '';
+  dynamic get embeddedAudioInfo => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

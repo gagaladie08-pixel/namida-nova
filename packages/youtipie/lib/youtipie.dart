@@ -37,6 +37,11 @@ class Thumbnail {
 
 typedef YoutiPieThumbnail = Thumbnail;
 
+class YoutiPieVideoThumbnail {
+  static String mix(String id) => '';
+  static String mixLow(String id) => '';
+}
+
 extension ThumbnailListExtension<E> on Iterable<E>? {
   E? pick() {
     final self = this;

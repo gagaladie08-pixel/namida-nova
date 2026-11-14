@@ -1290,7 +1290,7 @@ class _YoutubeHomePageState extends _HomePageStateBase<YoutubeID, String, YTHome
   @override
   Widget buildOtherSectionSliver(BuildContext context, HomePageItems element) {
     if (element == HomePageItems.pinned) {
-      return _PinnedPlaylistsList<YoutubeID, SortEntry<YTSortType>>(
+      return _PinnedPlaylistsList(
         homepageItem: element,
         playlistsMap: YoutubePlaylistController.inst.playlistsMap,
         cardBuilder: (playlist, homepageItem) => _YTPlaylistCard(
@@ -1522,7 +1522,7 @@ class _ArtistsList extends StatelessWidget {
   }
 }
 
-class _PinnedPlaylistsList<T extends PlaylistItemWithDate, S> extends StatelessWidget {
+class _PinnedPlaylistsList<T, S> extends StatelessWidget {
   final HomePageItems homepageItem;
   final RxMap<String, GeneralPlaylist<T, S>> playlistsMap;
   final Widget Function(GeneralPlaylist<T, S> playlist, HomePageItems homepageItem) cardBuilder;

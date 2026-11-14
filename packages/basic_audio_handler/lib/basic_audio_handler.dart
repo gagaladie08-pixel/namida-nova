@@ -140,6 +140,9 @@ class EqualizerBand {
 
   @override
   int get hashCode => Object.hash(id, type, frequency, gain, q, order, channel, enabled);
+
+  int get sectionCount => 1;
+  double sectionQ(int section) => q;
 }
 
 class ParametricEqualizer {
@@ -437,6 +440,7 @@ class LoudnessEnhancerExtended {
   }
   double getActualGainFromUser(bool enabled, double targetGainUser) => targetGainUser;
   void refreshEnabled() {}
+  dynamic get androidAudioEffect => null;
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }
@@ -657,6 +661,12 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   final queueItems = RxList<Q>();
   final numberOfRepeats = Rx<int>(0);
   final sleepTimerConfig = Rx<SleepTimerConfig>(const SleepTimerConfig());
+  final currentItem = Rx<Q?>(null);
+  final currentIndex = Rx<int>(0);
+  final currentQueue = Rx<List<Q>>([]);
+  final currentLiveWindow = Rx<dynamic>(null);
+  bool get isQueueShuffled => false;
+  dynamic get equalizerExtended => null;
 
   PlayerRepeatMode get displayRepeatMode => PlayerRepeatMode.none;
   PlayerRepeatMode get playerRepeatMode => PlayerRepeatMode.none;
@@ -669,6 +679,13 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
 
   bool getLoudnessEnhancerEnabledTrackValue() => false;
   bool getLoudnessEnhancerEnabledTrackValueR() => false;
+
+  void onPlayRaw({bool attemptFixVolume = false}) {}
+  Future<void> seekToItemStart() async {}
+  Future<Duration?> setAudioSource(dynamic source, {dynamic item}) async => null;
+  void resetSleepTimer() {}
+  void updateSleepTimerValues({dynamic mins, dynamic items}) {}
+  dynamic transformEvent(dynamic event) => event;
 
   Future<void> onQueueChanged() async {}
   void onReorderItems(int currentIndex, Q itemDragged) {}
@@ -684,7 +701,7 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   Future<void> seekToLiveEdge() async {}
   Future<void> onDispose() async {}
 
-  Future<void> skipToNext({bool andPlay = true, bool isManualSkip = false}) async {}
+  Future<void> skipToNext({bool? andPlay = true, bool isManualSkip = false}) async {}
   Future<void> skipToPrevious({bool isManualSkip = false}) async {}
 }
 
@@ -700,21 +717,14 @@ class UriSource {
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
-class AudioVideoSource extends UriSource {
-  const AudioVideoSource(super.uri, {super.headers});
-
-  factory AudioVideoSource.uri(Uri uri, {Map<String, String>? headers}) => AudioVideoSource(uri, headers: headers);
-  factory AudioVideoSource.file(String path) => AudioVideoSource(Uri.file(path));
-
-  dynamic noSuchMethod(Invocation invocation) => null;
-}
-
 class ItemPrepareConfig<Q, S extends UriSource> {
   final S source;
   final int index;
   final Duration? initialPosition;
   final dynamic audioTrackId;
   final dynamic videoOptions;
+  final dynamic item;
+  final bool keepOldVideoSource;
 
   const ItemPrepareConfig(
     this.source, {
@@ -722,6 +732,8 @@ class ItemPrepareConfig<Q, S extends UriSource> {
     this.initialPosition,
     this.audioTrackId,
     this.videoOptions,
+    this.item,
+    this.keepOldVideoSource = false,
   });
 
   dynamic noSuchMethod(Invocation invocation) => null;
@@ -734,6 +746,8 @@ abstract class AVPlayer {
   Stream<Duration?> get durationStream;
   bool get playing;
   Stream<bool> get playingStream;
+  double get volume;
+  Stream<dynamic> get processingStateStream;
 
   Future<Duration?> setSource<T>(ItemPrepareConfig<T, UriSource> config);
   Future<void> play();
@@ -741,6 +755,14 @@ abstract class AVPlayer {
   Future<void> stop();
   Future<void> seek(Duration position);
   Future<void> dispose();
+  void setAudioOutput(dynamic output);
+  Future<void> setVolume(double volume);
 
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
+class CustomAudioPlayer implements AVPlayer {
+  final dynamic player;
+  CustomAudioPlayer([this.player]);
   dynamic noSuchMethod(Invocation invocation) => null;
 }

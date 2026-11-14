@@ -10,6 +10,7 @@ class AudioStream {
   final AudioTrack? audioTrack;
   final bool isWebm;
   final int? itag;
+  final int? bitrate;
 
   const AudioStream({
     this.id,
@@ -20,6 +21,7 @@ class AudioStream {
     this.audioTrack,
     this.isWebm = false,
     this.itag,
+    this.bitrate,
   });
 
   VideoStreamCodecInfo get codecInfo => const VideoStreamCodecInfo();

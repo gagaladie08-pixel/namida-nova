@@ -9,7 +9,7 @@ class Thumbnail {
   const Thumbnail({this.url, this.width, this.height});
 }
 
-extension ThumbnailListExtension on Iterable<dynamic>? {
+extension ThumbnailPickerExt on Iterable<dynamic>? {
   dynamic pick() {
     if (this == null || this!.isEmpty) return null;
     return this!.first;

@@ -32,6 +32,7 @@ class VideoStreamInfo {
 
   PublishTime get publishDate => publishedAt;
   String? get availableDescription => description;
+  bool get isLiveNow => false;
 
   static VideoStreamInfo fromMap(dynamic map) => const VideoStreamInfo();
   StreamInfoItem toStreamInfo() => const StreamInfoItem();

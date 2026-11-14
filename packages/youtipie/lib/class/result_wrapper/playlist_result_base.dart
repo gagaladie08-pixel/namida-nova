@@ -72,6 +72,8 @@ class YoutiPiePlaylistResultBase {
   YoutiPieFetchAllRes? fetchAll({void Function()? onProgress, dynamic details}) =>
       YoutiPieFetchAllRes(result: Future.value(YoutiPieFetchAllResType.success));
 
+  String? get mixId => id as String?;
+
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
