@@ -1,4 +1,3 @@
-// Stub generated for class/thumbnail.dart
 class Thumbnail {
   final dynamic id;
   final dynamic name;
@@ -6,4 +5,9 @@ class Thumbnail {
   const Thumbnail({this.id, this.name, this.title});
 
   dynamic noSuchMethod(Invocation invocation) => null;
+}
+
+class YoutiPieVideoThumbnail {
+  static String mix(String id) => '';
+  static String mixLow(String id) => '';
 }

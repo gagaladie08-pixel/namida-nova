@@ -15,11 +15,15 @@ class VideoStreamsResult {
   final dynamic id;
   final dynamic name;
   final dynamic title;
+  final List<VideoStream> mixedStreams;
+  final String? hlsManifestUrl;
 
   const VideoStreamsResult({
     this.info,
     this.audioStreams = const [],
     this.videoStreams = const [],
+    this.mixedStreams = const [],
+    this.hlsManifestUrl,
     this.loudnessDBData,
     this.playability = const VideoPlayability(),
     this.overlay,

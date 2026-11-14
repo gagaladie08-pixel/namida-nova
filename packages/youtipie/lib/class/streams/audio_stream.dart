@@ -26,6 +26,7 @@ class AudioStream {
 
   VideoStreamCodecInfo get codecInfo => const VideoStreamCodecInfo();
   String bitrateText() => '';
+  String buildUrl() => '';
   static AudioStream fromMap(dynamic map) => const AudioStream();
   Map<String, dynamic> toMap() => {};
 

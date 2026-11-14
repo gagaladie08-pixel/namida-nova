@@ -3197,9 +3197,10 @@ class NamidaAudioVideoHandler<Q extends Playable> extends BasicAudioHandler<Q> w
   }
 
   Future<void> _setLastAccessedForSourceIfFileTry(AudioVideoSource source) async {
-    if (source is UriSource && source.uri.isScheme('file')) {
+    final s = source as dynamic;
+    if (source is UriSource && s.uri?.isScheme('file') == true) {
       try {
-        final file = File.fromUri(source.uri);
+        final file = File.fromUri(s.uri as Uri);
         await file.setLastAccessed(DateTime.now());
       } catch (_) {}
     }

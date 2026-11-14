@@ -13,9 +13,11 @@ class VideoStream {
   final dynamic title;
   final String qualityLabel;
   final int sizeInBytes;
-  final int? height;
-  final int? bitrate;
-  final int? fps;
+  final int height;
+  final int bitrate;
+  final int fps;
+  final int width;
+  final Duration? duration;
   final int? itag;
   final bool isWebm;
 
@@ -25,12 +27,16 @@ class VideoStream {
     this.title,
     this.qualityLabel = '',
     this.sizeInBytes = 0,
-    this.height,
-    this.bitrate,
-    this.fps,
+    this.height = 0,
+    this.bitrate = 0,
+    this.fps = 0,
+    this.width = 0,
+    this.duration,
     this.itag,
     this.isWebm = false,
   });
+
+  String buildUrl() => '';
 
   VideoStreamCodecInfo get codecInfo => const VideoStreamCodecInfo();
   dynamic getCachedFileSync(dynamic id) => null;

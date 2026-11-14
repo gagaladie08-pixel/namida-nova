@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/foundation.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:nampack/nampack.dart';
+
+export 'package:just_audio/just_audio.dart' show UriSource;
 
 enum PlayerRepeatMode {
   none,
@@ -435,7 +438,7 @@ class LoudnessEnhancerExtended {
 
   void setTargetGainUser(double gain) {}
   Future<void> setEnabledUser(bool enabled) async {}
-  void setTargetGainTrack(double gain) {
+  Future<void> setTargetGainTrack(double gain) async {
     targetGainTrack.value = gain;
   }
   double getActualGainFromUser(bool enabled, double targetGainUser) => targetGainUser;
@@ -665,6 +668,12 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   final currentIndex = Rx<int>(0);
   final currentQueue = Rx<List<Q>>([]);
   final currentLiveWindow = Rx<dynamic>(null);
+  final currentState = Rx<dynamic>(ProcessingState.idle);
+  final currentPositionMS = Rx<int>(0);
+  final videoPlayerInfo = Rx<dynamic>(null);
+  final totalListenedTimeInSec = Rx<dynamic>({});
+  final isPlaying = Rx<bool>(false);
+
   bool get isQueueShuffled => false;
   dynamic get equalizerExtended => null;
 
@@ -684,8 +693,21 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   Future<void> seekToItemStart() async {}
   Future<Duration?> setAudioSource(dynamic source, {dynamic item}) async => null;
   void resetSleepTimer() {}
-  void updateSleepTimerValues({dynamic mins, dynamic items}) {}
-  dynamic transformEvent(dynamic event) => event;
+  void updateSleepTimerValues({bool? enableSleepAfterMins, dynamic sleepAfterMin, dynamic mins, dynamic items}) {}
+  dynamic transformEvent(dynamic event, [dynamic a, dynamic b, dynamic c]) => event;
+
+  void startCounterToAListen(dynamic pi) {}
+  void refreshVolumeForReplayGain() {}
+  void resetGaplessPlaybackData() {}
+  void refreshPlaybackStateModes() {}
+  int? getCurrentItemEndMS() => null;
+  int? getCurrentItemStartMS() => null;
+  void setCrossfadeTransition(dynamic transition) {}
+  int? shufflePeekPreviousIndex() => null;
+  void setPlayWhenReady(bool play) {}
+
+  @override
+  Future<void> pause({dynamic pauseFadeMillis}) async {}
 
   Future<void> onQueueChanged() async {}
   void onReorderItems(int currentIndex, Q itemDragged) {}
@@ -705,18 +727,6 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   Future<void> skipToPrevious({bool isManualSkip = false}) async {}
 }
 
-class UriSource {
-  final Uri uri;
-  final Map<String, String>? headers;
-
-  const UriSource(this.uri, {this.headers});
-
-  factory UriSource.uri(Uri uri, {Map<String, String>? headers}) => UriSource(uri, headers: headers);
-  factory UriSource.file(String path) => UriSource(Uri.file(path));
-
-  dynamic noSuchMethod(Invocation invocation) => null;
-}
-
 class ItemPrepareConfig<Q, S extends UriSource> {
   final S source;
   final int index;
@@ -725,6 +735,7 @@ class ItemPrepareConfig<Q, S extends UriSource> {
   final dynamic videoOptions;
   final dynamic item;
   final bool keepOldVideoSource;
+  final bool? itemExists;
 
   const ItemPrepareConfig(
     this.source, {
@@ -734,6 +745,7 @@ class ItemPrepareConfig<Q, S extends UriSource> {
     this.videoOptions,
     this.item,
     this.keepOldVideoSource = false,
+    this.itemExists,
   });
 
   dynamic noSuchMethod(Invocation invocation) => null;
@@ -755,7 +767,7 @@ abstract class AVPlayer {
   Future<void> stop();
   Future<void> seek(Duration position);
   Future<void> dispose();
-  void setAudioOutput(dynamic output);
+  void setAudioOutput(dynamic output, {dynamic bitPerfect});
   Future<void> setVolume(double volume);
 
   dynamic noSuchMethod(Invocation invocation) => null;
