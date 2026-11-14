@@ -11,6 +11,9 @@ class SponsorBlockSegmentsResult {
     this.poi_highlight,
   });
 
+  int? get firstMS => segments.isEmpty ? null : segments.first.startMS;
+  int? get lastMS => segments.isEmpty ? null : segments.last.endMS;
+
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

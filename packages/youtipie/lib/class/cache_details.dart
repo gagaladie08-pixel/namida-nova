@@ -12,9 +12,10 @@ class CacheDetailsBase<T> {
   const CacheDetailsBase([this.section, this.secondary, this.accId]);
 
   Future<T?> read() async => null;
-  List<dynamic> readAllMapsSync(dynamic keys) => const [];
+  List<Map<String, dynamic>> readAllMapsSync(dynamic keys) => const [];
   void close() {}
   void loadEverythingExtractedSync(dynamic paths, dynamic callback) {}
+  void loadEverythingSync(dynamic callback) {}
 
   dynamic noSuchMethod(Invocation invocation) => null;
 }

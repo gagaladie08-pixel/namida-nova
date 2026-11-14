@@ -40,6 +40,22 @@ enum PlaylistTagFilterState {
   excluded,
 }
 
+class PlaylistTagChip {
+  final PlaylistTagKey key;
+  final PlaylistTagFilterState state;
+  final int depth;
+  final String? label;
+  final int? color;
+
+  const PlaylistTagChip({
+    required this.key,
+    this.state = PlaylistTagFilterState.none,
+    this.depth = 0,
+    this.label,
+    this.color,
+  });
+}
+
 mixin PlaylistItemWithDate {
   int get dateAdded;
 }
@@ -85,13 +101,15 @@ class PlaylistTagsFilter {
     }
     return result.toList();
   }
+
+  List<int> colorsOf(dynamic tags) => const [];
 }
 
 class GeneralPlaylist<T, S> {
   String name;
   List<T> tracks;
   DateTime creationDate;
-  DateTime modifiedDate;
+  int modifiedDate;
   String? m3uPath;
   PlaylistID? playlistID;
   List<String> tags;
@@ -105,7 +123,7 @@ class GeneralPlaylist<T, S> {
     required this.name,
     List<T>? tracks,
     DateTime? creationDate,
-    DateTime? modifiedDate,
+    int? modifiedDate,
     this.m3uPath,
     this.playlistID,
     List<String>? tags,
@@ -116,7 +134,7 @@ class GeneralPlaylist<T, S> {
     Map<String, dynamic>? metadata,
   })  : tracks = tracks ?? [],
         creationDate = creationDate ?? DateTime.now(),
-        modifiedDate = modifiedDate ?? DateTime.now(),
+        modifiedDate = modifiedDate ?? DateTime.now().millisecondsSinceEpoch,
         tags = tags ?? [],
         moods = moods ?? [],
         metadata = metadata ?? {};
@@ -127,6 +145,8 @@ class GeneralPlaylist<T, S> {
   }
 
   GeneralPlaylist<T, S> get value => this;
+
+  DateTime? get pinnedDate => isPinned ? DateTime.fromMillisecondsSinceEpoch(modifiedDate) : null;
 }
 
 extension RxMapLengthExt<K, V> on Rx<Map<K, V>> {
@@ -148,6 +168,8 @@ abstract class PlaylistManager<T, I, S> {
   dynamic get tagsFilter => null;
   Rx<List<int>> getCustomIndicesOrderListRx() => Rx<List<int>>([]);
   void onPlaylistReorder(int oldIndex, int newIndex) {}
+  Future<void> removeTracksFromPlaylist(GeneralPlaylist<T, S> playlist, dynamic indexes) async {}
+  void ensureCustomOrderValid({bool removeNonExistent = true}) {}
 
   Future<void> get waitForPlaylistsLoad async {}
   Future<void> get waitForFavouritePlaylistLoad async {}

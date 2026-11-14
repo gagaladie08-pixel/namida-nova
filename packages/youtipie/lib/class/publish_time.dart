@@ -7,5 +7,7 @@ class PublishTime {
   const PublishTime({this.date, this.id, this.name, this.title});
   const PublishTime.unknown() : date = null, id = null, name = null, title = null;
 
+  static PublishTime fromMap(dynamic map) => const PublishTime.unknown();
+
   dynamic noSuchMethod(Invocation invocation) => null;
 }

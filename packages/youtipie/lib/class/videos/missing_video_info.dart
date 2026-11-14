@@ -2,11 +2,13 @@ import 'package:youtipie/class/stream_info_item/stream_info_item.dart';
 
 class MissingVideoInfo {
   final dynamic id;
-  final dynamic name;
-  final dynamic title;
+  final String? name;
+  final String? title;
   final dynamic videoPage;
   final dynamic date;
   final int? durSeconds;
+  final String? channelId;
+  final String? channelName;
 
   const MissingVideoInfo({
     this.id,
@@ -15,9 +17,11 @@ class MissingVideoInfo {
     this.videoPage,
     this.date,
     this.durSeconds,
+    this.channelId,
+    this.channelName,
   });
 
-  String? get videoId => id as String?;
+  String get videoId => (id as String?) ?? '';
   String? get description => null;
 
   static MissingVideoInfo fromMap(dynamic map) => const MissingVideoInfo();

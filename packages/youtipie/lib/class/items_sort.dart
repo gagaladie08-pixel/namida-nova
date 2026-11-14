@@ -1,9 +1,9 @@
 class YoutiPieItemsSort {
-  final String? title;
+  final String title;
   final bool initiallySelected;
 
   const YoutiPieItemsSort({
-    this.title,
+    this.title = '',
     this.initiallySelected = false,
   });
 

@@ -1,13 +1,7 @@
 import 'package:youtipie/class/map_serializable.dart';
+import 'package:youtipie/class/youtipie_feed/channel_info_item.dart';
 
-class YoutiPieChannelInfo extends MapSerializable {
-  @override
-  final dynamic id;
-  @override
-  final dynamic name;
-  @override
-  final dynamic title;
-  final List<dynamic> thumbnails;
+class YoutiPieChannelInfo extends ChannelInfoItem implements MapSerializable {
   final List<dynamic> banners;
   final List<dynamic> tvbanners;
   final List<dynamic> mobileBanners;
@@ -15,12 +9,14 @@ class YoutiPieChannelInfo extends MapSerializable {
   final dynamic notifications;
   final dynamic notificationParameters;
   final dynamic channelEngagement;
+  final int? subscribersCount;
 
   const YoutiPieChannelInfo({
-    this.id,
-    this.name,
-    this.title,
-    this.thumbnails = const [],
+    super.id,
+    super.name,
+    super.title,
+    super.handler,
+    super.thumbnails = const [],
     this.banners = const [],
     this.tvbanners = const [],
     this.mobileBanners = const [],
@@ -28,11 +24,13 @@ class YoutiPieChannelInfo extends MapSerializable {
     this.notifications,
     this.notificationParameters,
     this.channelEngagement,
+    this.subscribersCount,
   });
 
   YoutiPieChannelInfo rebuild({
     dynamic newNotifications,
     dynamic newNotificationParameters,
+    dynamic newSubscribed,
     dynamic subscribed,
   }) => this;
 

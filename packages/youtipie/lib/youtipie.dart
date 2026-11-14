@@ -7,6 +7,8 @@ import 'package:youtipie/class/result_wrapper/history_result.dart';
 import 'package:youtipie/class/result_wrapper/channel_user_result.dart';
 import 'package:youtipie/class/result_wrapper/feed_result.dart';
 import 'package:youtipie/class/result_wrapper/feedback_holder.dart';
+import 'package:youtipie/class/result_wrapper/notification_result.dart';
+import 'package:youtipie/class/result_wrapper/playlist_result_base.dart';
 import 'package:youtipie/class/result_wrapper/playlist_user_result.dart';
 import 'package:youtipie/class/result_wrapper/user_channels_all_videos_result.dart';
 import 'package:youtipie/class/youtipie_feed/user_channel_info.dart';
@@ -76,6 +78,7 @@ class YoutiPie {
 class _StubCacheManager {
   const _StubCacheManager();
   void init(dynamic dir) {}
+  void closeAll() {}
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -140,8 +143,8 @@ class _StubChannel {
 
 class _StubChannelAction {
   const _StubChannelAction();
-  Future<bool> changeSubscribeStatus({dynamic channelId, dynamic channelEngagement, dynamic status}) async => true;
-  Future<bool> changeChannelNotificationStatus({dynamic channelId, dynamic status, dynamic parameters}) async => true;
+  Future<bool> changeSubscribeStatus({dynamic channelId, dynamic channelEngagement, dynamic status, dynamic mainChannelInfo, dynamic subscribe}) async => true;
+  Future<bool> changeChannelNotificationStatus({dynamic channelId, dynamic status, dynamic parameters, dynamic mainChannelInfo}) async => true;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -180,6 +183,8 @@ class _StubPlaylistAction {
 
 class _StubPlaylist {
   const _StubPlaylist();
+  Future<YoutiPiePlaylistResultBase?> getMixPlaylist({dynamic videoId, dynamic includeFirstVideo, dynamic userPersonalized, dynamic details}) async => null;
+  Future<YoutiPiePlaylistResultBase?> fetchPlaylist({dynamic playlistId, dynamic details}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
@@ -235,7 +240,7 @@ class _StubFeedbackAction {
 class _StubFeed {
   const _StubFeed();
   Future<YoutiPieFeedResult?> fetchFeed({dynamic details}) async => null;
-  Future<dynamic> fetchNotifications({dynamic details, dynamic useNewExtractor}) async => null;
+  Future<YoutiPieNotificationResult?> fetchNotifications({dynamic details, dynamic useNewExtractor}) async => null;
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

@@ -3,7 +3,18 @@ enum PlaylistAddDuplicateAction {
   addAllAndRemoveOldOnes,
   addOnlyMissing,
   mergeAndSortByAddedDate,
-  deleteAndCreateNewPlaylist,
+  deleteAndCreateNewPlaylist;
+
+  static const List<PlaylistAddDuplicateAction> valuesForAdd = [
+    justAddEverything,
+    addAllAndRemoveOldOnes,
+    addOnlyMissing,
+  ];
+
+  static const List<PlaylistAddDuplicateAction> valuesForAddExcludingAddEverything = [
+    addAllAndRemoveOldOnes,
+    addOnlyMissing,
+  ];
 }
 
 enum PlaylistType {
