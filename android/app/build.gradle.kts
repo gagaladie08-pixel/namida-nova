@@ -59,7 +59,8 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.msob7y.namida"
+        // Nova is intentionally a separate Android app so it can coexist with Namida.
+        applicationId = "com.gagaladie08.namida.nova"
         minSdk = 26 // -- ffmpeg_kit_extended_flutter needs 26
         targetSdk = 36
         versionCode = flutter.versionCode
