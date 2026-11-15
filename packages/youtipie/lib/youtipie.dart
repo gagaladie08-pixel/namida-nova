@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -101,7 +102,14 @@ class YoutiPie {
     dynamic checkHasConnectionCallback,
     dynamic syncItemsCompleter,
     dynamic accountCompleter,
-  }) {}
+  }) {
+    // The real package completes these once its stores are ready.  This local
+    // compatibility implementation has no asynchronous store to initialize;
+    // leaving either completer pending keeps Flutter's splash screen forever.
+    for (final completer in [syncItemsCompleter, accountCompleter]) {
+      if (completer is Completer && !completer.isCompleted) completer.complete();
+    }
+  }
   static void dispose() {}
   static Future<void> resetSession() async {}
 }
