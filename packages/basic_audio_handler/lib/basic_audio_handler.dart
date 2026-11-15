@@ -698,11 +698,12 @@ class CurrentQueueRx<Q> extends RxList<Q> {
   CurrentQueueRx([List<Q> value = const []]) : super(value);
 
   List<int> originalIndices = [];
+  RxBaseCore<List<Q>> get queueRx => this;
   int get length => value.length;
 }
 
 abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
-  final playWhenReady = ValueNotifier<bool>(false);
+  final playWhenReady = Rx<bool>(false);
   final queueShuffler = QueueShuffler<Q>();
   final queueItems = RxList<Q>();
   final numberOfRepeats = Rx<int>(0);
@@ -710,14 +711,28 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   final currentItem = Rx<Q?>(null);
   final currentIndex = Rx<int>(0);
   final currentQueue = CurrentQueueRx<Q>();
-  final currentLiveWindow = Rx<dynamic>(null);
+  final currentLiveWindow = Rx<LiveWindow?>(null);
   final currentState = Rx<dynamic>(ProcessingState.idle);
   final currentPositionMS = Rx<int>(0);
-  final videoPlayerInfo = Rx<dynamic>(null);
-  final totalListenedTimeInSec = Rx<dynamic>({});
+  final videoPlayerInfo = Rx<VideoInfoData?>(null);
+  final totalListenedTimeInSec = RxMap<String, int>({});
   final isPlaying = Rx<bool>(false);
+  final audioTracks = Rx<List<AudioTrack>?>(null);
+  final textTracks = Rx<List<TextTrack>?>(null);
+  final subtitleText = Rx<String?>(null);
+  final buffered = Rx<Duration>(Duration.zero);
+  final currentSpeed = Rx<double>(1.0);
 
+  bool get rendersSubtitlesInternally => false;
+  int? get androidSessionId => null;
   bool get isQueueShuffled => false;
+  bool get isShuffleEnabled => false;
+  bool get isLastItem => false;
+  bool get isModifyingQueue => false;
+  bool get isAutoSkipping => false;
+  int get latestInsertedIndex => -1;
+  Duration? get liveJoinPosition => null;
+  double get userPlayerVolumeForItem => 1.0;
   dynamic get equalizerExtended => null;
   dynamic get currentPlayer => null;
 
@@ -737,21 +752,31 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   Future<void> seekToItemStart() async {}
   Future<Duration?> setAudioSource(dynamic source, {dynamic item}) async => null;
   void resetSleepTimer() {}
-  void updateSleepTimerValues({bool? enableSleepAfterMins, dynamic sleepAfterMin, dynamic mins, dynamic items}) {}
+  void updateSleepTimerValues({bool? enableSleepAfterItems, bool? enableSleepAfterMins, int? sleepAfterMin, int? sleepAfterItems, bool? isAnchoredToItem, dynamic mins, dynamic items}) {}
   dynamic transformEvent(dynamic event, [dynamic a, dynamic b, dynamic c]) => event;
 
   void startCounterToAListen(dynamic pi) {}
   void refreshVolumeForReplayGain() {}
   Future<void> resetGaplessPlaybackData() async {}
   void refreshPlaybackStateModes() {}
+  Future<void> executeWithPausedOutput(Future<void> Function() fn) => fn();
+  Future<void> refreshCurrentItemPlayerConfig() async {}
+  Future<void> executeOnPlayers(FutureOr<void> Function(dynamic player) fn) async {}
+  void refreshRxVariables() {}
+  void onVolumeChangeAddListener(String key, void Function(double volume) listener) {}
+  void onVolumeChangeRemoveListener(String key) {}
+  void Function(Object? error, Object? stack)? onVideoError;
   int? getCurrentItemEndMS() => null;
   int? getCurrentItemStartMS() => null;
   void setCrossfadeTransition(dynamic transition) {}
   int? shufflePeekPreviousIndex() => null;
-  void setPlayWhenReady(bool play) {}
+  int? shuffleNextIndex() => null;
+  void setPlayWhenReady(bool play) => playWhenReady.value = play;
   Future<void> setQueueShuffled(bool shuffled) async {}
   void beginEarlyCrossFadeOutIfRequired() {}
-  void addToQueue(dynamic items) {}
+  Future<void> addToQueue(Iterable<Q> items, {bool insertNext = false, bool insertAfterLatest = false}) async {}
+  Future<bool> moveToNext(int index) async => false;
+  Future<bool> moveToAfterLatestInserted(int index) async => false;
   Future<bool> moveToLast(int index) async => false;
   Future<bool> moveItemsToNext(List<int> indices) async => false;
   Future<bool> moveItemsToLast(List<int> indices) async => false;
@@ -770,6 +795,15 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   Future<void> setAudioTrack(String? trackId) async {}
   Future<void> setTextTrack(String? trackId) async {}
   Future<bool> setExternalSubtitle(String? uri) async => false;
+  Future<void> setUserVolumeForItem(double volume) async {}
+  Future<void> setVolumeWithMultiplier(double volume) async {}
+  Future<void> setPlayerPitch(double pitch) async {}
+  Future<void> setPlayerSpeed(double speed) async {}
+  void invokeQueueModifyLock() {}
+  void invokeQueueModifyLockRelease({bool isCanceled = false}) {}
+  void shuffleAllItems() {}
+  Future<void> shuffleNextItems() async {}
+  int removeDuplicatesFromQueue() => 0;
 
   @override
   Future<void> play({bool checkIfPlaybackEnded = true}) async {}

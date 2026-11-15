@@ -1,4 +1,7 @@
 class MapSerializable {
+  static const dummyKey = 'dummy';
+  static const timestampKey = 'timestamp';
+
   final dynamic id;
   final dynamic name;
   final dynamic title;
