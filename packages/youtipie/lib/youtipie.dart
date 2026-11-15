@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:nampack/nampack.dart';
 import 'package:youtipie/core/enum.dart';
 import 'package:youtipie/class/result_wrapper/hashtag_result.dart';
+import 'package:youtipie/class/result_wrapper/music_browse_result.dart';
 import 'package:youtipie/class/result_wrapper/comment_result.dart';
 import 'package:youtipie/class/result_wrapper/comment_reply_result.dart';
 import 'package:youtipie/class/result_wrapper/history_result.dart';
@@ -109,11 +110,11 @@ class _StubService {
   const _StubService();
 
   Future<dynamic> search(dynamic query, {dynamic params, dynamic details}) async => null;
-  Future<dynamic> browse(dynamic endpoint, {dynamic details}) async => null;
+  Future<YoutiPieMusicBrowseResult?> browse(dynamic endpoint, {dynamic details}) async => null;
   Future<dynamic> getSegments(dynamic videoId, {dynamic categories, dynamic serverAddress, dynamic details}) async => null;
   void trackSkippedSegment(dynamic segmentId, {dynamic serverAddress}) {}
   Future<dynamic> fetchDislikes(dynamic videoId) async => null;
-  Future<void> sendVoteAction(dynamic videoId, dynamic action) async {}
+  dynamic sendVoteAction(dynamic videoId, dynamic action) => Future<void>.value();
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

@@ -326,7 +326,10 @@ abstract class PlaylistManager<T extends PlaylistItemWithDate, I, S> {
   Future<void> get waitForFavouritePlaylistLoad async {}
 
   GeneralPlaylist<T, S>? getPlaylist(String name) {
-    return playlists.value.firstWhereOrNull((p) => p.name == name);
+    for (final playlist in playlists.value) {
+      if (playlist.name == name) return playlist;
+    }
+    return null;
   }
 
   bool isFavourite(I item) => favouritesPlaylist.isSubItemFavourite(item);
