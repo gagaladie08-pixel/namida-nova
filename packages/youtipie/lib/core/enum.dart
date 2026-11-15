@@ -71,6 +71,7 @@ enum YoutiPieOperation {
   fetchUserChannels,
   fetchHistory,
   fetchUserPlaylists,
+  fetchUserPlaylistsNext,
   fetchUserPlaylistsSort,
   fetchChannelTab,
   fetchNotifications,
@@ -90,6 +91,7 @@ enum YoutiPieOperation {
   sendFeedback,
   undoFeedback,
   changeVideoLikeStatus,
+  addVideoToHistory,
   fetchMusicBrowse,
   other,
 }
@@ -148,6 +150,15 @@ enum InnertubeClients {
   ios,
   tv_samsung,
   tv_lg,
+}
+
+class InnertubeClientConfiguration {
+  final bool requireJSPlayer;
+  const InnertubeClientConfiguration({this.requireJSPlayer = false});
+}
+
+extension InnertubeClientsConfiguration on InnertubeClients {
+  InnertubeClientConfiguration get configuration => const InnertubeClientConfiguration();
 }
 
 extension YoutiPieOperationExtension on YoutiPieOperation {

@@ -457,6 +457,10 @@ class EqualizerPreset {
   int get hashCode => name.hashCode;
 }
 
+class EqualizerExtended {
+  Future<void> apply(bool enabled, ParametricEqualizer equalizer) async {}
+}
+
 class LoudnessEnhancerExtended {
   static const double kMinGain = -20.0;
   static const double kMaxGain = 20.0;

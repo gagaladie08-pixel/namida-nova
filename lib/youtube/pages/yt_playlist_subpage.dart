@@ -456,7 +456,7 @@ class YTHostedPlaylistSubpage extends StatefulWidget with NamidaRouteWidget {
     required this.userPlaylist,
     this.album,
   }) : playlist = _EmptyPlaylistResult(playlistId: playlistId),
-       isMixPlaylist = PlaylistInfoItem.isMixPlaylist(playlistId);
+       isMixPlaylist = PlaylistInfoItem.isMixPlaylistId(playlistId);
 
   @override
   State<YTHostedPlaylistSubpage> createState() => _YTHostedPlaylistSubpageState();

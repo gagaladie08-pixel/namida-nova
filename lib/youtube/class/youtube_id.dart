@@ -33,6 +33,9 @@ class YoutubeID with ItemWithDate, PlaylistItemWithDate implements Playable<Map<
   @override
   int get dateAddedMS => watchNull?.dateMSNull ?? 0;
 
+  @override
+  int get dateAdded => dateAddedMS;
+
   YTWatch get watch => watchNull ?? const YTWatch(dateMSNull: null, isYTMusic: false);
 
   const YoutubeID({

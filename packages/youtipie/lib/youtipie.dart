@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:nampack/nampack.dart';
+import 'package:youtipie/core/enum.dart';
 import 'package:youtipie/class/result_wrapper/hashtag_result.dart';
 import 'package:youtipie/class/result_wrapper/comment_result.dart';
 import 'package:youtipie/class/result_wrapper/comment_reply_result.dart';
@@ -79,7 +80,7 @@ class YoutiPie {
   static const music = _StubService();
   static const sponsorblock = _StubService();
   static const returnyoutubedislike = _StubService();
-  static final memoryCache = _StubService();
+  static final dynamic memoryCache = _StubMemoryCache();
   static const cacheManager = _StubCacheManager();
   static const cacheManagerSync = _StubCacheManager();
   static Future<dynamic> getActiveAccountChannelIsolate(dynamic dir, {dynamic encryptionKey}) async => null;
@@ -106,6 +107,17 @@ class YoutiPie {
 
 class _StubService {
   const _StubService();
+
+  Future<dynamic> search(dynamic query, {dynamic params, dynamic details}) async => null;
+  Future<dynamic> browse(dynamic endpoint, {dynamic details}) async => null;
+  Future<dynamic> getSegments(dynamic videoId, {dynamic categories, dynamic serverAddress, dynamic details}) async => null;
+  void trackSkippedSegment(dynamic segmentId, {dynamic serverAddress}) {}
+  Future<dynamic> fetchDislikes(dynamic videoId) async => null;
+  Future<void> sendVoteAction(dynamic videoId, dynamic action) async {}
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
+class _StubMemoryCache {
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 
