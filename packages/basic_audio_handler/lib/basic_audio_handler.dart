@@ -21,6 +21,24 @@ enum InterruptionType {
   unknown,
 }
 
+class CrossFadeCurve {
+  const CrossFadeCurve._();
+  const factory CrossFadeCurve.equalPower() = CrossFadeCurve._;
+  double transform(double value) => value;
+}
+
+class DefaultCrossfadeTransition<Q> {
+  const DefaultCrossfadeTransition();
+}
+
+class SmartCrossfadeTransition<Q> {
+  const SmartCrossfadeTransition({dynamic timingOf});
+}
+
+class BeatMatchedCrossfadeTransition<Q> {
+  const BeatMatchedCrossfadeTransition({dynamic timingOf, dynamic gridOf});
+}
+
 enum InterruptionAction {
   doNothing,
   duckAudio,
@@ -396,6 +414,10 @@ class ParametricEqualizer {
 }
 
 class EqualizerPreset {
+  static const allDefaults = [
+    EqualizerPreset(name: 'Flat', equalizer: ParametricEqualizer.flat),
+  ];
+
   final String name;
   final ParametricEqualizer equalizer;
 
@@ -705,7 +727,7 @@ class CurrentQueueRx<Q> extends RxList<Q> {
 abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   final playWhenReady = Rx<bool>(false);
   final queueShuffler = QueueShuffler<Q>();
-  final queueItems = RxList<Q>();
+  final queueItems = RxList<Q>([]);
   final numberOfRepeats = Rx<int>(0);
   final sleepTimerConfig = Rx<SleepTimerConfig>(const SleepTimerConfig());
   final currentItem = Rx<Q?>(null);
@@ -813,7 +835,7 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
 
   Future<void> onQueueChanged() async {}
   void onReorderItems(int currentIndex, Q itemDragged) {}
-  Future<void> clearQueue() async {
+  FutureOr<void> clearQueue() async {
     queueItems.clear();
   }
   Future<void>? beforeSkippingToItem() => null;
@@ -885,7 +907,7 @@ abstract class AVPlayer {
   Future<void> stop();
   Future<void> seek(Duration position);
   Future<void> dispose();
-  void setAudioOutput(dynamic output, {dynamic bitPerfect, dynamic exclusive, dynamic mono});
+  Future<void> setAudioOutput(String? device, {required bool bitPerfect, required bool exclusive, required bool mono});
   Future<void> setVolume(double volume);
 
   dynamic noSuchMethod(Invocation invocation) => null;

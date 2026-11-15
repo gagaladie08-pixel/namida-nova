@@ -265,7 +265,7 @@ extension RxMapLengthExt<K, V> on Rx<Map<K, V>> {
 }
 
 abstract class PlaylistManager<T extends PlaylistItemWithDate, I, S> {
-  final playlists = RxList<GeneralPlaylist<T, S>>();
+  final playlists = RxList<GeneralPlaylist<T, S>>([]);
   final playlistsMap = RxMap<String, GeneralPlaylist<T, S>>({});
   late final FavouritePlaylist<T, I, S> favouritesPlaylist = FavouritePlaylist<T, I, S>(
     GeneralPlaylist<T, S>(name: 'Favourites'),
@@ -429,7 +429,7 @@ abstract class PlaylistManager<T extends PlaylistItemWithDate, I, S> {
     return tracks.length;
   }
 
-  void addNewPlaylist(String name, {dynamic videoIds}) {}
+  void addNewPlaylist(String name) {}
 
   String? validatePlaylistName(String? name) => null;
 
@@ -477,5 +477,7 @@ abstract class PlaylistManager<T extends PlaylistItemWithDate, I, S> {
     return count;
   }
 
-  void addTracksToPlaylist(dynamic playlist, dynamic tracks) {}
+  Future<void> mergeMetadataFrom(String path) async {}
+
+  void addTracksToPlaylist(GeneralPlaylist<T, S> playlist, List<I> tracks) {}
 }

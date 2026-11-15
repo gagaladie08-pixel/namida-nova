@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:basic_audio_handler/basic_audio_handler.dart';
 import 'package:flutter_scrollbar_modified/flutter_scrollbar_modified.dart';
 import 'package:history_manager/history_manager.dart';
+import 'package:youtipie/core/enum.dart' show InnertubeClients;
 import 'package:youtipie/core/http.dart';
 
 import 'package:namida/base/settings_file_writer.dart';

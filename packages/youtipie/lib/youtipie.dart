@@ -76,6 +76,10 @@ class YoutiPie {
   static const feed = _StubFeed();
   static const hashtag = _StubHashtag();
   static const video = _StubVideo();
+  static const music = _StubService();
+  static const sponsorblock = _StubService();
+  static const returnyoutubedislike = _StubService();
+  static final memoryCache = _StubService();
   static const cacheManager = _StubCacheManager();
   static const cacheManagerSync = _StubCacheManager();
   static Future<dynamic> getActiveAccountChannelIsolate(dynamic dir, {dynamic encryptionKey}) async => null;
@@ -98,6 +102,11 @@ class YoutiPie {
   }) {}
   static void dispose() {}
   static Future<void> resetSession() async {}
+}
+
+class _StubService {
+  const _StubService();
+  dynamic noSuchMethod(Invocation invocation) => null;
 }
 
 class _StubCacheManager {

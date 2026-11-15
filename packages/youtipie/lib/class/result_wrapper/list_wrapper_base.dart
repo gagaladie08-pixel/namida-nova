@@ -13,6 +13,8 @@ class YoutiPieFetchAllRes {
 }
 
 abstract class YoutiPieListWrapper<T> {
+  const YoutiPieListWrapper();
+
   List<T> get items;
   int get length => items.length;
   bool get isEmpty => items.isEmpty;
