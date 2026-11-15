@@ -221,6 +221,8 @@ class GeneralPlaylist<T, S> {
     bool? isPinned,
     int? pinnedDate,
     String? comment,
+    List<String>? moods,
+    List<String>? tags,
     dynamic remoteSource,
   }) => GeneralPlaylist<T, S>(
     name: name ?? this.name,
@@ -231,6 +233,8 @@ class GeneralPlaylist<T, S> {
     isPinned: isPinned ?? this.isPinned,
     pinnedDate: pinnedDate ?? this.pinnedDate,
     comment: comment ?? this.comment,
+    moods: moods ?? this.moods,
+    tags: tags ?? this.tags,
     remoteSource: remoteSource ?? this.remoteSource,
   );
 
@@ -368,6 +372,23 @@ abstract class PlaylistManager<T extends PlaylistItemWithDate, I, S> {
 
   Future<void> insertTracksInPlaylistWithEachIndex(dynamic playlist, dynamic tracks) async {}
 
+  Future<void> replaceTheseTracksInPlaylists(bool Function(T item) predicate, T Function(T item) replacer) async {
+    for (final playlist in playlistsMap.value.values) {
+      playlist.tracks = playlist.tracks.map((item) => predicate(item) ? replacer(item) : item).toList();
+    }
+  }
+
+  Future<void> replaceTheseTracksInFavourites(bool Function(T item) predicate, T Function(T item) replacer) async {
+    final playlist = favouritesPlaylist.value;
+    playlist.tracks = playlist.tracks.map((item) => predicate(item) ? replacer(item) : item).toList();
+  }
+
+  List<T>? computeCustomOrder(GeneralPlaylist<T, S> playlist) => null;
+  Future<GeneralPlaylist<T, S>> ensureNewSourceItemsSorted(GeneralPlaylist<T, S> playlist) async => playlist;
+  Future<void> importPlaylistForce(GeneralPlaylist<T, S> playlist, {bool sortPlaylists = true, bool tracksFromNewSource = false}) async {
+    playlistsMap.value[playlist.name] = playlist;
+  }
+
   Future<void> removeTag(String tag) async {}
 
   Future<void> renameTag(String oldTag, String newTag) async {}
@@ -381,6 +402,7 @@ abstract class PlaylistManager<T extends PlaylistItemWithDate, I, S> {
   Future<void> removePlaylist(GeneralPlaylist<T, S> playlist) async {}
 
   Future<void> prepareAllPlaylistsFile() async {}
+  Future<void> prepareDefaultPlaylistsFileAsync() async {}
 
   Future<void> reAddPlaylist(GeneralPlaylist<T, S> playlist, int modifiedDate, {dynamic artworkBytes}) async {
     playlistsMap.value[playlist.name] = playlist;

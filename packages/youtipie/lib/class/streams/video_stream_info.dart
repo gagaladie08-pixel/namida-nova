@@ -17,6 +17,7 @@ class VideoStreamInfo {
   final bool? isPrivate;
   final bool? isUnlisted;
   final bool? isLiveContent;
+  final bool? isLiveNow;
   final dynamic category;
   final dynamic uploadDate;
 
@@ -27,7 +28,8 @@ class VideoStreamInfo {
     this.channelId,
     this.channelName,
     this.durSeconds,
-    this.publishedAt = const PublishTime.unknown(),
+    PublishTime? publishedAt,
+    PublishTime? publishDate,
     this.viewsCount,
     this.channel,
     this.thumbnails = const [],
@@ -36,14 +38,13 @@ class VideoStreamInfo {
     this.isPrivate,
     this.isUnlisted,
     this.isLiveContent,
+    this.isLiveNow,
     this.category,
     this.uploadDate,
-  });
+  }) : publishedAt = publishedAt ?? publishDate ?? const PublishTime.unknown();
 
   PublishTime get publishDate => publishedAt;
   String? get availableDescription => description;
-  bool get isLiveNow => false;
-
   static VideoStreamInfo merge(String videoId, VideoStreamInfo? cached, VideoStreamInfo fresh) => fresh;
   static VideoStreamInfo fromMap(dynamic map) => const VideoStreamInfo();
   Map<String, dynamic> toMap() => {};

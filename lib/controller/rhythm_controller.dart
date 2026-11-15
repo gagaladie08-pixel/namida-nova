@@ -140,7 +140,7 @@ class RhythmController {
     if (rhythm == null || !rhythm.hasSteadyBeat) return null;
     return BeatGrid(
       bpm: rhythm.bpm,
-      beatOffsetMS: rhythm.beatOffsetMS,
+      beatOffsetMS: rhythm.beatOffsetMS.round(),
     );
   }
 

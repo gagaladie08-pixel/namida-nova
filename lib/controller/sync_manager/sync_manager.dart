@@ -20,6 +20,7 @@ import 'package:uuid/uuid.dart';
 import 'package:namida/class/eggs_data.dart';
 import 'package:namida/class/file_parts.dart';
 import 'package:namida/class/split_config.dart';
+import 'package:namida/class/sort_chain.dart' show SortEntry;
 import 'package:namida/class/track.dart';
 import 'package:namida/class/video.dart';
 import 'package:namida/controller/audio_cache_controller.dart';

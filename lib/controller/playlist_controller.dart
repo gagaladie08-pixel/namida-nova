@@ -1190,7 +1190,7 @@ class PlaylistController extends PlaylistManager<TrackWithDate, Track, SortEntry
   static LocalPlaylist? _prepareFavouritesFile(String path) {
     try {
       final response = File(path).readAsJsonSync();
-      return LocalPlaylist.fromJson(response, TrackWithDate.fromJson, SortType.sortListFromJsonList);
+      return LocalPlaylist.fromJson<TrackWithDate, SortEntry<SortType>>(response, TrackWithDate.fromJson, SortType.sortListFromJsonList);
     } catch (_) {}
     return null;
   }
@@ -1201,7 +1201,7 @@ class PlaylistController extends PlaylistManager<TrackWithDate, Track, SortEntry
     for (final f in files) {
       try {
         final response = f.readAsJsonSync(ensureExists: false);
-        final pl = LocalPlaylist.fromJson(response, TrackWithDate.fromJson, SortType.sortListFromJsonList);
+        final pl = LocalPlaylist.fromJson<TrackWithDate, SortEntry<SortType>>(response, TrackWithDate.fromJson, SortType.sortListFromJsonList);
         map[pl.name] = pl;
       } catch (_) {}
     }

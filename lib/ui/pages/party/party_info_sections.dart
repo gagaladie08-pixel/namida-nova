@@ -222,6 +222,7 @@ class _PartyNowPlayingCenterCard extends StatelessWidget {
                                 final current = Player.inst.currentItem.valueR;
                                 if (current is Selectable) {
                                   return ArtworkWidget(
+                                    key: ValueKey(current.track.path),
                                     track: current.track,
                                     thumbnailSize: artworkSize,
                                     forceSquared: true,

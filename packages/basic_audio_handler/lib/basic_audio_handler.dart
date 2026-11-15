@@ -521,6 +521,7 @@ class PlayerConfigOverrides {
   final bool? equalizerEnabled;
   final ParametricEqualizer? equalizer;
   final EqualizerPreset? preset;
+  final int modifiedDate;
 
   const PlayerConfigOverrides({
     this.pitch,
@@ -533,7 +534,10 @@ class PlayerConfigOverrides {
     this.equalizerEnabled,
     this.equalizer,
     this.preset,
+    this.modifiedDate = 0,
   });
+
+  bool get isEmpty => pitch == null && speed == null && volume == null && balance == null && skipSilence == null && loudnessEnhancerEnabled == null && loudnessEnhancer == null && equalizerEnabled == null && equalizer == null && preset == null;
 
   factory PlayerConfigOverrides.fromMap(Map<dynamic, dynamic> map) {
     return PlayerConfigOverrides(
@@ -545,6 +549,7 @@ class PlayerConfigOverrides {
       loudnessEnhancerEnabled: map['loudnessEnhancerEnabled'] as bool?,
       loudnessEnhancer: (map['loudnessEnhancer'] as num?)?.toDouble(),
       equalizerEnabled: map['equalizerEnabled'] as bool?,
+      modifiedDate: (map['modifiedDate'] as num?)?.toInt() ?? 0,
     );
   }
 
@@ -557,6 +562,7 @@ class PlayerConfigOverrides {
     'loudnessEnhancerEnabled': loudnessEnhancerEnabled,
     'loudnessEnhancer': loudnessEnhancer,
     'equalizerEnabled': equalizerEnabled,
+    'modifiedDate': modifiedDate,
   };
 
   PlayerConfigOverrides copyWith({
@@ -570,6 +576,7 @@ class PlayerConfigOverrides {
     bool? equalizerEnabled,
     ParametricEqualizer? equalizer,
     EqualizerPreset? preset,
+    int? modifiedDate,
   }) {
     return PlayerConfigOverrides(
       pitch: pitch ?? this.pitch,
@@ -582,6 +589,7 @@ class PlayerConfigOverrides {
       equalizerEnabled: equalizerEnabled ?? this.equalizerEnabled,
       equalizer: equalizer ?? this.equalizer,
       preset: preset ?? this.preset,
+      modifiedDate: modifiedDate ?? this.modifiedDate,
     );
   }
 
@@ -725,7 +733,7 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   bool getLoudnessEnhancerEnabledTrackValue() => false;
   bool getLoudnessEnhancerEnabledTrackValueR() => false;
 
-  void onPlayRaw({bool attemptFixVolume = false}) {}
+  Future<void> onPlayRaw({bool attemptFixVolume = false}) async {}
   Future<void> seekToItemStart() async {}
   Future<Duration?> setAudioSource(dynamic source, {dynamic item}) async => null;
   void resetSleepTimer() {}
@@ -734,7 +742,7 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
 
   void startCounterToAListen(dynamic pi) {}
   void refreshVolumeForReplayGain() {}
-  void resetGaplessPlaybackData() {}
+  Future<void> resetGaplessPlaybackData() async {}
   void refreshPlaybackStateModes() {}
   int? getCurrentItemEndMS() => null;
   int? getCurrentItemStartMS() => null;
@@ -744,9 +752,30 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
   Future<void> setQueueShuffled(bool shuffled) async {}
   void beginEarlyCrossFadeOutIfRequired() {}
   void addToQueue(dynamic items) {}
+  Future<bool> moveToLast(int index) async => false;
+  Future<bool> moveItemsToNext(List<int> indices) async => false;
+  Future<bool> moveItemsToLast(List<int> indices) async => false;
+  Future<void> removeFromQueue(int index) async {}
+  Future<void> replaceAllItemsInQueue(Q oldItem, Q newItem) async {}
+  Future<void> replaceWhereInQueue(bool Function(Q item) predicate, Q Function(Q item) replacer) async {}
+  int removeRangeFromQueue(int start, int end) => 0;
+  int removeAllPrevious() => 0;
+  int removeAllNext() => 0;
+  int removeAllExceptCurrent() => 0;
+  Future<void> insertInQueue(Iterable<Q> items, int index) async {}
+  Future<void> reorderItems(int oldIndex, int newIndex) async {}
+  Future<void> restoreQueue(QueueSnapshot<Q> snapshot) async {}
+  bool isSameAsOriginalQueue(Iterable<Q> queue) => false;
+  void setItemPlaybackRange(Q item, {required int? startMS, required int? endMS}) {}
+  Future<void> setAudioTrack(String? trackId) async {}
+  Future<void> setTextTrack(String? trackId) async {}
+  Future<bool> setExternalSubtitle(String? uri) async => false;
 
   @override
-  Future<void> pause({dynamic pauseFadeMillis}) async {}
+  Future<void> play({bool checkIfPlaybackEnded = true}) async {}
+
+  @override
+  Future<void> pause({dynamic pauseFadeMillis, dynamic awaitLastPositionReport, dynamic isUserInitiated}) async {}
 
   Future<void> onQueueChanged() async {}
   void onReorderItems(int currentIndex, Q itemDragged) {}
@@ -759,6 +788,7 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
     required Iterable<Q> queue,
     bool shuffle = false,
     bool shuffleKeepingItem = false,
+    bool startPlaying = true,
     List<int>? originalIndices,
     int? maximumItems,
     void Function()? onQueueEmpty,
@@ -778,6 +808,7 @@ abstract class BasicAudioHandler<Q> extends BaseAudioHandler {
 
   Future<void> skipToNext({bool? andPlay = true, bool isManualSkip = false}) async {}
   Future<void> skipToPrevious({bool isManualSkip = false}) async {}
+  Future<void> skipToQueueItem(int index, {bool isManualSkip = true}) async {}
 }
 
 class ItemPrepareConfig<Q, S extends UriSource> {

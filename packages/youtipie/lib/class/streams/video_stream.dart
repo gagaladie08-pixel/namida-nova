@@ -3,6 +3,7 @@ import 'package:youtipie/class/streams/stream_base.dart';
 class VideoStreamCodecInfo {
   final String container;
   const VideoStreamCodecInfo({this.container = ''});
+  bool isExperimentalCodec() => false;
   String? codecIdentifierIfCustom() => null;
   String codecCleaned() => '';
   dynamic get embeddedAudioInfo => null;
